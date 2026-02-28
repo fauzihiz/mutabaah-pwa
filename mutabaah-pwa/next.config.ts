@@ -8,11 +8,9 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  experimental: {
-    // @ts-ignore - Turbopack config might be needed for some plugins
-    turbopack: {},
-  },
+  // Fix for Next.js 15/16 Turbopack vs Webpack conflict (Serwist)
+  // @ts-ignore
+  turbopack: {},
 };
 
 export default process.env.NODE_ENV === "development"
