@@ -5,10 +5,30 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* ─── Light Mode ─────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --primary: #10b981;
+  --bg-base: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f1f5f9;
+  --border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --primary: #16a34a;
+  --primary-light: #dcfce7;
+}
+
+/* ─── Dark Mode ──────────────────────────────── */
+:root.dark {
+  --bg-base: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-subtle: #334155;
+  --border: #475569;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --primary: #4ade80;
+  --primary-light: #14532d;
 }
 
 * {
@@ -16,15 +36,17 @@
 }
 
 body {
-  background: #f8fafc;
-  color: var(--foreground);
+  background: var(--bg-base);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* Custom Scrollbar for a cleaner mobile look */
+/* ─── Scrollbars ─────────────────────────────── */
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -32,10 +54,40 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
+  background: var(--border);
   border-radius: 10px;
 }
 
-.premium-shadow {
-  box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.1);
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Semantic utility classes ───────────────── */
+.surface {
+  background: var(--bg-surface);
+}
+
+.subtle {
+  background: var(--bg-subtle);
+}
+
+.bordered {
+  border-color: var(--border);
+}
+
+.txt-primary {
+  color: var(--text-primary);
+}
+
+.txt-secondary {
+  color: var(--text-secondary);
+}
+
+.txt-muted {
+  color: var(--text-muted);
 }
