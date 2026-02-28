@@ -17,8 +17,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
 
     const isFuture = (day: number) => {
         const d = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-        d.setHours(23, 59, 59);
-        return d > today;
+        const todayMidnight = new Date();
+        todayMidnight.setHours(0, 0, 0, 0);
+        return d > todayMidnight;
     };
 
     const formatDate = (day: number) => {
@@ -68,11 +69,11 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                             {ACTIVITIES.filter(a => a.category === category).map(activity => (
                                 <div
                                     key={activity.id}
-                                    className="h-10 px-3 flex items-center border-b"
+                                    className="h-12 px-3 flex items-center border-b"
                                     style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                                 >
                                     <span
-                                        className="text-[11px] font-semibold truncate leading-tight"
+                                        className="text-[11px] font-semibold leading-tight"
                                         style={{ color: 'var(--text-secondary)' }}
                                     >
                                         {activity.name}
@@ -146,7 +147,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 {ACTIVITIES.filter(a => a.category === category).map(activity => (
                                     <div
                                         key={activity.id}
-                                        className="flex h-10 border-b"
+                                        className="flex h-12 border-b"
                                         style={{ borderColor: 'var(--border)' }}
                                     >
                                         {days.map(day => {
