@@ -211,8 +211,8 @@ Pull request sangat disambut! Untuk perubahan besar, buka *issue* terlebih dahul
 
 ## 👤 Dibuat Oleh
 
-**Fauzi Hizburrahman**  
-[fauzi-portfolio.com](https://fauzi-portfolio.com) · [GitHub @fauzihiz](https://github.com/fauzihiz)
+**Fauzi Hizbullah**  
+[fauzihiz.github.io](https://fauzihiz.github.io) · [GitHub @fauzihiz](https://github.com/fauzihiz)
 
 ---
 

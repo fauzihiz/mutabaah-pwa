@@ -1,6 +1,6 @@
-export type ActivityCategory = 
+export type ActivityCategory =
   | 'Qiyamulail'
-  | 'Sholat Jamaah di Masjid/Tepat Waktu'
+  | 'Sholat Jamaah Tepat Waktu'
   | 'Sholat Sunnah Rawatib'
   | 'Zikir Harian'
   | 'Interaksi Al Quran'
@@ -59,7 +59,7 @@ export const ACTIVITIES: Activity[] = [
 
 export const CATEGORIES: ActivityCategory[] = [
   'Qiyamulail',
-  'Sholat Jamaah di Masjid/Tepat Waktu',
+  'Sholat Jamaah Tepat Waktu',
   'Sholat Sunnah Rawatib',
   'Zikir Harian',
   'Interaksi Al Quran',
