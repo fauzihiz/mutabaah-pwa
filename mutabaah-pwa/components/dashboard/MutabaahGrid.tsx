@@ -96,9 +96,10 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                         {isCustom && (
                                             <button
                                                 onClick={() => handleRename(activity.id, displayName)}
-                                                className="absolute right-1 opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-opacity"
+                                                className="absolute right-1 p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-sm flex items-center justify-center transition-transform active:scale-90"
+                                                title="Ubah nama"
                                             >
-                                                <Edit2 size={10} className="text-slate-400" />
+                                                <Edit2 size={10} className="text-slate-500 dark:text-slate-300" />
                                             </button>
                                         )}
                                     </div>
