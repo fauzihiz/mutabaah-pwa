@@ -1,10 +1,11 @@
 export type ActivityCategory =
   | 'Qiyamulail'
-  | 'Sholat Jamaah Tepat Waktu'
+  | 'Sholat Tepat Waktu'
   | 'Sholat Sunnah Rawatib'
   | 'Zikir Harian'
   | 'Interaksi Al Quran'
-  | 'Ibadah Lainnya';
+  | 'Ibadah Lainnya'
+  | 'Aktivitas Mandiri';
 
 export interface Activity {
   id: string;
@@ -20,12 +21,12 @@ export const ACTIVITIES: Activity[] = [
   { id: 'hajat', name: 'Sholat Hajat', category: 'Qiyamulail' },
   { id: 'witir', name: 'Sholat Witir', category: 'Qiyamulail' },
 
-  // Sholat Jamaah
-  { id: 'subuh', name: 'Subuh', category: 'Sholat Jamaah di Masjid/Tepat Waktu' },
-  { id: 'zuhur', name: 'Zuhur', category: 'Sholat Jamaah di Masjid/Tepat Waktu' },
-  { id: 'ashar', name: 'Ashar', category: 'Sholat Jamaah di Masjid/Tepat Waktu' },
-  { id: 'magrib', name: 'Magrib', category: 'Sholat Jamaah di Masjid/Tepat Waktu' },
-  { id: 'isya', name: 'Isya', category: 'Sholat Jamaah di Masjid/Tepat Waktu' },
+  // Sholat Tepat Waktu
+  { id: 'subuh', name: 'Subuh', category: 'Sholat Tepat Waktu' },
+  { id: 'zuhur', name: 'Zuhur', category: 'Sholat Tepat Waktu' },
+  { id: 'ashar', name: 'Ashar', category: 'Sholat Tepat Waktu' },
+  { id: 'magrib', name: 'Magrib', category: 'Sholat Tepat Waktu' },
+  { id: 'isya', name: 'Isya', category: 'Sholat Tepat Waktu' },
 
   // Sholat Sunnah Rawatib
   { id: 'qob_subuh', name: 'Qobliyah Subuh', category: 'Sholat Sunnah Rawatib' },
@@ -55,13 +56,26 @@ export const ACTIVITIES: Activity[] = [
   { id: 'dhuha', name: 'Dhuha', category: 'Ibadah Lainnya' },
   { id: 'mendoakan', name: 'Mendoakan Orang lain di jalan', category: 'Ibadah Lainnya' },
   { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
+
+  // Aktivitas Mandiri (Custom Slots)
+  { id: 'custom_1', name: 'Aktivitas Kustom 1', category: 'Aktivitas Mandiri' },
+  { id: 'custom_2', name: 'Aktivitas Kustom 2', category: 'Aktivitas Mandiri' },
+  { id: 'custom_3', name: 'Aktivitas Kustom 3', category: 'Aktivitas Mandiri' },
+  { id: 'custom_4', name: 'Aktivitas Kustom 4', category: 'Aktivitas Mandiri' },
+  { id: 'custom_5', name: 'Aktivitas Kustom 5', category: 'Aktivitas Mandiri' },
+  { id: 'custom_6', name: 'Aktivitas Kustom 6', category: 'Aktivitas Mandiri' },
+  { id: 'custom_7', name: 'Aktivitas Kustom 7', category: 'Aktivitas Mandiri' },
+  { id: 'custom_8', name: 'Aktivitas Kustom 8', category: 'Aktivitas Mandiri' },
+  { id: 'custom_9', name: 'Aktivitas Kustom 9', category: 'Aktivitas Mandiri' },
+  { id: 'custom_10', name: 'Aktivitas Kustom 10', category: 'Aktivitas Mandiri' },
 ];
 
 export const CATEGORIES: ActivityCategory[] = [
   'Qiyamulail',
-  'Sholat Jamaah Tepat Waktu',
+  'Sholat Tepat Waktu',
   'Sholat Sunnah Rawatib',
   'Zikir Harian',
   'Interaksi Al Quran',
   'Ibadah Lainnya',
+  'Aktivitas Mandiri',
 ];
