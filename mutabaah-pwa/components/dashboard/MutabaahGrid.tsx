@@ -2,7 +2,8 @@
 
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
-import { Check, Lock } from 'lucide-react';
+import { Check, Lock, Edit2 } from 'lucide-react';
+import { useActivitySettings } from '@/hooks/useActivitySettings';
 
 interface MutabaahGridProps {
     currentDate: Date;
@@ -14,6 +15,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
     const today = new Date();
+
+    const { getActivityName, renameActivity } = useActivitySettings();
 
     const isFuture = (day: number) => {
         const d = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
@@ -33,6 +36,13 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         day === today.getDate() &&
         currentDate.getMonth() === today.getMonth() &&
         currentDate.getFullYear() === today.getFullYear();
+
+    const handleRename = async (id: string, currentName: string) => {
+        const newName = prompt(`Ganti nama baris ini:`, currentName);
+        if (newName && newName.trim() !== currentName) {
+            await renameActivity(id, newName);
+        }
+    };
 
     return (
         <div
@@ -66,20 +76,34 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 </span>
                             </div>
 
-                            {ACTIVITIES.filter(a => a.category === category).map(activity => (
-                                <div
-                                    key={activity.id}
-                                    className="h-12 px-3 flex items-center border-b"
-                                    style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
-                                >
-                                    <span
-                                        className="text-[11px] font-semibold leading-tight"
-                                        style={{ color: 'var(--text-secondary)' }}
+                            {ACTIVITIES.filter(a => a.category === category).map(activity => {
+                                const displayName = getActivityName(activity.id);
+                                const isCustom = category === 'Aktivitas Mandiri';
+
+                                return (
+                                    <div
+                                        key={activity.id}
+                                        className="h-12 px-3 flex items-center border-b group relative"
+                                        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                                     >
-                                        {activity.name}
-                                    </span>
-                                </div>
-                            ))}
+                                        <span
+                                            className="text-[11px] font-semibold leading-tight pr-4"
+                                            style={{ color: 'var(--text-secondary)' }}
+                                        >
+                                            {displayName}
+                                        </span>
+
+                                        {isCustom && (
+                                            <button
+                                                onClick={() => handleRename(activity.id, displayName)}
+                                                className="absolute right-1 opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-opacity"
+                                            >
+                                                <Edit2 size={10} className="text-slate-400" />
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     ))}
                 </div>

@@ -8,13 +8,20 @@ export interface ActivityLog {
     synced: boolean; // For future Supabase sync
 }
 
+export interface ActivitySetting {
+    activityId: string;
+    customName: string;
+}
+
 export class MutabaahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
+    activitySettings!: Table<ActivitySetting, string>;
 
     constructor() {
         super('MutabaahDB');
-        this.version(3).stores({
+        this.version(4).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
+            activitySettings: 'activityId',
         });
     }
 }
