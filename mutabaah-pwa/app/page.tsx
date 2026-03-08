@@ -10,12 +10,18 @@ import { AchievementCarousel } from '@/components/dashboard/AchievementCarousel'
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
+import { NavigationDrawer } from '@/components/dashboard/NavigationDrawer';
+import { ChangelogModal } from '@/components/dashboard/ChangelogModal';
 import { Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  // UI State
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isChangelogOpen, setIsChangelogOpen] = useState(false);
 
   const { logs, toggleActivity } = useMutabaahMonth(
     currentDate.getFullYear(),
@@ -37,7 +43,7 @@ export default function Dashboard() {
 
   if (authLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-white">
+      <div className="flex-1 flex items-center justify-center bg-white dark:bg-slate-950">
         <Loader2 className="animate-spin text-green-600" size={32} />
       </div>
     );
@@ -46,10 +52,24 @@ export default function Dashboard() {
   if (!user) return null;
 
   return (
-    <div className="flex-1 flex flex-col bg-white">
-      <DashboardHeader userEmail={user.email} />
+    <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 min-h-screen">
+      <DashboardHeader
+        userEmail={user.email}
+        onMenuClick={() => setIsDrawerOpen(true)}
+      />
 
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <NavigationDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        onOpenChangelog={() => setIsChangelogOpen(true)}
+      />
+
+      <ChangelogModal
+        isOpen={isChangelogOpen}
+        onClose={() => setIsChangelogOpen(false)}
+      />
+
+      <main className="flex-1 flex flex-col overflow-hidden relative">
         <div className="py-5 space-y-5">
           <AchievementCarousel badges={badges} isLoading={badgesLoading} />
           <MonthPicker currentDate={currentDate} onDateChange={setCurrentDate} />

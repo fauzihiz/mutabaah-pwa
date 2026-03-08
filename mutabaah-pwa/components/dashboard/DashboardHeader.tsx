@@ -6,21 +6,22 @@ import { LogOut, Menu, Sparkles, Sun, Moon } from 'lucide-react';
 
 interface DashboardHeaderProps {
     userEmail: string | undefined;
+    onMenuClick: () => void;
 }
 
-export function DashboardHeader({ userEmail }: DashboardHeaderProps) {
-    const { signOut } = useAuth();
+export function DashboardHeader({ userEmail, onMenuClick }: DashboardHeaderProps) {
     const { isDark, toggleTheme } = useTheme();
 
     return (
         <div
             style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
-            className="border-b p-4 flex items-center justify-between sticky top-0 z-30 transition-colors duration-300"
+            className="border-b px-4 py-3 flex items-center justify-between sticky top-0 z-30 transition-colors duration-300"
         >
             <div className="flex items-center space-x-3">
                 <button
+                    onClick={onMenuClick}
                     style={{ color: 'var(--text-muted)' }}
-                    className="p-2 rounded-lg hover:opacity-70 transition-opacity"
+                    className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90"
                 >
                     <Menu size={20} />
                 </button>
@@ -44,19 +45,10 @@ export function DashboardHeader({ userEmail }: DashboardHeaderProps) {
                 <button
                     onClick={toggleTheme}
                     style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
-                    className="p-2 rounded-lg border hover:opacity-70 transition-opacity"
+                    className="p-2 rounded-xl border hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all active:scale-90"
                     aria-label="Toggle dark mode"
                 >
-                    {isDark ? <Sun size={16} /> : <Moon size={16} />}
-                </button>
-                {/* Logout */}
-                <button
-                    onClick={() => signOut()}
-                    style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
-                    className="flex items-center space-x-2 px-3 py-1.5 rounded-lg border hover:opacity-70 transition-opacity text-xs font-medium"
-                >
-                    <LogOut size={14} />
-                    <span>Logout</span>
+                    {isDark ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
             </div>
         </div>
