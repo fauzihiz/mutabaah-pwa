@@ -15,6 +15,7 @@ const CHANGELOG = [
         date: 'Maret 2026',
         items: [
             { type: 'feature', icon: Sparkles, text: 'Aktivitas Mandiri (Custom Slots) yang bisa di-rename langsung di aplikasi.' },
+            { type: 'feature', icon: Sparkles, text: 'Navigasi: Menu Hamburger dan riwayat pembaruan (Changelog).' },
             { type: 'feature', icon: Zap, text: 'Ikon edit aktivitas kustom kini selalu terlihat di mobile.' },
             { type: 'fix', icon: Bug, text: 'Perbaikan bug: Tanggal hari ini tidak lagi terkunci.' },
             { type: 'fix', icon: Bug, text: 'Readability: Teks aktivitas panjang kini otomatis melipat (wrap).' },
