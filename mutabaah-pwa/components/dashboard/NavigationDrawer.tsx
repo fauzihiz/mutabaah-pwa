@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Home, History, LogOut, ChevronRight } from 'lucide-react';
+import { X, Home, History, LogOut, ChevronRight, BarChart3 } from 'lucide-react';
 import Image from 'next/image';
 import { useAuth } from '../providers/AuthProvider';
 
@@ -10,9 +10,10 @@ interface NavigationDrawerProps {
     isOpen: boolean;
     onClose: () => void;
     onOpenChangelog: () => void;
+    onOpenStats: () => void;
 }
 
-export function NavigationDrawer({ isOpen, onClose, onOpenChangelog }: NavigationDrawerProps) {
+export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats }: NavigationDrawerProps) {
     const { signOut } = useAuth();
 
     return (
@@ -71,6 +72,21 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog }: Navigatio
                                     <span className="text-sm font-bold">Beranda</span>
                                 </div>
                                 <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    onClose();
+                                    onOpenStats();
+                                }}
+                                className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors group"
+                                style={{ color: 'var(--text-secondary)' }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <BarChart3 size={18} />
+                                    <span className="text-sm font-semibold">Statistik</span>
+                                </div>
+                                <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--text-muted)' }} />
                             </button>
 
                             <button
