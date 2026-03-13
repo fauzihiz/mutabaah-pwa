@@ -13,15 +13,24 @@ export interface ActivitySetting {
     customName: string;
 }
 
+export interface PlannerNote {
+    id?: number;
+    date: string; // YYYY-MM-DD
+    content: string;
+    synced: boolean;
+}
+
 export class MutabaahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
+    planner!: Table<PlannerNote>;
 
     constructor() {
         super('MutabaahDB');
-        this.version(4).stores({
+        this.version(5).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             activitySettings: 'activityId',
+            planner: '++id, date, synced',
         });
     }
 }

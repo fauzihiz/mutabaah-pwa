@@ -14,6 +14,7 @@ import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
 import { NavigationDrawer } from '@/components/dashboard/NavigationDrawer';
 import { ChangelogModal } from '@/components/dashboard/ChangelogModal';
 import { StatsView } from '@/components/dashboard/StatsView';
+import { MonthlyPlannerView } from '@/components/dashboard/MonthlyPlannerView';
 import { Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -24,7 +25,7 @@ export default function Dashboard() {
   // UI State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
-  const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'stats' | 'planner'>('dashboard');
 
   const { logs, toggleActivity } = useMutabaahMonth(
     currentDate.getFullYear(),
@@ -75,16 +76,15 @@ export default function Dashboard() {
           setActiveView('stats');
           setIsDrawerOpen(false);
         }}
+        onOpenPlanner={() => {
+          setActiveView('planner');
+          setIsDrawerOpen(false);
+        }}
         onOpenHome={() => {
           setActiveView('dashboard');
           setIsDrawerOpen(false);
         }}
         activeView={activeView}
-      />
-
-      <ChangelogModal
-        isOpen={isChangelogOpen}
-        onClose={() => setIsChangelogOpen(false)}
       />
 
       <ChangelogModal
@@ -106,8 +106,10 @@ export default function Dashboard() {
               onToggle={toggleActivity}
             />
           </>
-        ) : (
+        ) : activeView === 'stats' ? (
           <StatsView stats={stats} />
+        ) : (
+          <MonthlyPlannerView currentDate={currentDate} onDateChange={setCurrentDate} />
         )}
       </main>
 
