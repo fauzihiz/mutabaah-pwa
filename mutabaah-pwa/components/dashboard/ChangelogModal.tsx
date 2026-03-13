@@ -109,7 +109,15 @@ export function ChangelogModal({ isOpen, onClose }: ChangelogModalProps) {
                         {/* Footer */}
                         <div className="border-t bg-slate-50/50 dark:bg-slate-900/20 px-6 py-4 text-center" style={{ borderColor: 'var(--border)' }}>
                             <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>
-                                Mutabaah Tracker v1.2.0 • Madani Group
+                                Mutabaah Tracker v1.2.0 • {' '}
+                                <a
+                                    href="https://fauzihiz.github.io/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-green-600 dark:text-green-500 font-bold hover:underline"
+                                >
+                                    FAUZI HIZ
+                                </a>
                             </p>
                         </div>
                     </motion.div>

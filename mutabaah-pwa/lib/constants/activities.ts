@@ -45,14 +45,14 @@ export const ACTIVITIES: Activity[] = [
   { id: 'zikir_petang', name: 'Zikir Petang', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
-  { id: 'tilawah', name: 'Tilawah 1 Juz', category: 'Interaksi Al Quran' },
-  { id: 'tafsir', name: 'Tafsir 1 Ayat', category: 'Interaksi Al Quran' },
+  { id: 'tilawah', name: 'Tilawah', category: 'Interaksi Al Quran' },
+  { id: 'tafsir', name: 'Tafsir', category: 'Interaksi Al Quran' },
   { id: 'al_waqiah', name: 'Al Waqiah', category: 'Interaksi Al Quran' },
   { id: 'al_mulk', name: 'Al Mulk', category: 'Interaksi Al Quran' },
 
   // Ibadah Lainnya
-  { id: 'puasa', name: 'Puasa Sunnah', category: 'Ibadah Lainnya' },
-  { id: 'sedekah', name: 'Sedekah Harian', category: 'Ibadah Lainnya' },
+  { id: 'puasa', name: 'Puasa', category: 'Ibadah Lainnya' },
+  { id: 'sedekah', name: 'Sedekah', category: 'Ibadah Lainnya' },
   { id: 'dhuha', name: 'Dhuha', category: 'Ibadah Lainnya' },
   { id: 'mendoakan', name: 'Mendoakan Orang lain di jalan', category: 'Ibadah Lainnya' },
   { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },

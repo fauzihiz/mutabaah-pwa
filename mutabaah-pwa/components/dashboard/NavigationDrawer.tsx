@@ -11,9 +11,11 @@ interface NavigationDrawerProps {
     onClose: () => void;
     onOpenChangelog: () => void;
     onOpenStats: () => void;
+    onOpenHome: () => void;
+    activeView: 'dashboard' | 'stats';
 }
 
-export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats }: NavigationDrawerProps) {
+export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats, onOpenHome, activeView }: NavigationDrawerProps) {
     const { signOut } = useAuth();
 
     return (
@@ -56,7 +58,7 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                                     Mutabaah
                                 </h2>
                                 <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
-                                    v1.2.0 • Digital Mutabaah
+                                    v1.2.0 • FAUZI HIZ
                                 </p>
                             </div>
                         </div>
@@ -64,29 +66,33 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                         {/* Menu Items */}
                         <nav className="flex-1 p-4 space-y-2">
                             <button
-                                onClick={onClose}
-                                className="w-full flex items-center justify-between p-3 rounded-2xl bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 group"
+                                onClick={onOpenHome}
+                                className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all group ${activeView === 'dashboard'
+                                    ? 'bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400'
+                                    : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+                                    }`}
+                                style={{ color: activeView === 'dashboard' ? undefined : 'var(--text-secondary)' }}
                             >
                                 <div className="flex items-center gap-3">
-                                    <Home size={18} className="font-bold" />
-                                    <span className="text-sm font-bold">Beranda</span>
+                                    <Home size={18} className={activeView === 'dashboard' ? 'font-bold' : ''} />
+                                    <span className={`text-sm ${activeView === 'dashboard' ? 'font-bold' : 'font-semibold'}`}>Beranda</span>
                                 </div>
-                                <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <ChevronRight size={14} className={`opacity-0 group-hover:opacity-100 transition-opacity ${activeView === 'dashboard' ? '' : 'text-muted'}`} />
                             </button>
 
                             <button
-                                onClick={() => {
-                                    onClose();
-                                    onOpenStats();
-                                }}
-                                className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors group"
-                                style={{ color: 'var(--text-secondary)' }}
+                                onClick={onOpenStats}
+                                className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all group ${activeView === 'stats'
+                                    ? 'bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400'
+                                    : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+                                    }`}
+                                style={{ color: activeView === 'stats' ? undefined : 'var(--text-secondary)' }}
                             >
                                 <div className="flex items-center gap-3">
-                                    <BarChart3 size={18} />
-                                    <span className="text-sm font-semibold">Statistik</span>
+                                    <BarChart3 size={18} className={activeView === 'stats' ? 'font-bold' : ''} />
+                                    <span className={`text-sm ${activeView === 'stats' ? 'font-bold' : 'font-semibold'}`}>Statistik</span>
                                 </div>
-                                <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--text-muted)' }} />
+                                <ChevronRight size={14} className={`opacity-0 group-hover:opacity-100 transition-opacity ${activeView === 'stats' ? '' : 'text-muted'}`} />
                             </button>
 
                             <button
