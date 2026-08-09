@@ -1,7 +1,15 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { Menu, Sparkles, Sun, Moon } from 'lucide-react';
+import { Menu, Sparkles, Sun, Moon, Pencil } from 'lucide-react';
+
+const GREETING_KEY = 'greetingName';
+
+function getStoredName(): string {
+    if (typeof window === 'undefined') return 'Sahabat';
+    return localStorage.getItem(GREETING_KEY) || 'Sahabat';
+}
 
 interface DashboardHeaderProps {
     onMenuClick: () => void;
@@ -9,6 +17,44 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
     const { isDark, toggleTheme } = useTheme();
+    const [name, setName] = useState('Sahabat');
+    const [isEditing, setIsEditing] = useState(false);
+    const [draft, setDraft] = useState('Sahabat');
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    // Load from localStorage on mount
+    useEffect(() => {
+        setName(getStoredName());
+    }, []);
+
+    const startEditing = () => {
+        setDraft(name);
+        setIsEditing(true);
+    };
+
+    const commitEdit = () => {
+        const trimmed = draft.trim();
+        const final = trimmed.length > 0 ? trimmed : 'Sahabat';
+        setName(final);
+        localStorage.setItem(GREETING_KEY, final);
+        setIsEditing(false);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            commitEdit();
+        } else if (e.key === 'Escape') {
+            setIsEditing(false);
+        }
+    };
+
+    // Focus input when editing starts
+    useEffect(() => {
+        if (isEditing && inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select();
+        }
+    }, [isEditing]);
 
     return (
         <div
@@ -31,9 +77,34 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                         <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-medium leading-none mb-1">
                             Assalamualaikum,
                         </p>
-                        <p style={{ color: 'var(--text-primary)' }} className="text-xs font-bold leading-none truncate max-w-[120px]">
-                            Sahabat
-                        </p>
+                        {isEditing ? (
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                value={draft}
+                                onChange={(e) => setDraft(e.target.value)}
+                                onBlur={commitEdit}
+                                onKeyDown={handleKeyDown}
+                                maxLength={20}
+                                style={{
+                                    background: 'var(--bg-surface)',
+                                    color: 'var(--text-primary)',
+                                    borderColor: 'var(--border)',
+                                }}
+                                className="text-xs font-bold leading-none border-b-2 outline-none px-0 py-0 w-[120px]"
+                            />
+                        ) : (
+                            <button
+                                onClick={startEditing}
+                                className="group flex items-center gap-1 max-w-[140px]"
+                                title="Tap untuk mengganti nama"
+                            >
+                                <p style={{ color: 'var(--text-primary)' }} className="text-xs font-bold leading-none truncate">
+                                    {name}
+                                </p>
+                                <Pencil size={10} className="opacity-0 group-hover:opacity-60 transition-opacity shrink-0" style={{ color: 'var(--text-muted)' }} />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

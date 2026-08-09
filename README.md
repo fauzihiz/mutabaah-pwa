@@ -14,7 +14,7 @@ Mutabaah Tracker is a Progressive Web App that helps you build consistent worshi
 
 - Check off daily worship activities with one tap
 - See your monthly progress in an interactive grid
-- Earn badges for consistency and streaks
+- Personalize your greeting name
 - Use the app fully offline — no login, no account needed
 
 ---
@@ -22,24 +22,10 @@ Mutabaah Tracker is a Progressive Web App that helps you build consistent worshi
 ## Features
 
 - **Monthly Grid** — tap to mark completed activities; past days are editable, future days are locked automatically
-- **Badge System** — unlock achievements based on real streaks, not just login
 - **Dark Mode** — toggle from the header, preference saved locally
-- **Monthly Planner** — write daily notes and plans for each day of the month
+- **Customizable Greeting** — tap the name next to "Assalamualaikum" to personalize it
 - **Statistics** — view category-level and overall completion stats with charts
 - **Installable PWA** — add to your home screen, works like a native app
-
-### Badges
-
-| Badge | Requirement |
-|---|---|
-| **Lail al-Awwal** | 3 consecutive nights of Tahajud |
-| **Muqarrabun** | 7 consecutive nights of Tahajud |
-| **Sahib al-Fajr** | 7 consecutive days of Subuh on time |
-| **Ahlul Quran** | 30 consecutive days of Tilawah |
-| **Al-Karim** | 7 consecutive days of Sedekah |
-| **Al-Mujtahid** | 30-day streak of any activity |
-
-Badges are defined in code (`lib/achievements.ts`). To add or edit badges, modify the `ACHIEVEMENTS` array and redeploy.
 
 ---
 
@@ -98,11 +84,9 @@ mutabaah-pwa/
 ├── components/
 │   ├── dashboard/
 │   │   ├── DashboardHeader.tsx     # Header + dark mode toggle
-│   │   ├── AchievementCarousel.tsx # Badge carousel
 │   │   ├── MutabaahGrid.tsx       # Monthly activity grid
 │   │   ├── MonthPicker.tsx        # Month navigation
 │   │   ├── StatsView.tsx          # Statistics charts
-│   │   ├── MonthlyPlannerView.tsx # Daily notes planner
 │   │   ├── NavigationDrawer.tsx   # Side menu
 │   │   ├── ChangelogModal.tsx     # Version history
 │   │   └── DashboardFooter.tsx    # Footer
@@ -110,13 +94,10 @@ mutabaah-pwa/
 │       └── ThemeProvider.tsx       # Dark/light mode context
 ├── hooks/
 │   ├── useMutabaah.ts             # Activity logs (IndexedDB)
-│   ├── useMonthlyAchievements.ts  # Badge computation per month
 │   ├── useMonthlyStats.ts         # Statistics computation
-│   ├── useMonthlyPlanner.ts       # Planner notes (IndexedDB)
 │   └── useActivitySettings.ts     # Custom activity names (IndexedDB)
 ├── lib/
 │   ├── db.ts                      # Dexie schema (IndexedDB)
-│   ├── achievements.ts            # Badge definitions + logic
 │   └── constants/
 │       └── activities.ts          # Activity list & categories
 └── public/
@@ -159,7 +140,6 @@ mutabaah-pwa/
 - **All data is stored locally** in your browser (IndexedDB). Clearing browser data or uninstalling the app will delete your records.
 - **No account or login** is required. Anyone can open and use the app directly.
 - **No cloud sync** exists yet. Data stays on the device and browser where it was created.
-- To add new badges, edit the `ACHIEVEMENTS` array in `lib/achievements.ts` and redeploy.
 
 ---
 

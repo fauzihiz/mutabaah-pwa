@@ -11,6 +11,17 @@ interface ChangelogModalProps {
 
 const CHANGELOG = [
     {
+        version: 'v1.3.0',
+        date: 'Agustus 2026',
+        items: [
+            { type: 'removed', icon: Zap, text: 'Login & Supabase removed — app is now fully offline, no account needed.' },
+            { type: 'removed', icon: Zap, text: 'Planner feature removed for now.' },
+            { type: 'removed', icon: Zap, text: 'Achievement/badge system temporarily hidden.' },
+            { type: 'feature', icon: Sparkles, text: 'Greeting name ("Sahabat") is now editable — tap to personalize.' },
+            { type: 'feature', icon: Sparkles, text: 'All data 100% local (IndexedDB) — nothing leaves your device.' },
+        ]
+    },
+    {
         version: 'v1.2.0',
         date: 'Maret 2026',
         items: [
@@ -27,7 +38,6 @@ const CHANGELOG = [
         items: [
             { type: 'feature', icon: Sparkles, text: 'Mode Gelap (Dark Mode) dengan deteksi otomatis.' },
             { type: 'feature', icon: Sparkles, text: 'Sistem Badge baru yang dinamis per bulan.' },
-            { type: 'removed', icon: Zap, text: 'Removed login — app is now fully open, no account needed.' },
             { type: 'feature', icon: Sparkles, text: 'Branding: Ikon aplikasi dan Favicon baru.' },
         ]
     }
@@ -109,7 +119,7 @@ export function ChangelogModal({ isOpen, onClose }: ChangelogModalProps) {
                         {/* Footer */}
                         <div className="border-t bg-slate-50/50 dark:bg-slate-900/20 px-6 py-4 text-center" style={{ borderColor: 'var(--border)' }}>
                             <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>
-                                Mutabaah Tracker v1.2.0 • {' '}
+                                Mutabaah Tracker v1.3.0 • {' '}
                                 <a
                                     href="https://fauzihiz.github.io/"
                                     target="_blank"

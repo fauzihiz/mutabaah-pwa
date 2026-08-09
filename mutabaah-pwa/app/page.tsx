@@ -1,18 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useMutabaahMonth, useStreak } from '@/hooks/useMutabaah';
-import { useMonthlyAchievements } from '@/hooks/useMonthlyAchievements';
+import { useMutabaahMonth } from '@/hooks/useMutabaah';
 import { useMonthlyStats } from '@/hooks/useMonthlyStats';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
-import { AchievementCarousel } from '@/components/dashboard/AchievementCarousel';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
 import { NavigationDrawer } from '@/components/dashboard/NavigationDrawer';
 import { ChangelogModal } from '@/components/dashboard/ChangelogModal';
 import { StatsView } from '@/components/dashboard/StatsView';
-import { MonthlyPlannerView } from '@/components/dashboard/MonthlyPlannerView';
 
 export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -20,14 +17,9 @@ export default function Dashboard() {
   // UI State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
-  const [activeView, setActiveView] = useState<'dashboard' | 'stats' | 'planner'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
 
   const { logs, toggleActivity } = useMutabaahMonth(
-    currentDate.getFullYear(),
-    currentDate.getMonth()
-  );
-
-  const { badges, isLoading: badgesLoading } = useMonthlyAchievements(
     currentDate.getFullYear(),
     currentDate.getMonth()
   );
@@ -52,10 +44,6 @@ export default function Dashboard() {
           setActiveView('stats');
           setIsDrawerOpen(false);
         }}
-        onOpenPlanner={() => {
-          setActiveView('planner');
-          setIsDrawerOpen(false);
-        }}
         onOpenHome={() => {
           setActiveView('dashboard');
           setIsDrawerOpen(false);
@@ -72,7 +60,6 @@ export default function Dashboard() {
         {activeView === 'dashboard' ? (
           <>
             <div className="py-5 space-y-5">
-              <AchievementCarousel badges={badges} isLoading={badgesLoading} />
               <MonthPicker currentDate={currentDate} onDateChange={setCurrentDate} />
             </div>
 
@@ -82,10 +69,8 @@ export default function Dashboard() {
               onToggle={toggleActivity}
             />
           </>
-        ) : activeView === 'stats' ? (
-          <StatsView stats={stats} />
         ) : (
-          <MonthlyPlannerView currentDate={currentDate} onDateChange={setCurrentDate} />
+          <StatsView stats={stats} />
         )}
       </main>
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Home, History, ChevronRight, BarChart3, Calendar } from 'lucide-react';
+import { X, Home, History, ChevronRight, BarChart3 } from 'lucide-react';
 import Image from 'next/image';
 
 interface NavigationDrawerProps {
@@ -10,12 +10,11 @@ interface NavigationDrawerProps {
     onClose: () => void;
     onOpenChangelog: () => void;
     onOpenStats: () => void;
-    onOpenPlanner: () => void;
     onOpenHome: () => void;
-    activeView: 'dashboard' | 'stats' | 'planner';
+    activeView: 'dashboard' | 'stats';
 }
 
-export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats, onOpenPlanner, onOpenHome, activeView }: NavigationDrawerProps) {
+export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats, onOpenHome, activeView }: NavigationDrawerProps) {
     return (
         <AnimatePresence>
             {isOpen && (
@@ -56,7 +55,7 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                                     Mutabaah
                                 </h2>
                                 <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
-                                    v1.2.0 • FAUZI HIZ
+                                    v1.3.0 • FAUZI HIZ
                                 </p>
                             </div>
                         </div>
@@ -94,21 +93,6 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                             </button>
 
                             <button
-                                onClick={onOpenPlanner}
-                                className={`w-full flex items-center justify-between p-3 rounded-2xl transition-all group ${activeView === 'planner'
-                                    ? 'bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400'
-                                    : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
-                                    }`}
-                                style={{ color: activeView === 'planner' ? undefined : 'var(--text-secondary)' }}
-                            >
-                                <div className="flex items-center gap-3">
-                                    <Calendar size={18} className={activeView === 'planner' ? 'font-bold' : ''} />
-                                    <span className={`text-sm ${activeView === 'planner' ? 'font-bold' : 'font-semibold'}`}>Planner</span>
-                                </div>
-                                <ChevronRight size={14} className={`opacity-0 group-hover:opacity-100 transition-opacity ${activeView === 'planner' ? '' : 'text-muted'}`} />
-                            </button>
-
-                            <button
                                 onClick={() => {
                                     onClose();
                                     onOpenChangelog();
@@ -127,7 +111,7 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                         {/* Footer */}
                         <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}>
                             <p className="text-[10px] text-center" style={{ color: 'var(--text-muted)' }}>
-                                v1.2.0 — Data disimpan lokal di perangkat ini
+                                v1.3.0 — Data disimpan lokal di perangkat ini
                             </p>
                         </div>
                     </motion.div>
