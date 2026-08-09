@@ -2,7 +2,7 @@
 
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, ActivityLog } from '@/lib/db';
-import { ACHIEVEMENTS } from '@/lib/achievements';
+import { ACHIEVEMENTS, type Achievement } from '@/lib/achievements';
 import { useMemo } from 'react';
 
 // --- Helper: local date string YYYY-MM-DD ---
