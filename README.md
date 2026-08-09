@@ -83,7 +83,7 @@ mutabaah-pwa/
 │   └── layout.tsx          # Root layout + theme provider
 ├── components/
 │   ├── dashboard/
-│   │   ├── DashboardHeader.tsx     # Header + dark mode toggle
+│   │   ├── DashboardHeader.tsx     # Header + logo + dark mode toggle
 │   │   ├── MutabaahGrid.tsx       # Monthly activity grid
 │   │   ├── MonthPicker.tsx        # Month navigation
 │   │   ├── StatsView.tsx          # Statistics charts
@@ -102,36 +102,9 @@ mutabaah-pwa/
 │       └── activities.ts          # Activity list & categories
 └── public/
     ├── manifest.json
-    └── favicon.png
+    ├── favicon.ico
+    └── logo.png
 ```
-
----
-
-## Roadmap
-
-### 📊 Phase 1 — Statistics & Analytics
-- [ ] Weekly summary card on the main page
-- [ ] Activity heatmap (calendar-style, like GitHub contributions)
-- [ ] Real-time daily completion percentage indicator
-
-### 🔔 Phase 2 — Personalization & Notifications
-- [ ] Push notification reminders (e.g., Subuh at 04:00)
-- [ ] Custom activities — add or hide specific activities
-- [ ] Personal daily targets
-
-### 🤝 Phase 3 — Community & Social
-- [ ] Streak leaderboard with friends/groups
-- [ ] Mutabaah groups — monitor each other's progress
-- [ ] Share badges to social media
-
-### ☁️ Phase 4 — Backup & Multi-Device
-- [ ] Export/import data as CSV or JSON
-- [ ] Cloud sync for cross-device access
-
-### 🧠 Phase 5 — Smart Features
-- [ ] Smart insights — analyze worship patterns and suggest improvements
-- [ ] Next badge recommendation ("2 more days to *Muqarrabun*!")
-- [ ] Automatic monthly report
 
 ---
 

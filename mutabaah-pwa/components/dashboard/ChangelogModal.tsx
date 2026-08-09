@@ -14,11 +14,11 @@ const CHANGELOG = [
         version: 'v1.3.0',
         date: 'Agustus 2026',
         items: [
-            { type: 'removed', icon: Zap, text: 'Login & Supabase removed — app is now fully offline, no account needed.' },
-            { type: 'removed', icon: Zap, text: 'Planner feature removed for now.' },
-            { type: 'removed', icon: Zap, text: 'Achievement/badge system temporarily hidden.' },
-            { type: 'feature', icon: Sparkles, text: 'Greeting name ("Sahabat") is now editable — tap to personalize.' },
-            { type: 'feature', icon: Sparkles, text: 'All data 100% local (IndexedDB) — nothing leaves your device.' },
+            { type: 'removed', icon: Zap, text: 'Login & Supabase dihapus — aplikasi kini sepenuhnya offline, tanpa akun.' },
+            { type: 'removed', icon: Zap, text: 'Fitur Planner dihapus sementara.' },
+            { type: 'removed', icon: Zap, text: 'Sistem pencapaian/badge disembunyikan sementara.' },
+            { type: 'feature', icon: Sparkles, text: 'Nama sapaan ("Sahabat") kini bisa diedit — ketuk untuk personalisasi.' },
+            { type: 'feature', icon: Sparkles, text: 'Semua data 100% lokal (IndexedDB) — tidak ada yang keluar dari perangkat.' },
         ]
     },
     {

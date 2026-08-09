@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   description: "Track your daily spiritual activities and build lasting habits",
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.png",
-    apple: "/icon-192.png",
+    icon: "/favicon.ico",
+    apple: "/logo.png",
   },
   appleWebApp: {
     capable: true,

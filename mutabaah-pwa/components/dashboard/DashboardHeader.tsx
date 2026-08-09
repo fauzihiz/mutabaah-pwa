@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { Menu, Sparkles, Sun, Moon, Pencil } from 'lucide-react';
+import { Menu, Sun, Moon, Pencil } from 'lucide-react';
+import Image from 'next/image';
 
 const GREETING_KEY = 'greetingName';
 
@@ -70,8 +71,8 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                     <Menu size={20} />
                 </button>
                 <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center text-white shadow-sm shadow-green-200">
-                        <Sparkles size={16} />
+                    <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm shadow-green-200">
+                        <Image src="/logo.png" alt="Mutabaah" width={32} height={32} />
                     </div>
                     <div>
                         <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-medium leading-none mb-1">

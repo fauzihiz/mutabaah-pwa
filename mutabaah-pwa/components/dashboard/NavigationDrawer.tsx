@@ -41,7 +41,7 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                         <div className="p-6 border-b" style={{ borderColor: 'var(--border)' }}>
                             <div className="flex items-center justify-between mb-6">
                                 <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
-                                    <Image src="/favicon.png" alt="Mutabaah" width={40} height={40} />
+                                    <Image src="/logo.png" alt="Mutabaah" width={40} height={40} />
                                 </div>
                                 <button
                                     onClick={onClose}
