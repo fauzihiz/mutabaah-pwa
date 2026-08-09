@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Home, History, LogOut, ChevronRight, BarChart3, Calendar } from 'lucide-react';
+import { X, Home, History, ChevronRight, BarChart3, Calendar } from 'lucide-react';
 import Image from 'next/image';
-import { useAuth } from '../providers/AuthProvider';
 
 interface NavigationDrawerProps {
     isOpen: boolean;
@@ -17,8 +16,6 @@ interface NavigationDrawerProps {
 }
 
 export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats, onOpenPlanner, onOpenHome, activeView }: NavigationDrawerProps) {
-    const { signOut } = useAuth();
-
     return (
         <AnimatePresence>
             {isOpen && (
@@ -129,13 +126,9 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
 
                         {/* Footer */}
                         <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}>
-                            <button
-                                onClick={() => signOut()}
-                                className="w-full flex items-center gap-3 p-3 rounded-2xl text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
-                            >
-                                <LogOut size={18} />
-                                <span className="text-sm font-bold">Keluar Akun</span>
-                            </button>
+                            <p className="text-[10px] text-center" style={{ color: 'var(--text-muted)' }}>
+                                v1.2.0 — Data disimpan lokal di perangkat ini
+                            </p>
                         </div>
                     </motion.div>
                 </div>

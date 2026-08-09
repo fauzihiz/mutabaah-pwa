@@ -1,15 +1,13 @@
 'use client';
 
-import { useAuth } from '@/components/providers/AuthProvider';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { LogOut, Menu, Sparkles, Sun, Moon } from 'lucide-react';
+import { Menu, Sparkles, Sun, Moon } from 'lucide-react';
 
 interface DashboardHeaderProps {
-    userEmail: string | undefined;
     onMenuClick: () => void;
 }
 
-export function DashboardHeader({ userEmail, onMenuClick }: DashboardHeaderProps) {
+export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
     const { isDark, toggleTheme } = useTheme();
 
     return (
@@ -34,7 +32,7 @@ export function DashboardHeader({ userEmail, onMenuClick }: DashboardHeaderProps
                             Assalamualaikum,
                         </p>
                         <p style={{ color: 'var(--text-primary)' }} className="text-xs font-bold leading-none truncate max-w-[120px]">
-                            {userEmail?.split('@')[0]}
+                            Sahabat
                         </p>
                     </div>
                 </div>

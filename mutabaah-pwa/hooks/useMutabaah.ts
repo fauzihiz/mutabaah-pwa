@@ -5,9 +5,7 @@ import { db, ActivityLog } from '@/lib/db';
 import { ACTIVITIES } from '@/lib/constants/activities';
 import { useState, useMemo } from 'react';
 
-import { checkAndSyncAchievements } from '@/lib/achievements';
-
-export function useMutabaahMonth(year: number, month: number, userId?: string) {
+export function useMutabaahMonth(year: number, month: number) {
     const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
     const endDate = `${year}-${String(month + 1).padStart(2, '0')}-31`;
 
@@ -30,11 +28,6 @@ export function useMutabaahMonth(year: number, month: number, userId?: string) {
             });
         }
 
-        // After toggle, check achievements if we have a user
-        if (userId) {
-            const allLogs = await db.logs.toArray();
-            await checkAndSyncAchievements(userId, allLogs);
-        }
     };
 
     const statsForToday = useMemo(() => {

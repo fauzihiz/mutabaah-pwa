@@ -2,9 +2,8 @@
 
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, ActivityLog } from '@/lib/db';
-import { supabase } from '@/lib/supabase';
-import { Achievement } from '@/lib/achievements';
-import { useMemo, useEffect, useState } from 'react';
+import { ACHIEVEMENTS } from '@/lib/achievements';
+import { useMemo } from 'react';
 
 // --- Helper: local date string YYYY-MM-DD ---
 function toLocal(date: Date): string {
@@ -38,7 +37,7 @@ export interface BadgeStatus {
     earned: boolean;    // did they hit the threshold this month?
 }
 
-export function useMonthlyAchievements(year: number, month: number, userId?: string) {
+export function useMonthlyAchievements(year: number, month: number) {
     const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
     const endDate = `${year}-${String(month + 1).padStart(2, '0')}-31`;
 
@@ -48,19 +47,11 @@ export function useMonthlyAchievements(year: number, month: number, userId?: str
         [year, month]
     );
 
-    // 2. Achievement definitions from Supabase (fetched once, cached in state)
-    const [definitions, setDefinitions] = useState<Achievement[]>([]);
-    useEffect(() => {
-        supabase.from('achievements').select('*').then(({ data }) => {
-            if (data) setDefinitions(data as Achievement[]);
-        });
-    }, []);
-
-    // 3. Compute badge status reactively whenever monthLogs or definitions change
+    // 2. Compute badge status reactively using local definitions
     const badges = useMemo<BadgeStatus[]>(() => {
-        if (!monthLogs || definitions.length === 0) return [];
+        if (!monthLogs || ACHIEVEMENTS.length === 0) return [];
 
-        return definitions.map(rule => {
+        return ACHIEVEMENTS.map(rule => {
             let current = 0;
 
             if (rule.condition_type === 'min_streak') {
@@ -84,7 +75,7 @@ export function useMonthlyAchievements(year: number, month: number, userId?: str
                 if (a.earned !== b.earned) return b.earned ? 1 : -1;
                 return b.progress - a.progress;
             });
-    }, [monthLogs, definitions]);
+    }, [monthLogs]);
 
     return { badges, isLoading: !monthLogs };
 }

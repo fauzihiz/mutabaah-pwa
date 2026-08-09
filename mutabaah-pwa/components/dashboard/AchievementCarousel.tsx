@@ -122,7 +122,7 @@ export function AchievementCarousel({ badges, isLoading }: AchievementCarouselPr
                 </div>
             ) : badges.length === 0 ? (
                 <div className="h-32 flex items-center justify-center text-xs text-slate-400 bg-slate-50 rounded-2xl">
-                    Belum ada achievement. Sambungkan ke internet untuk memuat.
+                    Belum ada achievement untuk bulan ini.
                 </div>
             ) : (
                 <div className="overflow-x-auto pb-2 -mx-0 scrollbar-hide">

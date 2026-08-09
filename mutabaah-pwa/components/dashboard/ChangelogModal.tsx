@@ -27,7 +27,7 @@ const CHANGELOG = [
         items: [
             { type: 'feature', icon: Sparkles, text: 'Mode Gelap (Dark Mode) dengan deteksi otomatis.' },
             { type: 'feature', icon: Sparkles, text: 'Sistem Badge baru yang dinamis per bulan.' },
-            { type: 'feature', icon: Zap, text: 'Desain halaman Login baru yang lebih ramah pengguna.' },
+            { type: 'removed', icon: Zap, text: 'Removed login — app is now fully open, no account needed.' },
             { type: 'feature', icon: Sparkles, text: 'Branding: Ikon aplikasi dan Favicon baru.' },
         ]
     }

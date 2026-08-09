@@ -1,8 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/components/providers/AuthProvider';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { useMutabaahMonth, useStreak } from '@/hooks/useMutabaah';
 import { useMonthlyAchievements } from '@/hooks/useMonthlyAchievements';
 import { useMonthlyStats } from '@/hooks/useMonthlyStats';
@@ -15,11 +13,8 @@ import { NavigationDrawer } from '@/components/dashboard/NavigationDrawer';
 import { ChangelogModal } from '@/components/dashboard/ChangelogModal';
 import { StatsView } from '@/components/dashboard/StatsView';
 import { MonthlyPlannerView } from '@/components/dashboard/MonthlyPlannerView';
-import { Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
   const [currentDate, setCurrentDate] = useState(new Date());
 
   // UI State
@@ -29,14 +24,12 @@ export default function Dashboard() {
 
   const { logs, toggleActivity } = useMutabaahMonth(
     currentDate.getFullYear(),
-    currentDate.getMonth(),
-    user?.id
+    currentDate.getMonth()
   );
 
   const { badges, isLoading: badgesLoading } = useMonthlyAchievements(
     currentDate.getFullYear(),
-    currentDate.getMonth(),
-    user?.id
+    currentDate.getMonth()
   );
 
   const stats = useMonthlyStats(
@@ -45,26 +38,9 @@ export default function Dashboard() {
     logs || []
   );
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
-
-  if (authLoading) {
-    return (
-      <div className="flex-1 flex items-center justify-center bg-white dark:bg-slate-950">
-        <Loader2 className="animate-spin text-green-600" size={32} />
-      </div>
-    );
-  }
-
-  if (!user) return null;
-
   return (
     <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 min-h-screen">
       <DashboardHeader
-        userEmail={user.email}
         onMenuClick={() => setIsDrawerOpen(true)}
       />
 

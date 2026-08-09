@@ -5,7 +5,7 @@ export interface ActivityLog {
     date: string; // YYYY-MM-DD
     activityId: string;
     completed: number; // 1 for true, 0 for false (better for indexing)
-    synced: boolean; // For future Supabase sync
+    synced: boolean; // Legacy field, kept for schema compatibility
 }
 
 export interface ActivitySetting {

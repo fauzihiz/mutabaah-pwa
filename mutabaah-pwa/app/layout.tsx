@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -39,13 +38,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         style={{ background: 'var(--bg-base)' }}
       >
         <ThemeProvider>
-          <AuthProvider>
-            <main className="min-h-full flex flex-col max-w-md mx-auto shadow-sm ring-1 ring-slate-200"
-              style={{ background: 'var(--bg-surface)' }}
-            >
-              {children}
-            </main>
-          </AuthProvider>
+          <main className="min-h-full flex flex-col max-w-md mx-auto shadow-sm ring-1 ring-slate-200"
+            style={{ background: 'var(--bg-surface)' }}
+          >
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>
