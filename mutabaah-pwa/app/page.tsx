@@ -31,7 +31,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 min-h-screen">
+    <div className="flex-1 flex flex-col min-h-screen" style={{ background: 'var(--bg-surface)' }}>
       <DashboardHeader
         onMenuClick={() => setIsDrawerOpen(true)}
       />

@@ -38,7 +38,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         style={{ background: 'var(--bg-base)' }}
       >
         <ThemeProvider>
-          <main className="min-h-full flex flex-col max-w-md mx-auto shadow-sm ring-1 ring-slate-200"
+          <main className="min-h-full flex flex-col max-w-md mx-auto shadow-sm ring-1 ring-slate-200 dark:ring-slate-700"
             style={{ background: 'var(--bg-surface)' }}
           >
             {children}

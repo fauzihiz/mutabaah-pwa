@@ -48,7 +48,7 @@ export function StatsView({ stats }: StatsViewProps) {
                             stroke="currentColor"
                             strokeWidth="10"
                             fill="transparent"
-                            className="text-slate-200 dark:text-slate-800"
+                            className="text-slate-200 dark:text-slate-700"
                         />
                         <circle
                             cx="64"

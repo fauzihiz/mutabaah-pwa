@@ -24,25 +24,27 @@ export function MonthPicker({ currentDate, onDateChange }: MonthPickerProps) {
     };
 
     return (
-        <div className="px-6 py-4 flex items-center justify-between bg-slate-50 border-b border-slate-100">
+        <div className="px-6 py-4 flex items-center justify-between border-b" style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}>
             <div className="flex items-center space-x-2">
-                <div className="p-2 rounded-lg bg-green-100 text-green-700">
+                <div className="p-2 rounded-lg bg-green-100 dark:bg-green-500/15 text-green-700 dark:text-green-400">
                     <Calendar size={18} />
                 </div>
-                <h2 className="text-lg font-bold text-slate-800">
+                <h2 className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>
                     {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                 </h2>
             </div>
             <div className="flex space-x-2">
                 <button
                     onClick={handlePrev}
-                    className="p-2 hover:bg-white hover:shadow-sm rounded-xl transition-all text-slate-400 hover:text-green-600"
+                    className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-sm rounded-xl transition-all hover:text-green-600 dark:hover:text-green-400"
+                    style={{ color: 'var(--text-muted)' }}
                 >
                     <ChevronLeft size={20} />
                 </button>
                 <button
                     onClick={handleNext}
-                    className="p-2 hover:bg-white hover:shadow-sm rounded-xl transition-all text-slate-400 hover:text-green-600"
+                    className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-sm rounded-xl transition-all hover:text-green-600 dark:hover:text-green-400"
+                    style={{ color: 'var(--text-muted)' }}
                 >
                     <ChevronRight size={20} />
                 </button>

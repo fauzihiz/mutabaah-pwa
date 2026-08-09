@@ -195,7 +195,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                                         onClick={() => onToggle(dateStr, activity.id)}
                                                         className={[
                                                             'w-6 h-6 rounded-lg flex items-center justify-center transition-all active:scale-90',
-                                                            completed ? 'bg-green-600 text-white shadow-sm shadow-green-300' : 'border hover:border-green-400',
+                                                            completed ? 'bg-green-600 text-white shadow-sm shadow-green-300 dark:shadow-green-900/30' : 'border hover:border-green-400 dark:hover:border-green-500',
                                                             locked ? 'cursor-not-allowed opacity-40' : '',
                                                         ].join(' ')}
                                                         style={!completed ? { borderColor: 'var(--border)', background: 'var(--bg-subtle)' } : undefined}
