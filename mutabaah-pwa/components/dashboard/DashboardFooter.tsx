@@ -10,7 +10,7 @@ export function DashboardFooter() {
                     Mutabaah Tracker
                 </h3>
                 <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>
-                    v1.3.0 • Built with 💚 for your spiritual journey
+                    v1.3.0 • Built for your spiritual journey
                 </p>
                 <div className="flex items-center space-x-1 pt-2">
                     <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Crafted by</span>

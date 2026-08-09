@@ -1,105 +1,199 @@
 # 🌙 Mutabaah Tracker
 
-A PWA to help Muslims track daily worship habits — offline, private, and motivating.
+> **A private, offline-first PWA for Muslims to track daily worship habits, build consistency, and reflect on their monthly progress — with no account or cloud storage required.**
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![MIT License](https://img.shields.io/badge/License-MIT-green)](../LICENSE)
+[![PWA](https://img.shields.io/badge/PWA-Installable-purple)](https://web.dev/progressive-web-apps/)
+[![License](https://img.shields.io/badge/License-MIT-green)](../LICENSE)
 
 ---
 
-## What It Does
+## 📸 Preview
 
-Mutabaah Tracker is a Progressive Web App that helps you build consistent worship habits. Inspired by the concept of *mutabaah* (self-monitoring) in Islam, it lets you:
+<!-- Replace with your actual screenshot or demo GIF 
+![Mutabaah Tracker Preview](docs/screenshoot/preview.png) -->
+| Light Mode | Dark Mode | Statistics |
+|---|---|---|
+| ![Light Mode](./docs/screenshots/dashboard-light.jpg) | ![Dark Mode](./docs/screenshots/dashboard-dark.jpg) | ![Statistics](./docs/screenshots/statistic.jpg) |
 
-- Check off daily worship activities with one tap
-- See your monthly progress in an interactive grid
-- Personalize your greeting name
-- Use the app fully offline — no login, no account needed
-
----
-
-## Features
-
-- **Monthly Grid** — tap to mark completed activities; past days are editable, future days are locked automatically
-- **Dark Mode** — toggle from the header, preference saved locally
-- **Customizable Greeting** — tap the name next to "Assalamualaikum" to personalize it
-- **Statistics** — view category-level and overall completion stats with charts
-- **Installable PWA** — add to your home screen, works like a native app
+> A simple and private way to keep track of your daily worship habits directly from your device.
 
 ---
 
-## Tech Stack
+## ✨ Features
 
-| Layer | Tech |
+- **📅 Monthly Mutabaah Grid** — Track daily worship activities in an easy-to-scan monthly grid.
+- **👆 One-Tap Tracking** — Mark activities as completed with a single tap.
+- **🔒 Past & Future Day Rules** — Past days remain editable while future days are automatically locked.
+- **📊 Progress Statistics** — View overall and category-level completion progress through interactive charts.
+- **🌙 Dark Mode** — Switch between light and dark themes with your preference saved locally.
+- **👤 Custom Greeting** — Personalize the name displayed next to *Assalamualaikum*.
+- **📱 Installable PWA** — Install the app on supported devices and use it like a native application.
+- **📴 Offline-First** — Core functionality works without an internet connection.
+- **🔐 Private by Design** — No login, account, or cloud database. Your data stays on your device.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
 |---|---|
-| **Framework** | [Next.js 16](https://nextjs.org/) (App Router) |
+| **Framework** | [Next.js 16](https://nextjs.org/) — App Router |
 | **Language** | TypeScript |
 | **Styling** | Tailwind CSS v4 + CSS Variables |
-| **Local DB** | [Dexie.js](https://dexie.org/) (IndexedDB) |
+| **Local Database** | [Dexie.js](https://dexie.org/) — IndexedDB |
 | **PWA** | [Serwist](https://serwist.pages.dev/) |
 | **Animation** | [Framer Motion](https://www.framer.com/motion/) |
 | **Charts** | [Recharts](https://recharts.org/) |
 | **Icons** | [Lucide React](https://lucide.dev/) |
 
+### Prerequisites
+
+- **Node.js 18+**
+- **npm**
+- A modern web browser
+
+No database server, API key, or external service is required.
+
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-**Prerequisite:** Node.js 18+
+Get the project running locally in a few steps.
 
-### Install
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/fauzihiz/mutabaah-pwa.git
+```
+
+### 2. Navigate to the project
+
+```bash
 cd mutabaah-pwa/mutabaah-pwa
+```
+
+### 3. Install dependencies
+
+```bash
 npm install
 ```
 
-### Run
+### 4. Start the development server
 
 ```bash
 npm run dev
-# Open http://localhost:3000
 ```
 
-No environment variables needed. Everything runs locally in your browser.
+Open **http://localhost:3000** in your browser.
 
-### Build for production
+---
+
+## ⚙️ Environment Variables
+
+No environment variables are required.
+
+The application stores its data locally in the browser using **IndexedDB**, so there is currently no backend, database server, authentication service, or API configuration.
+
+---
+
+## 📖 Usage
+
+### Track a daily activity
+
+1. Open the dashboard.
+2. Select the desired month.
+3. Find the activity you want to track.
+4. Tap the corresponding day.
+5. The completion status is saved automatically.
+
+### View your progress
+
+Open the **Statistics** view to see:
+
+- Overall completion progress
+- Category-level statistics
+- Visual progress charts
+
+### Personalize your greeting
+
+Tap the name displayed next to **"Assalamualaikum"** and enter your preferred name.
+
+### Use Dark Mode
+
+Toggle the theme from the dashboard header. Your preference is stored locally.
+
+### Install as an App
+
+On a supported browser, use the browser's **Install App** or **Add to Home Screen** option to install Mutabaah Tracker as a PWA.
+
+---
+
+## 🧪 Running Tests
+
+A dedicated automated test suite is **not currently configured** for this project.
+
+For now, verify changes by running the production build:
 
 ```bash
 npm run build
+```
+
+Then start the production server:
+
+```bash
 npm start
 ```
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
-```
+```text
 mutabaah-pwa/
 ├── app/
-│   ├── page.tsx            # Dashboard (main screen)
-│   └── layout.tsx          # Root layout + theme provider
+│   ├── page.tsx
+│   │   └── Dashboard (main screen)
+│   └── layout.tsx
+│       └── Root layout + theme provider
+│
 ├── components/
 │   ├── dashboard/
-│   │   ├── DashboardHeader.tsx     # Header + logo + dark mode toggle
-│   │   ├── MutabaahGrid.tsx       # Monthly activity grid
-│   │   ├── MonthPicker.tsx        # Month navigation
-│   │   ├── StatsView.tsx          # Statistics charts
-│   │   ├── NavigationDrawer.tsx   # Side menu
-│   │   ├── ChangelogModal.tsx     # Version history
-│   │   └── DashboardFooter.tsx    # Footer
+│   │   ├── DashboardHeader.tsx
+│   │   │   └── Header + logo + dark mode toggle
+│   │   ├── MutabaahGrid.tsx
+│   │   │   └── Monthly activity grid
+│   │   ├── MonthPicker.tsx
+│   │   │   └── Month navigation
+│   │   ├── StatsView.tsx
+│   │   │   └── Statistics charts
+│   │   ├── NavigationDrawer.tsx
+│   │   │   └── Side menu
+│   │   ├── ChangelogModal.tsx
+│   │   │   └── Version history
+│   │   └── DashboardFooter.tsx
+│   │       └── Footer
+│   │
 │   └── providers/
-│       └── ThemeProvider.tsx       # Dark/light mode context
+│       └── ThemeProvider.tsx
+│           └── Dark/light mode context
+│
 ├── hooks/
-│   ├── useMutabaah.ts             # Activity logs (IndexedDB)
-│   ├── useMonthlyStats.ts         # Statistics computation
-│   └── useActivitySettings.ts     # Custom activity names (IndexedDB)
+│   ├── useMutabaah.ts
+│   │   └── Activity logs
+│   ├── useMonthlyStats.ts
+│   │   └── Statistics computation
+│   └── useActivitySettings.ts
+│       └── Custom activity names
+│
 ├── lib/
-│   ├── db.ts                      # Dexie schema (IndexedDB)
+│   ├── db.ts
+│   │   └── Dexie / IndexedDB schema
 │   └── constants/
-│       └── activities.ts          # Activity list & categories
+│       └── activities.ts
+│           └── Activity list & categories
+│
 └── public/
     ├── manifest.json
     ├── favicon.ico
@@ -108,33 +202,110 @@ mutabaah-pwa/
 
 ---
 
-## Notes
+## 🔐 Privacy & Data
 
-- **All data is stored locally** in your browser (IndexedDB). Clearing browser data or uninstalling the app will delete your records.
-- **No account or login** is required. Anyone can open and use the app directly.
-- **No cloud sync** exists yet. Data stays on the device and browser where it was created.
+Mutabaah Tracker is designed to keep personal worship data private.
 
----
+- **No account required**
+- **No login**
+- **No cloud database**
+- **No cloud synchronization**
+- **No external backend required**
+- Data is stored locally using **IndexedDB**
 
-## Contributing
+> ⚠️ **Important:** Clearing browser data or uninstalling the application can permanently delete your locally stored records.
 
-Pull requests are welcome! For large changes, open an issue first to discuss what you'd like to change.
-
----
-
-## Author
-
-**Fauzi Hizbullah**  
-[fauzihiz.github.io](https://fauzihiz.github.io) · [GitHub @fauzihiz](https://github.com/fauzihiz)
+Your data currently remains on the browser/device where it was created.
 
 ---
 
-## License
+## 🗺️ Roadmap
 
-This project is licensed under **MIT** — see [LICENSE](../LICENSE) for details.
+### ✅ Completed
+
+- [x] Monthly worship tracking grid
+- [x] One-tap activity completion
+- [x] Past-day editing
+- [x] Future-day locking
+- [x] Local IndexedDB storage
+- [x] Dark mode
+- [x] Customizable greeting name
+- [x] Monthly statistics
+- [x] Category-level statistics
+- [x] Interactive charts
+- [x] PWA support
+- [x] Offline functionality
+- [x] Navigation drawer
+- [x] Changelog modal
+
+### 🚧 Planned
+
+- [ ] Export and import local data
+- [ ] Backup and restore functionality
+- [ ] More customization options for activities
+- [ ] Improved PWA update handling
+- [ ] Additional progress insights
+- [ ] Enhanced accessibility
+- [ ] Automated testing
+
+### 🔮 Future Ideas
+
+- [ ] Optional cloud synchronization
+- [ ] Multi-device data sync
+- [ ] User-defined activity categories
+- [ ] More detailed historical analytics
+- [ ] Streak and consistency insights
 
 ---
 
-<div align="center">
-  <sub>Semoga menjadi amal jariyah. بارك الله فيكم</sub>
-</div>
+## 🤝 Contributing
+
+Contributions are welcome!
+
+If you want to make a significant change, please open an issue first to discuss the proposed improvement.
+
+For smaller improvements:
+
+1. Fork the repository.
+2. Create a feature branch.
+
+```bash
+git checkout -b feature/your-feature
+```
+
+3. Make your changes.
+4. Verify the production build.
+
+```bash
+npm run build
+```
+
+5. Commit your changes.
+
+```bash
+git commit -m "feat: add your feature"
+```
+
+6. Push your branch.
+
+```bash
+git push origin feature/your-feature
+```
+
+7. Open a Pull Request.
+
+---
+
+## 👨‍💻 Author
+
+**Fauzi Hizbullah**
+
+[Portfolio](https://fauzihiz.github.io) · [GitHub](https://github.com/fauzihiz)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+See [LICENSE](../LICENSE) for the full license text.
