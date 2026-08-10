@@ -1,8 +1,8 @@
 'use client';
 
+import { useMemo } from 'react';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
-import { Check, Lock, Edit2 } from 'lucide-react';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
 
 interface MutabaahGridProps {
@@ -13,15 +13,29 @@ interface MutabaahGridProps {
 
 export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
     const today = new Date();
 
     const { getActivityName, renameActivity } = useActivitySettings();
 
+    // Pre-compute a lookup Map: "date:activityId" → completed — O(1) per cell instead of O(n)
+    const logMap = useMemo(() => {
+        const m = new Map<string, boolean>();
+        for (const l of logs) {
+            m.set(`${l.date}:${l.activityId}`, l.completed === 1);
+        }
+        return m;
+    }, [logs]);
+
+    // Pre-compute todayMidnight once
+    const todayMidnight = useMemo(() => {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        return d.getTime();
+    }, []);
+
     const isFuture = (day: number) => {
-        const d = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-        const todayMidnight = new Date();
-        todayMidnight.setHours(0, 0, 0, 0);
+        const d = new Date(currentDate.getFullYear(), currentDate.getMonth(), day).getTime();
         return d > todayMidnight;
     };
 
@@ -81,7 +95,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 const isCustom = category === 'Aktivitas Mandiri';
 
                                 return (
-                                    <div
+       <div
                                         key={activity.id}
                                         className="h-12 px-3 flex items-center border-b group relative"
                                         style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
@@ -99,7 +113,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                                 className="absolute right-1 p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-sm flex items-center justify-center transition-transform active:scale-90"
                                                 title="Ubah nama"
                                             >
-                                                <Edit2 size={10} className="text-slate-500 dark:text-slate-300" />
+                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 dark:text-slate-300"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                                             </button>
                                         )}
                                     </div>
@@ -178,7 +192,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                         {days.map(day => {
                                             const dateStr = formatDate(day);
                                             const locked = isFuture(day);
-                                            const completed = logs.find(l => l.date === dateStr && l.activityId === activity.id)?.completed === 1;
+                                            const completed = logMap.get(`${dateStr}:${activity.id}`) ?? false;
                                             const _today = isToday(day);
 
                                             return (
@@ -201,9 +215,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                                         style={!completed ? { borderColor: 'var(--border)', background: 'var(--bg-subtle)' } : undefined}
                                                     >
                                                         {locked
-                                                            ? <Lock size={9} style={{ color: 'var(--text-muted)' }} />
+                                                            ? <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                                             : completed
-                                                                ? <Check size={13} />
+                                                                ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                                                 : null
                                                         }
                                                     </button>

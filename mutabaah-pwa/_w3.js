@@ -1,4 +1,7 @@
-'use client';
+const fs = require('fs');
+const b = 'c:/Users/fauzi/Documents/github/mutabaah-pwa/mutabaah-pwa';
+
+fs.writeFileSync(b+'/components/dashboard/StatsView.tsx', `'use client';
 import { CategoryStat } from '@/hooks/useMonthlyStats';
 interface StatsViewProps { stats: { categoryStats: CategoryStat[]; overallPercentage: number; totalCompleted: number; totalTarget: number; } | null; }
 const BC = ['bg-green-500','bg-blue-500','bg-yellow-500','bg-red-500','bg-purple-500','bg-pink-500','bg-cyan-500'];
@@ -20,19 +23,24 @@ export function StatsView({ stats }: StatsViewProps) {
             {stats.categoryStats.length > 0 && (
                 <div className="space-y-4">
                     <h3 className="text-xs font-black uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Per Kategori</h3>
-                    {stats.categoryStats.map((cat, i) => (
-                        <div key={cat.name} className="space-y-2">
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{cat.name}</span>
-                                <span className="text-xs font-bold" style={{ color: 'var(--text-muted)' }}>{cat.completed}/{cat.total} ({cat.percentage}%)</span>
+                    {stats.categoryStats.map((cat, i) => {
+                        const pct = cat.target > 0 ? Math.round((cat.completed / cat.target) * 100) : 0;
+                        return (
+                            <div key={cat.category} className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{cat.category}</span>
+                                    <span className="text-xs font-bold" style={{ color: 'var(--text-muted)' }}>{cat.completed}/{cat.target} ({pct}%)</span>
+                                </div>
+                                <div className="h-3 w-full rounded-full overflow-hidden" style={{ background: 'var(--bg-subtle)' }}>
+                                    <div className={'h-full rounded-full transition-all duration-700 ease-out '+BC[i%BC.length]} style={{ width: Math.min(pct,100)+'%' }} />
+                                </div>
                             </div>
-                            <div className="h-3 w-full rounded-full overflow-hidden" style={{ background: 'var(--bg-subtle)' }}>
-                                <div className={'h-full rounded-full transition-all duration-700 ease-out '+BC[i%BC.length]} style={{ width: Math.min(cat.percentage,100)+'%' }} />
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
         </div>
     );
 }
+`);
+console.log('StatsView OK');

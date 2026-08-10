@@ -1,4 +1,8 @@
-'use client';
+const fs = require('fs');
+const b = 'c:/Users/fauzi/Documents/github/mutabaah-pwa/mutabaah-pwa';
+
+// NavigationDrawer
+fs.writeFileSync(b+'/components/dashboard/NavigationDrawer.tsx', `'use client';
 import React from 'react';
 import Image from 'next/image';
 interface NavigationDrawerProps { isOpen: boolean; onClose: () => void; onOpenChangelog: () => void; onOpenStats: () => void; onOpenHome: () => void; activeView: 'dashboard' | 'stats'; }
@@ -34,3 +38,5 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
         </div>
     );
 }
+`);
+console.log('NavDrawer OK');

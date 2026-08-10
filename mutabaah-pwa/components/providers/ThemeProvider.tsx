@@ -18,24 +18,29 @@ const ThemeContext = createContext<ThemeContextValue>({
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setTheme] = useState<Theme>('light');
+    const [mounted, setMounted] = useState(false);
 
     // Load from localStorage on mount
     useEffect(() => {
         const stored = localStorage.getItem('mutabaah-theme') as Theme | null;
         const preferred = stored ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         setTheme(preferred);
+        setMounted(true);
     }, []);
 
-    // Apply class to <html> whenever theme changes
+    // Apply class to <html> whenever theme changes — batched with rAF to avoid forced reflow
     useEffect(() => {
+        if (!mounted) return;
         const root = document.documentElement;
-        if (theme === 'dark') {
-            root.classList.add('dark');
-        } else {
-            root.classList.remove('dark');
-        }
+        requestAnimationFrame(() => {
+            if (theme === 'dark') {
+                root.classList.add('dark');
+            } else {
+                root.classList.remove('dark');
+            }
+        });
         localStorage.setItem('mutabaah-theme', theme);
-    }, [theme]);
+    }, [theme, mounted]);
 
     const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light');
 

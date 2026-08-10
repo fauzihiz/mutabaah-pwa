@@ -1,4 +1,7 @@
-'use client';
+const fs = require('fs');
+const b = 'c:/Users/fauzi/Documents/github/mutabaah-pwa/mutabaah-pwa';
+
+fs.writeFileSync(b+'/components/dashboard/StatsView.tsx', `'use client';
 import { CategoryStat } from '@/hooks/useMonthlyStats';
 interface StatsViewProps { stats: { categoryStats: CategoryStat[]; overallPercentage: number; totalCompleted: number; totalTarget: number; } | null; }
 const BC = ['bg-green-500','bg-blue-500','bg-yellow-500','bg-red-500','bg-purple-500','bg-pink-500','bg-cyan-500'];
@@ -36,3 +39,5 @@ export function StatsView({ stats }: StatsViewProps) {
         </div>
     );
 }
+`);
+console.log('StatsView fixed');

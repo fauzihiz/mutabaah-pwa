@@ -1,15 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useMutabaahMonth } from '@/hooks/useMutabaah';
 import { useMonthlyStats } from '@/hooks/useMonthlyStats';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
-import { NavigationDrawer } from '@/components/dashboard/NavigationDrawer';
-import { ChangelogModal } from '@/components/dashboard/ChangelogModal';
-import { StatsView } from '@/components/dashboard/StatsView';
+
+// Lazy-load heavy components that aren't needed on initial render
+const NavigationDrawer = dynamic(
+  () => import('@/components/dashboard/NavigationDrawer').then(m => m.NavigationDrawer),
+  { ssr: false }
+);
+
+const ChangelogModal = dynamic(
+  () => import('@/components/dashboard/ChangelogModal').then(m => m.ChangelogModal),
+  { ssr: false }
+);
+
+const StatsView = dynamic(
+  () => import('@/components/dashboard/StatsView').then(m => m.StatsView),
+  { ssr: false }
+);
 
 export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState(new Date());
