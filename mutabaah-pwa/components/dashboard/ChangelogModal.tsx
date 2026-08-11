@@ -7,6 +7,10 @@ const Bg = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" str
 const Zp = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
 type IF = () => React.JSX.Element;
 const CL = [
+  { v:'v1.4.0', d:'Agustus 2026', items:[
+    {t:'feature',i:Sp,x:'Tombol "Reset Semua Data" untuk menghapus seluruh data lokal dari perangkat.'},
+    {t:'fix',i:Bg,x:'Aktivitas kustom yang namanya dikosongkan saat rename akan otomatis kembali ke nama default (Aktivitas Kustom 1, dst).'},
+  ]},
   { v:'v1.3.0', d:'Agustus 2026', items:[
     {t:'removed',i:Zp,x:'Login & Supabase dihapus — aplikasi kini sepenuhnya offline.'},
     {t:'removed',i:Zp,x:'Fitur Planner dihapus sementara.'},

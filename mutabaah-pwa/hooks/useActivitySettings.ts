@@ -8,8 +8,13 @@ export function useActivitySettings() {
     const settings = useLiveQuery(() => db.activitySettings.toArray());
 
     const renameActivity = async (activityId: string, newName: string) => {
-        if (!newName.trim()) return;
-        await db.activitySettings.put({ activityId, customName: newName.trim() });
+        const trimmed = newName.trim();
+        if (!trimmed) {
+            // Blank input → remove custom name so it reverts to the default
+            await db.activitySettings.delete(activityId);
+            return;
+        }
+        await db.activitySettings.put({ activityId, customName: trimmed });
     };
 
     const getActivityName = (activityId: string) => {

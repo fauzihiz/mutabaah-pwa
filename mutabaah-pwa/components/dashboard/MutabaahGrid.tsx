@@ -53,9 +53,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
 
     const handleRename = async (id: string, currentName: string) => {
         const newName = prompt(`Ganti nama baris ini:`, currentName);
-        if (newName && newName.trim() !== currentName) {
-            await renameActivity(id, newName);
-        }
+        if (newName === null) return; // user pressed Cancel
+        await renameActivity(id, newName);
     };
 
     return (

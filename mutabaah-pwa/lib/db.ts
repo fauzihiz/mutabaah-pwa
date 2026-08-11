@@ -36,3 +36,14 @@ export class MutabaahDatabase extends Dexie {
 }
 
 export const db = new MutabaahDatabase();
+
+/**
+ * Reset all locally stored data (IndexedDB tables + localStorage items).
+ * After calling this, the page should be reloaded.
+ */
+export async function resetAllData(): Promise<void> {
+    await db.logs.clear();
+    await db.activitySettings.clear();
+    await db.planner.clear();
+    localStorage.removeItem('greetingName');
+}

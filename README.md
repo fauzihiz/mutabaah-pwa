@@ -29,6 +29,7 @@
 - **📊 Progress Statistics** — View overall and category-level completion progress through interactive charts.
 - **🌙 Dark Mode** — Switch between light and dark themes with your preference saved locally.
 - **👤 Custom Greeting** — Personalize the name displayed next to *Assalamualaikum*.
+- **🗑️ Reset Data** — One-tap button to clear all stored data with a confirmation prompt.
 - **📱 Installable PWA** — Install the app on supported devices and use it like a native application.
 - **📴 Offline-First** — Core functionality works without an internet connection.
 - **🔐 Private by Design** — No login, account, or cloud database. Your data stays on your device.
@@ -237,6 +238,8 @@ Your data currently remains on the browser/device where it was created.
 - [x] Offline functionality
 - [x] Navigation drawer
 - [x] Changelog modal
+- [x] Reset all local data
+- [x] Custom activity name fallback to default
 
 ### 🚧 Planned
 
