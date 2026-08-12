@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
@@ -9,6 +9,11 @@ interface MutabaahGridProps {
     currentDate: Date;
     logs: ActivityLog[];
     onToggle: (date: string, activityId: string) => void;
+}
+
+/** Build a YYYY-MM-DD string from local date components (timezone-safe). */
+function toLocalDateStr(y: number, m: number, d: number) {
+    return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 }
 
 export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps) {
@@ -27,16 +32,18 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         return m;
     }, [logs]);
 
-    // Pre-compute todayMidnight once
-    const todayMidnight = useMemo(() => {
+    // Compute today's date string on the CLIENT only to avoid SSR timezone mismatch.
+    // During SSR/hydration, todayStr is "" so nothing is incorrectly locked.
+    const [todayStr, setTodayStr] = useState('');
+    useEffect(() => {
         const d = new Date();
-        d.setHours(0, 0, 0, 0);
-        return d.getTime();
+        setTodayStr(toLocalDateStr(d.getFullYear(), d.getMonth(), d.getDate()));
     }, []);
 
     const isFuture = (day: number) => {
-        const d = new Date(currentDate.getFullYear(), currentDate.getMonth(), day).getTime();
-        return d > todayMidnight;
+        if (!todayStr) return false; // SSR / hydration — don't lock anything yet
+        const dateStr = toLocalDateStr(currentDate.getFullYear(), currentDate.getMonth(), day);
+        return dateStr > todayStr;
     };
 
     const formatDate = (day: number) => {

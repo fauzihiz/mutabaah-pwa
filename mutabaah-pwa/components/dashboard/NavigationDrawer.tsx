@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
 import { resetAllData } from '@/lib/db';
 interface NavigationDrawerProps { isOpen: boolean; onClose: () => void; onOpenChangelog: () => void; onOpenStats: () => void; onOpenHome: () => void; activeView: 'dashboard' | 'stats'; }
 export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats, onOpenHome, activeView }: NavigationDrawerProps) {
@@ -11,7 +10,7 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
             <div className="absolute left-0 top-0 bottom-0 w-[280px] flex flex-col shadow-2xl animate-[slideInLeft_0.3s_cubic-bezier(0.32,0.72,0,1)]" style={{ background: 'var(--bg-surface)' }}>
                 <div className="p-6 border-b" style={{ borderColor: 'var(--border)' }}>
                     <div className="flex items-center justify-between mb-6">
-                        <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg"><Image src="/logo.png" alt="Mutabaah" width={40} height={40} /></div>
+                        <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg"><img src="/logo.png" alt="Mutabaah" width={40} height={40} className="w-full h-full object-cover" /></div>
                         <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                     </div>
                     <div><h2 className="text-lg font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Mutabaah</h2><p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>v1.3.0 • FAUZI HIZ</p></div>
