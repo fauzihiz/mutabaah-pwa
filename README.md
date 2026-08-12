@@ -31,7 +31,7 @@
 - **👤 Custom Greeting** — Personalize the name displayed next to *Assalamualaikum*.
 - **🗑️ Reset Data** — One-tap button to clear all stored data with a confirmation prompt.
 - **📱 Installable PWA** — Install the app on supported devices and use it like a native application.
-- **📴 Offline-First** — Core functionality works without an internet connection.
+- **📴 Offline-First** — App opens offline with cached data; updates only apply when connected.
 - **🔐 Private by Design** — No login, account, or cloud database. Your data stays on your device.
 
 ---
@@ -156,8 +156,11 @@ mutabaah-pwa/
 ├── app/
 │   ├── page.tsx
 │   │   └── Dashboard (main screen)
-│   └── layout.tsx
-│       └── Root layout + theme provider
+│   ├── layout.tsx
+│   │   └── Root layout + theme provider
+│   └── ~offline/
+│       └── page.tsx
+│           └── Offline fallback page
 │
 ├── components/
 │   ├── dashboard/
@@ -246,7 +249,7 @@ Your data currently remains on the browser/device where it was created.
 - [ ] Export and import local data
 - [ ] Backup and restore functionality
 - [ ] More customization options for activities
-- [ ] Improved PWA update handling
+- [x] Improved PWA update handling
 - [ ] Additional progress insights
 - [ ] Enhanced accessibility
 - [ ] Automated testing

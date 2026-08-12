@@ -10,6 +10,7 @@ const CL = [
   { v:'v1.4.0', d:'Agustus 2026', items:[
     {t:'feature',i:Sp,x:'Tombol "Reset Semua Data" untuk menghapus seluruh data lokal dari perangkat.'},
     {t:'fix',i:Bg,x:'Aktivitas kustom yang namanya dikosongkan saat rename akan otomatis kembali ke nama default (Aktivitas Kustom 1, dst).'},
+    {t:'fix',i:Bg,x:'Aplikasi kini tetap bisa dibuka saat offline — halaman fallback ditampilkan jika belum ada cache, dan pembaruan hanya berjalan saat terkoneksi internet.'},
   ]},
   { v:'v1.3.0', d:'Agustus 2026', items:[
     {t:'removed',i:Zp,x:'Login & Supabase dihapus — aplikasi kini sepenuhnya offline.'},
@@ -57,7 +58,7 @@ export function ChangelogModal({ isOpen, onClose }: ChangelogModalProps) {
                     ))}
                 </div>
                 <div className="border-t bg-slate-50/50 dark:bg-slate-900/20 px-6 py-4 text-center" style={{ borderColor: 'var(--border)' }}>
-                    <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Mutabaah Tracker v1.3.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
+                    <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Mutabaah Tracker v1.4.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
                 </div>
             </div>
         </div>
