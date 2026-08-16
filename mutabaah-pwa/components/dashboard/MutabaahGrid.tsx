@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
@@ -19,7 +19,6 @@ function toLocalDateStr(y: number, m: number, d: number) {
 export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
-    const today = new Date();
 
     const { getActivityName, renameActivity } = useActivitySettings();
 
@@ -32,12 +31,24 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         return m;
     }, [logs]);
 
-    // Compute today's date string on the CLIENT only to avoid SSR timezone mismatch.
-    // During SSR/hydration, todayStr is "" so nothing is incorrectly locked.
+    // Reactive "today" state — updates every 60 s so the green highlight
+    // transitions correctly when the day changes at midnight.
+    const [today, setToday] = useState(() => new Date());
     const [todayStr, setTodayStr] = useState('');
+
     useEffect(() => {
-        const d = new Date();
-        setTodayStr(toLocalDateStr(d.getFullYear(), d.getMonth(), d.getDate()));
+        // Seed both values on the CLIENT to avoid SSR timezone mismatch.
+        const now = new Date();
+        setToday(now);
+        setTodayStr(toLocalDateStr(now.getFullYear(), now.getMonth(), now.getDate()));
+
+        const id = setInterval(() => {
+            const now = new Date();
+            setToday(now);
+            setTodayStr(toLocalDateStr(now.getFullYear(), now.getMonth(), now.getDate()));
+        }, 60_000); // refresh every 60 seconds
+
+        return () => clearInterval(id);
     }, []);
 
     const isFuture = (day: number) => {
@@ -57,6 +68,29 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         day === today.getDate() &&
         currentDate.getMonth() === today.getMonth() &&
         currentDate.getFullYear() === today.getFullYear();
+
+    // ── Auto-scroll to today's column on mount / month change ──
+    const gridScrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const el = gridScrollRef.current;
+        if (!el || !todayStr) return;
+
+        // Only auto-scroll if the displayed month is the current month
+        const isCurrentMonth =
+            currentDate.getFullYear() === today.getFullYear() &&
+            currentDate.getMonth() === today.getMonth();
+
+        if (isCurrentMonth) {
+            // Each column is w-10 = 40 px.  Scroll so today is ~40 % from the left.
+            const colWidth = 40;
+            const target = Math.max(0, (today.getDate() - 1) * colWidth - el.clientWidth * 0.4);
+            el.scrollTo({ left: target, behavior: 'smooth' });
+        } else {
+            // For non-current months, scroll to the start
+            el.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+    }, [currentDate, todayStr]); // re-run when month changes or todayStr updates
 
     const handleRename = async (id: string, currentName: string) => {
         const newName = prompt(`Ganti nama baris ini:`, currentName);
@@ -131,7 +165,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
             </div>
 
             {/* ── RIGHT: horizontal date grid ── */}
-            <div className="flex-1 overflow-x-auto overflow-y-hidden z-10">
+            <div ref={gridScrollRef} className="flex-1 overflow-x-auto overflow-y-hidden z-10">
                 <div className="inline-block min-w-full">
 
                     {/* Date header */}
