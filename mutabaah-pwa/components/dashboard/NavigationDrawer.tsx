@@ -13,7 +13,7 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                         <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg"><img src="/logo.png" alt="Mutabaah" width={40} height={40} className="w-full h-full object-cover" /></div>
                         <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                     </div>
-                    <div><h2 className="text-lg font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Mutabaah</h2><p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>v1.3.0 • FAUZI HIZ</p></div>
+                    <div><h2 className="text-lg font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Mutabaah</h2><p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>v1.5.0 • FAUZI HIZ</p></div>
                 </div>
                 <nav className="flex-1 p-4 space-y-2">
                     <button onClick={onOpenHome} className={'w-full flex items-center justify-between p-3 rounded-2xl transition-all group '+(activeView==='dashboard'?'bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400':'hover:bg-slate-50 dark:hover:bg-slate-900/50')} style={{color:activeView==='dashboard'?undefined:'var(--text-secondary)'}}>
@@ -51,7 +51,7 @@ export function NavigationDrawer({ isOpen, onClose, onOpenChangelog, onOpenStats
                         </div>
                     )}
                 </nav>
-                <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}><p className="text-[10px] text-center" style={{ color: 'var(--text-muted)' }}>v1.3.0 — Data disimpan lokal di perangkat ini</p></div>
+                <div className="p-4 border-t" style={{ borderColor: 'var(--border)' }}><p className="text-[10px] text-center" style={{ color: 'var(--text-muted)' }}>v1.5.0 — Data disimpan lokal di perangkat ini</p></div>
             </div>
         </div>
     );
