@@ -31,24 +31,38 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         return m;
     }, [logs]);
 
-    // Reactive "today" state — updates every 60 s so the green highlight
-    // transitions correctly when the day changes at midnight.
-    const [today, setToday] = useState(() => new Date());
+    // Reactive "today" state — initialised to null so the server never bakes
+    // a highlight into the SSR HTML (avoids React 19 hydration style mismatches).
+    // Seeded to the real device date only after the first client render.
+    const [today, setToday] = useState<Date | null>(null);
     const [todayStr, setTodayStr] = useState('');
 
     useEffect(() => {
-        // Seed both values on the CLIENT to avoid SSR timezone mismatch.
-        const now = new Date();
-        setToday(now);
-        setTodayStr(toLocalDateStr(now.getFullYear(), now.getMonth(), now.getDate()));
-
-        const id = setInterval(() => {
+        const sync = () => {
             const now = new Date();
             setToday(now);
             setTodayStr(toLocalDateStr(now.getFullYear(), now.getMonth(), now.getDate()));
-        }, 60_000); // refresh every 60 seconds
+        };
 
-        return () => clearInterval(id);
+        sync(); // seed immediately on mount
+
+        const id = setInterval(sync, 60_000);
+
+        // Re-check when the tab becomes visible (handles overnight tab and
+        // cross-midnight background transitions).
+        const onVisible = () => {
+            if (document.visibilityState === 'visible') sync();
+        };
+        document.addEventListener('visibilitychange', onVisible);
+        window.addEventListener('focus', onVisible);
+        window.addEventListener('pageshow', onVisible);
+
+        return () => {
+            clearInterval(id);
+            document.removeEventListener('visibilitychange', onVisible);
+            window.removeEventListener('focus', onVisible);
+            window.removeEventListener('pageshow', onVisible);
+        };
     }, []);
 
     const isFuture = (day: number) => {
@@ -65,6 +79,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
     };
 
     const isToday = (day: number) =>
+        !!today &&
         day === today.getDate() &&
         currentDate.getMonth() === today.getMonth() &&
         currentDate.getFullYear() === today.getFullYear();
@@ -74,7 +89,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
 
     useEffect(() => {
         const el = gridScrollRef.current;
-        if (!el || !todayStr) return;
+        if (!el || !today || !todayStr) return;
 
         // Only auto-scroll if the displayed month is the current month
         const isCurrentMonth =
