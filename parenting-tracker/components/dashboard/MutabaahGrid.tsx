@@ -1,0 +1,292 @@
+'use client';
+
+import { useMemo, useState, useEffect, useRef } from 'react';
+import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
+import { ActivityLog } from '@/lib/db';
+import { useActivitySettings } from '@/hooks/useActivitySettings';
+
+interface MutabaahGridProps {
+    currentDate: Date;
+    logs: ActivityLog[];
+    onToggle: (date: string, activityId: string) => void;
+}
+
+/** Build a YYYY-MM-DD string from local date components (timezone-safe). */
+function toLocalDateStr(y: number, m: number, d: number) {
+    return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+
+export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps) {
+    const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+    const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
+
+    const { getActivityName, renameActivity } = useActivitySettings();
+
+    // Pre-compute a lookup Map: "date:activityId" → completed — O(1) per cell instead of O(n)
+    const logMap = useMemo(() => {
+        const m = new Map<string, boolean>();
+        for (const l of logs) {
+            m.set(`${l.date}:${l.activityId}`, l.completed === 1);
+        }
+        return m;
+    }, [logs]);
+
+    // Reactive "today" state — initialised to null so the server never bakes
+    // a highlight into the SSR HTML (avoids React 19 hydration style mismatches).
+    // Seeded to the real device date only after the first client render.
+    const [today, setToday] = useState<Date | null>(null);
+    const [todayStr, setTodayStr] = useState('');
+
+    useEffect(() => {
+        const sync = () => {
+            const now = new Date();
+            setToday(now);
+            setTodayStr(toLocalDateStr(now.getFullYear(), now.getMonth(), now.getDate()));
+        };
+
+        sync(); // seed immediately on mount
+
+        const id = setInterval(sync, 60_000);
+
+        // Re-check when the tab becomes visible (handles overnight tab and
+        // cross-midnight background transitions).
+        const onVisible = () => {
+            if (document.visibilityState === 'visible') sync();
+        };
+        document.addEventListener('visibilitychange', onVisible);
+        window.addEventListener('focus', onVisible);
+        window.addEventListener('pageshow', onVisible);
+
+        return () => {
+            clearInterval(id);
+            document.removeEventListener('visibilitychange', onVisible);
+            window.removeEventListener('focus', onVisible);
+            window.removeEventListener('pageshow', onVisible);
+        };
+    }, []);
+
+    const isFuture = (day: number) => {
+        if (!todayStr) return false; // SSR / hydration — don't lock anything yet
+        const dateStr = toLocalDateStr(currentDate.getFullYear(), currentDate.getMonth(), day);
+        return dateStr > todayStr;
+    };
+
+    const formatDate = (day: number) => {
+        const y = currentDate.getFullYear();
+        const m = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const d = String(day).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    };
+
+    const isToday = (day: number) =>
+        !!today &&
+        day === today.getDate() &&
+        currentDate.getMonth() === today.getMonth() &&
+        currentDate.getFullYear() === today.getFullYear();
+
+    // ── Auto-scroll to today's column on mount / month change ──
+    const gridScrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const el = gridScrollRef.current;
+        if (!el || !today || !todayStr) return;
+
+        // Only auto-scroll if the displayed month is the current month
+        const isCurrentMonth =
+            currentDate.getFullYear() === today.getFullYear() &&
+            currentDate.getMonth() === today.getMonth();
+
+        if (isCurrentMonth) {
+            // Each column is w-10 = 40 px.  Scroll so today is ~40 % from the left.
+            const colWidth = 40;
+            const target = Math.max(0, (today.getDate() - 1) * colWidth - el.clientWidth * 0.4);
+            el.scrollTo({ left: target, behavior: 'smooth' });
+        } else {
+            // For non-current months, scroll to the start
+            el.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+    }, [currentDate, todayStr]); // re-run when month changes or todayStr updates
+
+    const handleRename = async (id: string, currentName: string) => {
+        const newName = prompt(`Ganti nama baris ini:`, currentName);
+        if (newName === null) return; // user pressed Cancel
+        await renameActivity(id, newName);
+    };
+
+    return (
+        <div
+            className="flex-1 flex overflow-hidden border-t"
+            style={{ borderColor: 'var(--border)' }}
+        >
+            {/* ── LEFT: static activity names ── */}
+            <div
+                className="w-36 flex-shrink-0 border-r z-20"
+                style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
+            >
+                {/* empty top-left corner */}
+                <div
+                    className="h-11 border-b"
+                    style={{ borderColor: 'var(--border)', background: 'var(--bg-surface)' }}
+                />
+
+                <div className="overflow-y-auto h-full scrollbar-hide pb-24">
+                    {CATEGORIES.map(category => (
+                        <div key={category}>
+                            {/* Category label */}
+                            <div
+                                className="h-7 px-3 flex items-center border-b"
+                                style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
+                            >
+                                <span
+                                    className="text-[9px] font-black uppercase tracking-tighter truncate"
+                                    style={{ color: 'var(--text-muted)' }}
+                                >
+                                    {category}
+                                </span>
+                            </div>
+
+                            {ACTIVITIES.filter(a => a.category === category).map(activity => {
+                                const displayName = getActivityName(activity.id);
+                                const isCustom = category === 'Aktivitas Mandiri';
+
+                                return (
+       <div
+                                        key={activity.id}
+                                        className="h-12 px-3 flex items-center border-b group relative"
+                                        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+                                    >
+                                        <span
+                                            className="text-[11px] font-semibold leading-tight pr-4"
+                                            style={{ color: 'var(--text-secondary)' }}
+                                        >
+                                            {displayName}
+                                        </span>
+
+                                        {isCustom && (
+                                            <button
+                                                onClick={() => handleRename(activity.id, displayName)}
+                                                className="absolute right-1 p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-sm flex items-center justify-center transition-transform active:scale-90"
+                                                title="Ubah nama"
+                                            >
+                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 dark:text-slate-300"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ── RIGHT: horizontal date grid ── */}
+            <div ref={gridScrollRef} className="flex-1 overflow-x-auto overflow-y-hidden z-10">
+                <div className="inline-block min-w-full">
+
+                    {/* Date header */}
+                    <div
+                        className="flex h-11 border-b sticky top-0 z-20"
+                        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+                    >
+                        {days.map(day => {
+                            const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                            const _today = isToday(day);
+                            const weekend = date.getDay() === 0 || date.getDay() === 6;
+
+                            return (
+                                <div
+                                    key={day}
+                                    className="w-10 flex-shrink-0 flex flex-col items-center justify-center border-r"
+                                    style={{
+                                        borderColor: 'var(--border)',
+                                        background: _today ? 'var(--primary-light)' : weekend ? 'var(--bg-subtle)' : 'var(--bg-surface)',
+                                    }}
+                                >
+                                    <span
+                                        className="text-[9px] font-bold uppercase"
+                                        style={{ color: _today ? 'var(--primary)' : 'var(--text-muted)' }}
+                                    >
+                                        {date.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0)}
+                                    </span>
+                                    <span
+                                        className="text-[11px] font-black"
+                                        style={{ color: _today ? 'var(--primary)' : 'var(--text-primary)' }}
+                                    >
+                                        {day}
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Grid body */}
+                    <div className="overflow-y-auto scrollbar-hide pb-24">
+                        {CATEGORIES.map(category => (
+                            <div key={category}>
+                                {/* Category spacer */}
+                                <div
+                                    className="h-7 flex border-b"
+                                    style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
+                                >
+                                    {days.map(day => (
+                                        <div
+                                            key={day}
+                                            className="w-10 flex-shrink-0 border-r"
+                                            style={{ borderColor: 'var(--border)' }}
+                                        />
+                                    ))}
+                                </div>
+
+                                {/* Rows per activity */}
+                                {ACTIVITIES.filter(a => a.category === category).map(activity => (
+                                    <div
+                                        key={activity.id}
+                                        className="flex h-12 border-b"
+                                        style={{ borderColor: 'var(--border)' }}
+                                    >
+                                        {days.map(day => {
+                                            const dateStr = formatDate(day);
+                                            const locked = isFuture(day);
+                                            const completed = logMap.get(`${dateStr}:${activity.id}`) ?? false;
+                                            const _today = isToday(day);
+
+                                            return (
+                                                <div
+                                                    key={day}
+                                                    className="w-10 flex-shrink-0 flex items-center justify-center border-r transition-colors"
+                                                    style={{
+                                                        borderColor: 'var(--border)',
+                                                        background: _today ? 'var(--primary-light)' : 'transparent',
+                                                    }}
+                                                >
+                                                    <button
+                                                        disabled={locked}
+                                                        onClick={() => onToggle(dateStr, activity.id)}
+                                                        className={[
+                                                            'w-6 h-6 rounded-lg flex items-center justify-center transition-all active:scale-90',
+                                                            completed ? 'bg-green-600 text-white shadow-sm shadow-green-300 dark:shadow-green-900/30' : 'border hover:border-green-400 dark:hover:border-green-500',
+                                                            locked ? 'cursor-not-allowed opacity-40' : '',
+                                                        ].join(' ')}
+                                                        style={!completed ? { borderColor: 'var(--border)', background: 'var(--bg-subtle)' } : undefined}
+                                                    >
+                                                        {locked
+                                                            ? <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                                            : completed
+                                                                ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                                                : null
+                                                        }
+                                                    </button>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    );
+}
