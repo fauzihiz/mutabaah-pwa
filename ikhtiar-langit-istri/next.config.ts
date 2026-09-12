@@ -33,6 +33,8 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
+  
+  allowedDevOrigins: ['192.168.0.*'],
 };
 
 export default process.env.NODE_ENV === "development"

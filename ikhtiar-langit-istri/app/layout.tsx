@@ -11,7 +11,7 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: "Ikhtiar Langit Istri",
-  description: "Track your daily spiritual activities and build lasting habits",
+  description: "Amalan istri untuk suami mudah menjemput rezeki",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
