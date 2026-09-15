@@ -28,7 +28,7 @@ export const ACTIVITIES: Activity[] = [
 
   // Zikir Harian
   { id: 'zikir_pagi', name: 'Zikir Pagi', category: 'Zikir Harian' },
-  { id: 'zikir_bada_sholat', name: 'Zikir Setelah Sholat Wajib', category: 'Zikir Harian' },
+  { id: 'zikir_bada_sholat', name: 'Ayat Kursi Setelah Sholat Wajib', category: 'Zikir Harian' },
   { id: 'sholawat', name: 'Sholawat 100x', category: 'Zikir Harian' },
   { id: 'la_haula', name: 'Laa haula walaa quwwata illa billah 100x', category: 'Zikir Harian' },
   { id: 'hasbi_rabbi', name: 'Hasbi rabbi jallallah 100x', category: 'Zikir Harian' },
