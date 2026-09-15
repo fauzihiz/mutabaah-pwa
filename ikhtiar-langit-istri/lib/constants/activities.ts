@@ -16,6 +16,8 @@ export const ACTIVITIES: Activity[] = [
   // Sholat Sunnah
   { id: 'tahajud', name: 'Sholat Tahajud', category: 'Sholat Sunnah' },
   { id: 'taubat', name: 'Sholat Sunnah Taubat', category: 'Sholat Sunnah' },
+  { id: 'hajat', name: 'Sholat Sunnah Hajat', category: 'Sholat Sunnah' },
+  { id: 'witr', name: 'Sholat Sunnah witr', category: 'Sholat Sunnah' },
   { id: 'qob_subuh', name: 'Sholat Sunnah Qobliyah Subuh', category: 'Sholat Sunnah' },
   { id: 'dhuha', name: 'Sholat Sunnah Dhuha', category: 'Sholat Sunnah' },
 
@@ -34,6 +36,7 @@ export const ACTIVITIES: Activity[] = [
   { id: 'hasbi_rabbi', name: 'Hasbi rabbi jallallah 100x', category: 'Zikir Harian' },
   { id: 'subhanallah', name: 'Subhanallah Wabihamdihi 100x', category: 'Zikir Harian' },
   { id: 'astagfirullah', name: 'Astagfirullah Waatuubuilaihi 100x', category: 'Zikir Harian' },
+  { id: 'yunus', name: 'Laa ilaahaillaaanta subhaanaka inni kuntuminadzoolimiin 100x', category: 'Zikir Harian' },
   { id: 'zikir_petang', name: 'Zikir Petang', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
