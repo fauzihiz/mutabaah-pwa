@@ -41,7 +41,8 @@ export const ACTIVITIES: Activity[] = [
 
   // Interaksi Al Quran
   { id: 'tilawah', name: 'Tilawah Al Quran', category: 'Interaksi Al Quran' },
-  { id: 'al_mulk', name: 'Membaca Surat Almulk Pada Malam Hari', category: 'Interaksi Al Quran' },
+  { id: 'al_mulk', name: 'Membaca Surat Almulk Malam Hari', category: 'Interaksi Al Quran' },
+  { id: 'attalaq', name: 'Membaca Surat Attalaq ayat 2-3dan artinya', category: 'Interaksi Al Quran' },
 
   // Ibadah Lainnya
   { id: 'sedekah', name: 'Sedekah', category: 'Ibadah Lainnya' },
