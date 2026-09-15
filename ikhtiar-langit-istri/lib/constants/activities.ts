@@ -36,7 +36,7 @@ export const ACTIVITIES: Activity[] = [
   { id: 'hasbi_rabbi', name: 'Hasbi rabbi jallallah 100x', category: 'Zikir Harian' },
   { id: 'subhanallah', name: 'Subhanallah Wabihamdihi 100x', category: 'Zikir Harian' },
   { id: 'astagfirullah', name: 'Astagfirullah Waatuubuilaihi 100x', category: 'Zikir Harian' },
-  { id: 'yunus', name: 'Laa ilaahaillaaanta subhaanaka inni kuntuminadzoolimiin 100x', category: 'Zikir Harian' },
+  { id: 'yunus', name: 'Doa Nabi Yunus 100x', category: 'Zikir Harian' },
   { id: 'zikir_petang', name: 'Zikir Petang', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
