@@ -22,7 +22,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     // Load from localStorage on mount
     useEffect(() => {
-        const stored = localStorage.getItem('mutabaah-theme') as Theme | null;
+        const stored = localStorage.getItem('ikhtiar-langit-theme') as Theme | null;
         const preferred = stored ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         setTheme(preferred);
         setMounted(true);
@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
                 root.classList.remove('dark');
             }
         });
-        localStorage.setItem('mutabaah-theme', theme);
+        localStorage.setItem('ikhtiar-langit-theme', theme);
     }, [theme, mounted]);
 
     const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light');

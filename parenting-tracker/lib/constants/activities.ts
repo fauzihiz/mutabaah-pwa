@@ -1,11 +1,10 @@
 export type ActivityCategory =
-  | 'Qiyamulail'
   | 'Sholat Tepat Waktu'
-  | 'Sholat Sunnah Rawatib'
+  | 'Sholat Sunnah'
   | 'Zikir Harian'
   | 'Interaksi Al Quran'
   | 'Ibadah Lainnya'
-  | 'Aktivitas Mandiri';
+  | 'Curhat Berulang';
 
 export interface Activity {
   id: string;
@@ -15,67 +14,52 @@ export interface Activity {
 }
 
 export const ACTIVITIES: Activity[] = [
-  // Qiyamulail
-  { id: 'tahajud', name: 'Sholat Tahajud', category: 'Qiyamulail' },
-  { id: 'taubat', name: 'Sholat Taubat', category: 'Qiyamulail' },
-  { id: 'hajat', name: 'Sholat Hajat', category: 'Qiyamulail' },
-  { id: 'witir', name: 'Sholat Witir', category: 'Qiyamulail' },
+  // Sholat Sunnah
+  { id: 'tahajud', name: 'Sholat Tahajud', category: 'Sholat Sunnah' },
+  { id: 'taubat', name: 'Sholat Sunnah Taubat', category: 'Sholat Sunnah' },
+  { id: 'hajat', name: 'Sholat Sunnah Hajat', category: 'Sholat Sunnah' },
+  { id: 'witr', name: 'Sholat Sunnah witr', category: 'Sholat Sunnah' },
+  { id: 'qob_subuh', name: 'Sholat Sunnah Qobliyah Subuh', category: 'Sholat Sunnah' },
+  { id: 'dhuha', name: 'Sholat Sunnah Dhuha', category: 'Sholat Sunnah' },
 
   // Sholat Tepat Waktu
-  { id: 'subuh', name: 'Subuh', category: 'Sholat Tepat Waktu' },
-  { id: 'zuhur', name: 'Zuhur', category: 'Sholat Tepat Waktu' },
-  { id: 'ashar', name: 'Ashar', category: 'Sholat Tepat Waktu' },
-  { id: 'magrib', name: 'Magrib', category: 'Sholat Tepat Waktu' },
-  { id: 'isya', name: 'Isya', category: 'Sholat Tepat Waktu' },
-
-  // Sholat Sunnah Rawatib
-  { id: 'qob_subuh', name: 'Qobliyah Subuh', category: 'Sholat Sunnah Rawatib' },
-  { id: 'qob_zuhur', name: 'Qobiyah Zuhur', category: 'Sholat Sunnah Rawatib' },
-  { id: 'bad_zuhur', name: 'Badiah Zuhur', category: 'Sholat Sunnah Rawatib' },
-  { id: 'bad_magrib', name: 'Badiah Magrib', category: 'Sholat Sunnah Rawatib' },
-  { id: 'bad_isya', name: 'Badiah Isya', category: 'Sholat Sunnah Rawatib' },
+  { id: 'subuh', name: 'Sholat Subuh', category: 'Sholat Tepat Waktu' },
+  { id: 'zuhur', name: 'Sholat Zuhur', category: 'Sholat Tepat Waktu' },
+  { id: 'ashar', name: 'Sholat Ashar', category: 'Sholat Tepat Waktu' },
+  { id: 'magrib', name: 'Sholat Magrib', category: 'Sholat Tepat Waktu' },
+  { id: 'isya', name: 'Sholat Isya', category: 'Sholat Tepat Waktu' },
 
   // Zikir Harian
   { id: 'zikir_pagi', name: 'Zikir Pagi', category: 'Zikir Harian' },
-  { id: 'sholawat', name: 'Sholawat 10x', category: 'Zikir Harian' },
-  { id: 'la_haula', name: 'Laa haula walaa quwwata illa billah 10x', category: 'Zikir Harian' },
-  { id: 'hasbi_rabbi', name: 'Hasbi rabbi jallallah 10x', category: 'Zikir Harian' },
-  { id: 'astagfirullah', name: 'Astagfirullah Waatuubuilaihi 100x', category: 'Zikir Harian' },
+  { id: 'zikir_bada_sholat', name: 'Ayat Kursi Setelah Sholat Wajib', category: 'Zikir Harian' },
+  { id: 'sholawat', name: 'Sholawat 100x', category: 'Zikir Harian' },
+  { id: 'la_haula', name: 'Laa haula walaa quwwata illa billah 100x', category: 'Zikir Harian' },
+  { id: 'hasbi_rabbi', name: 'Hasbi rabbi jallallah 100x', category: 'Zikir Harian' },
   { id: 'subhanallah', name: 'Subhanallah Wabihamdihi 100x', category: 'Zikir Harian' },
+  { id: 'astagfirullah', name: 'Astagfirullah Waatuubuilaihi 100x', category: 'Zikir Harian' },
+  { id: 'yunus', name: 'Doa Nabi Yunus 100x', category: 'Zikir Harian' },
   { id: 'zikir_petang', name: 'Zikir Petang', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
-  { id: 'tilawah', name: 'Tilawah', category: 'Interaksi Al Quran' },
-  { id: 'tafsir', name: 'Tafsir', category: 'Interaksi Al Quran' },
-  { id: 'al_waqiah', name: 'Al Waqiah', category: 'Interaksi Al Quran' },
-  { id: 'al_mulk', name: 'Al Mulk', category: 'Interaksi Al Quran' },
+  { id: 'tilawah', name: 'Tilawah Al Quran', category: 'Interaksi Al Quran' },
+  { id: 'al_mulk', name: 'Membaca Surat Almulk Malam Hari', category: 'Interaksi Al Quran' },
+  { id: 'attalaq', name: 'Membaca Surat Attalaq ayat 2-3 dan artinya', category: 'Interaksi Al Quran' },
+  { id: 'alqashas', name: 'Membaca Surat Alqashas ayat 24 dan artinya', category: 'Interaksi Al Quran' },
 
   // Ibadah Lainnya
-  { id: 'puasa', name: 'Puasa', category: 'Ibadah Lainnya' },
   { id: 'sedekah', name: 'Sedekah', category: 'Ibadah Lainnya' },
-  { id: 'dhuha', name: 'Dhuha', category: 'Ibadah Lainnya' },
-  { id: 'mendoakan', name: 'Mendoakan Orang lain di jalan', category: 'Ibadah Lainnya' },
-  { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
-
-  // Aktivitas Mandiri (Custom Slots)
-  { id: 'custom_1', name: 'Aktivitas Kustom 1', category: 'Aktivitas Mandiri' },
-  { id: 'custom_2', name: 'Aktivitas Kustom 2', category: 'Aktivitas Mandiri' },
-  { id: 'custom_3', name: 'Aktivitas Kustom 3', category: 'Aktivitas Mandiri' },
-  { id: 'custom_4', name: 'Aktivitas Kustom 4', category: 'Aktivitas Mandiri' },
-  { id: 'custom_5', name: 'Aktivitas Kustom 5', category: 'Aktivitas Mandiri' },
-  { id: 'custom_6', name: 'Aktivitas Kustom 6', category: 'Aktivitas Mandiri' },
-  { id: 'custom_7', name: 'Aktivitas Kustom 7', category: 'Aktivitas Mandiri' },
-  { id: 'custom_8', name: 'Aktivitas Kustom 8', category: 'Aktivitas Mandiri' },
-  { id: 'custom_9', name: 'Aktivitas Kustom 9', category: 'Aktivitas Mandiri' },
-  { id: 'custom_10', name: 'Aktivitas Kustom 10', category: 'Aktivitas Mandiri' },
+  { id: 'mendoakan', name: 'Mendoakan Orang Lain', category: 'Ibadah Lainnya' },
+  
+  
+  // Curhat Berulang
+  { id: 'curhat', name: 'Curhat Berulang', category: 'Curhat Berulang' },
 ];
 
 export const CATEGORIES: ActivityCategory[] = [
-  'Qiyamulail',
   'Sholat Tepat Waktu',
-  'Sholat Sunnah Rawatib',
+  'Sholat Sunnah',
   'Zikir Harian',
   'Interaksi Al Quran',
   'Ibadah Lainnya',
-  'Aktivitas Mandiri',
+  'Curhat Berulang',
 ];

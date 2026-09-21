@@ -3,7 +3,8 @@ export type ActivityCategory =
   | 'Sholat Sunnah'
   | 'Zikir Harian'
   | 'Interaksi Al Quran'
-  | 'Ibadah Lainnya';
+  | 'Ibadah Lainnya'
+  | 'Curhat Berulang';
 
 export interface Activity {
   id: string;
@@ -43,12 +44,15 @@ export const ACTIVITIES: Activity[] = [
   { id: 'tilawah', name: 'Tilawah Al Quran', category: 'Interaksi Al Quran' },
   { id: 'al_mulk', name: 'Membaca Surat Almulk Malam Hari', category: 'Interaksi Al Quran' },
   { id: 'attalaq', name: 'Membaca Surat Attalaq ayat 2-3 dan artinya', category: 'Interaksi Al Quran' },
+  { id: 'alqashas', name: 'Membaca Surat Alqashas ayat 24 dan artinya', category: 'Interaksi Al Quran' },
 
   // Ibadah Lainnya
   { id: 'sedekah', name: 'Sedekah', category: 'Ibadah Lainnya' },
   { id: 'mendoakan', name: 'Mendoakan Orang Lain', category: 'Ibadah Lainnya' },
-  { id: 'doa', name: 'Membaca Script Doa', category: 'Ibadah Lainnya' },
-  { id: 'curhat', name: 'Curhat Berulang', category: 'Ibadah Lainnya' },
+  { id: 'gerak', name: 'Ikhtiar Gerak', category: 'Ibadah Lainnya' },
+  
+  // Curhat Berulang
+  { id: 'curhat', name: 'Curhat Berulang', category: 'Curhat Berulang' },
 ];
 
 export const CATEGORIES: ActivityCategory[] = [
@@ -57,4 +61,5 @@ export const CATEGORIES: ActivityCategory[] = [
   'Zikir Harian',
   'Interaksi Al Quran',
   'Ibadah Lainnya',
+  'Curhat Berulang',
 ];

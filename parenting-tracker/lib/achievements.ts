@@ -68,7 +68,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     {
         id: 'al_mujtahid',
         title: 'Al-Mujtahid',
-        description: '30 hari mutabaah beruntun',
+        description: '30 hari ibadah beruntun',
         condition_type: 'min_streak',
         threshold: 30,
         icon_name: 'trophy',

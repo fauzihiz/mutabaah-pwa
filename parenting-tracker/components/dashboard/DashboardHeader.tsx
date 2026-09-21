@@ -7,8 +7,8 @@ import { Menu, Sun, Moon, Pencil } from 'lucide-react';
 const GREETING_KEY = 'greetingName';
 
 function getStoredName(): string {
-    if (typeof window === 'undefined') return 'Sahabat';
-    return localStorage.getItem(GREETING_KEY) || 'Sahabat';
+    if (typeof window === 'undefined') return 'Bunda';
+    return localStorage.getItem(GREETING_KEY) || 'Bunda';
 }
 
 interface DashboardHeaderProps {
@@ -17,9 +17,9 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
     const { isDark, toggleTheme } = useTheme();
-    const [name, setName] = useState('Sahabat');
+    const [name, setName] = useState('Bunda');
     const [isEditing, setIsEditing] = useState(false);
-    const [draft, setDraft] = useState('Sahabat');
+    const [draft, setDraft] = useState('Bunda');
     const inputRef = useRef<HTMLInputElement>(null);
 
     // Load from localStorage on mount
@@ -34,7 +34,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
 
     const commitEdit = () => {
         const trimmed = draft.trim();
-        const final = trimmed.length > 0 ? trimmed : 'Sahabat';
+        const final = trimmed.length > 0 ? trimmed : 'Bunda';
         setName(final);
         localStorage.setItem(GREETING_KEY, final);
         setIsEditing(false);
@@ -71,7 +71,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                 </button>
                 <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm shadow-green-200 dark:shadow-green-900/30">
-                        <img src="/logo.png" alt="Mutabaah" width={32} height={32} className="w-full h-full object-cover" />
+                        <img src="/logo.png" alt="Ikhtiar Langit" width={32} height={32} className="w-full h-full object-cover" />
                     </div>
                     <div>
                         <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-medium leading-none mb-1">

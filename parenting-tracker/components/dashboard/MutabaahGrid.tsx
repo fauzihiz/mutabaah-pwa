@@ -147,7 +147,6 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
 
                             {ACTIVITIES.filter(a => a.category === category).map(activity => {
                                 const displayName = getActivityName(activity.id);
-                                const isCustom = category === 'Aktivitas Mandiri';
 
                                 return (
        <div
@@ -161,16 +160,6 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                         >
                                             {displayName}
                                         </span>
-
-                                        {isCustom && (
-                                            <button
-                                                onClick={() => handleRename(activity.id, displayName)}
-                                                className="absolute right-1 p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 shadow-sm flex items-center justify-center transition-transform active:scale-90"
-                                                title="Ubah nama"
-                                            >
-                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 dark:text-slate-300"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-                                            </button>
-                                        )}
                                     </div>
                                 );
                             })}
