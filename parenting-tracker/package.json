@@ -1,6 +1,6 @@
 {
-  "name": "ikhtiar-langit-istri",
-  "version": "1.3.0",
+  "name": "parenting-tracker",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

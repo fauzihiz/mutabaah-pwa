@@ -1,7 +1,7 @@
 {
-  "name": "Ikhtiar Langit Istri",
-  "short_name": "Ikhtiar Langit",
-  "description": "Amalan istri untuk suami mudah menjemput rezeki",
+  "name": "Parenting Tracker",
+  "short_name": "Parenting Tracker",
+  "description": "Membantu orangtua tracking aktivitas anak",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

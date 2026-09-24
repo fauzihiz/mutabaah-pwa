@@ -10,8 +10,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Ikhtiar Langit Istri",
-  description: "Amalan istri untuk suami mudah menjemput rezeki",
+  title: "Parenting Tracker",
+  description: "Membantu orangtua tracking aktivitas anak",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Ikhtiar Langit",
+    title: "Parenting Tracker",
   },
 };
 
