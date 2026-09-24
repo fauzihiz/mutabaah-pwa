@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useMutabaahMonth } from '@/hooks/useMutabaah';
+import { useMutabaahMonth, useChildren } from '@/hooks/useMutabaah';
 import { useMonthlyStats } from '@/hooks/useMonthlyStats';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
+import { ChildTabs } from '@/components/dashboard/ChildTabs';
 
 // Lazy-load heavy components that aren't needed on initial render
 const NavigationDrawer = dynamic(
@@ -33,9 +34,30 @@ export default function Dashboard() {
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
   const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
 
+  // Child State
+  const { children, addChild, updateChild, removeChild } = useChildren();
+  const [activeChildId, setActiveChildId] = useState<number>(1);
+
+  // Initialize activeChildId when children load
+  React.useEffect(() => {
+    if (children && children.length > 0) {
+      if (!children.find(c => c.id === activeChildId)) {
+        setActiveChildId(children[0].id!);
+      }
+    } else if (children && children.length === 0) {
+      // Create a default child if none exist
+      addChild('Anak 1').then(id => {
+        if (typeof id === 'number') {
+           setActiveChildId(id);
+        }
+      });
+    }
+  }, [children, activeChildId, addChild]);
+
   const { logs, toggleActivity } = useMutabaahMonth(
     currentDate.getFullYear(),
-    currentDate.getMonth()
+    currentDate.getMonth(),
+    activeChildId
   );
 
   const stats = useMonthlyStats(
@@ -73,8 +95,16 @@ export default function Dashboard() {
       <main className="flex-1 flex flex-col overflow-hidden relative">
         {activeView === 'dashboard' ? (
           <>
-            <div className="py-5 space-y-5">
+            <div className="pt-5 space-y-4">
               <MonthPicker currentDate={currentDate} onDateChange={setCurrentDate} />
+              <ChildTabs 
+                children={children}
+                activeChildId={activeChildId}
+                onTabChange={setActiveChildId}
+                onAddChild={addChild}
+                onUpdateChild={updateChild}
+                onRemoveChild={removeChild}
+              />
             </div>
 
             <MutabaahGrid

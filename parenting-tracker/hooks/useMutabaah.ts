@@ -5,17 +5,38 @@ import { db, ActivityLog } from '@/lib/db';
 import { ACTIVITIES } from '@/lib/constants/activities';
 import { useState, useMemo } from 'react';
 
-export function useMutabaahMonth(year: number, month: number) {
+export function useChildren() {
+    const children = useLiveQuery(() => db.children.toArray());
+
+    const addChild = async (name: string) => {
+        return await db.children.add({ name });
+    };
+
+    const updateChild = async (id: number, name: string) => {
+        return await db.children.update(id, { name });
+    };
+
+    const removeChild = async (id: number) => {
+        // Option to delete child's logs as well could be here
+        return await db.children.delete(id);
+    };
+
+    return { children, addChild, updateChild, removeChild };
+}
+
+export function useMutabaahMonth(year: number, month: number, childId: number = 1) {
     const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
     const endDate = `${year}-${String(month + 1).padStart(2, '0')}-31`;
 
     const logs = useLiveQuery(
-        () => db.logs.where('date').between(startDate, endDate, true, true).toArray(),
-        [year, month]
+        () => db.logs.where('date').between(startDate, endDate, true, true)
+                 .filter(log => log.childId === childId)
+                 .toArray(),
+        [year, month, childId]
     );
 
     const toggleActivity = async (date: string, activityId: string) => {
-        const existing = await db.logs.where({ date, activityId }).first();
+        const existing = await db.logs.where({ date, activityId, childId }).first();
 
         if (existing) {
             await db.logs.update(existing.id!, { completed: existing.completed ? 0 : 1 });
@@ -25,6 +46,7 @@ export function useMutabaahMonth(year: number, month: number) {
                 activityId,
                 completed: 1,
                 synced: false,
+                childId
             });
         }
 
@@ -47,8 +69,8 @@ export function useMutabaahMonth(year: number, month: number) {
     };
 }
 
-export function useStreak() {
-    const allLogs = useLiveQuery(() => db.logs.where('completed').equals(1).toArray());
+export function useStreak(childId: number = 1) {
+    const allLogs = useLiveQuery(() => db.logs.where('completed').equals(1).filter(log => log.childId === childId).toArray(), [childId]);
 
     const streak = useMemo(() => {
         if (!allLogs || allLogs.length === 0) return 0;
