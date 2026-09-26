@@ -97,14 +97,14 @@ export default function Dashboard() {
           <>
             <div className="pt-5 space-y-4">
               <MonthPicker currentDate={currentDate} onDateChange={setCurrentDate} />
-              <ChildTabs 
+              {/* <ChildTabs 
                 children={children}
                 activeChildId={activeChildId}
                 onTabChange={setActiveChildId}
                 onAddChild={addChild}
                 onUpdateChild={updateChild}
                 onRemoveChild={removeChild}
-              />
+              /> */}
             </div>
 
             <MutabaahGrid
