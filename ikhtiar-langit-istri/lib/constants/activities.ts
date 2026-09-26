@@ -60,7 +60,9 @@ export const ACTIVITIES: Activity[] = [
   { id: 'gerak', name: 'Ikhtiar Gerak Antusias', category: 'Ibadah Lainnya' },
   
   // Curhat Berulang
-  { id: 'curhat', name: 'Curhat Berulang', category: 'Curhat Berulang' },
+  { id: 'doa_setelah_sholat', name: 'Doa Setelah Sholat Wajib', category: 'Curhat Berulang' },
+  { id: 'doa_sepertiga_malam', name: 'Doa Pada Sepertiga Malam', category: 'Curhat Berulang' },
+  { id: 'doa_setelah_azan', name: 'Doa Antara Adzan dan Iqomah', category: 'Curhat Berulang' },
   { id: 'selftalk_berlimpah', name: 'Baca Selftalk Keberlimpahan', category: 'Curhat Berulang' },
 ];
 

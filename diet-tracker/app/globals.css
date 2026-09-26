@@ -2,33 +2,85 @@
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-border: var(--border);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  
+  --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  
+  --color-danger: var(--danger);
+  --color-danger-light: var(--danger-light);
+  
+  --color-info: var(--info);
+  --color-info-light: var(--info-light);
+  
+  --color-brown-accent: var(--brown-accent);
 }
 
 /* ─── Light Mode ─────────────────────────────── */
 :root {
-  --bg-base: #F8F8E8; /* Warm Cream */
-  --bg-surface: #FFFDF7; /* Ivory */
-  --bg-subtle: #78A888; /* Sage (used as subtle/accent bg) */
-  --border: #587868; /* Secondary */
-  --text-primary: #284848; /* Dark Text */
-  --text-secondary: #587868; /* Secondary */
-  --text-muted: #687878; /* Muted Text */
-  --primary: #285848; /* Primary */
-  --primary-light: #78A888; /* Sage */
-  --gold: #C89838; /* Gold */
+  --bg-base: #FFF8E8;
+  --bg-surface: #FFFDF8;
+  --border: #DCE2D4;
+  
+  --text-primary: #24483A;
+  --text-secondary: #6F7D72;
+  
+  --primary: #246B4F;
+  --primary-dark: #18543D;
+  --primary-light: #A8C978;
+  
+  --accent: #FFD35A;
+  --accent-dark: #F5B83D;
+  
+  --success: #4F8B4F;
+  --success-light: #DCEBC7;
+  
+  --danger: #F0443E;
+  --danger-light: #FDE0DE;
+  
+  --info: #769FAD;
+  --info-light: #DCEEF0;
+  
+  --brown-accent: #79502F;
 }
 
 /* ─── Dark Mode ──────────────────────────────── */
 :root.dark {
-  --bg-base: #0f172a;
-  --bg-surface: #1e293b;
-  --bg-subtle: #334155;
-  --border: #475569;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --primary: #4ade80;
-  --primary-light: #14532d;
+  --bg-base: #1A201E; /* Example dark variants for background */
+  --bg-surface: #242A27;
+  --border: #3A453F;
+  
+  --text-primary: #FFF8E8;
+  --text-secondary: #DCE2D4;
+  
+  --primary: #A8C978;
+  --primary-dark: #246B4F;
+  --primary-light: #18543D;
+  
+  --accent: #FFD35A;
+  --accent-dark: #F5B83D;
+  
+  --success: #DCEBC7;
+  --success-light: #4F8B4F;
+  
+  --danger: #FDE0DE;
+  --danger-light: #F0443E;
+  
+  --info: #DCEEF0;
+  --info-light: #769FAD;
+  
+  --brown-accent: #D7A684;
 }
 
 * {
