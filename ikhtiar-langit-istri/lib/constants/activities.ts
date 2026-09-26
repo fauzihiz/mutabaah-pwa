@@ -34,7 +34,7 @@ export const ACTIVITIES: Activity[] = [
   { id: 'zikir_pagi', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas Waktu Pagi', category: 'Zikir Harian' },
   { id: 'zikir_bada_sholat', name: 'Ayat Kursi Setelah Sholat Wajib', category: 'Zikir Harian' },
   { id: 'la_haula', name: 'Laa haula walaa quwwata illa billah 10x', category: 'Zikir Harian' },
-  { id: 'hasbi_rabbi', name: 'Hasbi rabbi jallallah 10x', category: 'Zikir Harian' },
+  { id: 'hasbi_rabbi', name: "Hasbunallahu wa ni'mal wakil 10x", category: 'Zikir Harian' },
   { id: 'subhanallah', name: 'Subhanallah Wabihamdihi Subhanallahiladzim 10x', category: 'Zikir Harian' },
   { id: 'yunus', name: 'Doa Nabi Yunus 10x', category: 'Zikir Harian' },
   { id: 'astagfirullah', name: 'Astagfirullah Waatuubuilaihi 100x', category: 'Zikir Harian' },
