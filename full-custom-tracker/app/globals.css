@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+}
+
+/* ─── Light Mode ─────────────────────────────── */
+:root {
+  --bg-base: #F8F8E8; /* Warm Cream */
+  --bg-surface: #FFFDF7; /* Ivory */
+  --bg-subtle: #78A888; /* Sage (used as subtle/accent bg) */
+  --border: #587868; /* Secondary */
+  --text-primary: #284848; /* Dark Text */
+  --text-secondary: #587868; /* Secondary */
+  --text-muted: #687878; /* Muted Text */
+  --primary: #285848; /* Primary */
+  --primary-light: #78A888; /* Sage */
+  --gold: #C89838; /* Gold */
+}
+
+/* ─── Dark Mode ──────────────────────────────── */
+:root.dark {
+  --bg-base: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-subtle: #334155;
+  --border: #475569;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --primary: #4ade80;
+  --primary-light: #14532d;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ─── Scrollbars ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Semantic utility classes ───────────────── */
+.surface {
+  background: var(--bg-surface);
+}
+
+.subtle {
+  background: var(--bg-subtle);
+}
+
+.bordered {
+  border-color: var(--border);
+}
+
+.txt-primary {
+  color: var(--text-primary);
+}
+
+.txt-secondary {
+  color: var(--text-secondary);
+}
+
+.txt-muted {
+  color: var(--text-muted);
+}
+
+/* ─── Animation Keyframes ─────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
