@@ -1,9 +1,9 @@
 'use client';
 
 import { useMemo, useState, useEffect, useRef } from 'react';
-import { ActivityLog } from '@/lib/db';
+import { ActivityLog, ActivityDef } from '@/lib/db';
 import { useTrackerConfig } from '@/hooks/useTrackerConfig';
-import { Plus, Trash, Edit2 } from 'lucide-react';
+import { Plus, Trash, Edit2, Flag } from 'lucide-react';
 
 interface MutabaahGridProps {
     currentDate: Date;
@@ -102,10 +102,19 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
     };
     const handleEditActivity = (id: string, current: string) => {
         const name = prompt('Edit Activity Name:', current);
-        if (name?.trim() && name !== current) editActivity(id, name.trim());
+        if (name?.trim() && name !== current) editActivity(id, { name: name.trim() });
     };
     const handleDeleteActivity = (id: string) => {
         if (confirm('Delete this activity?')) deleteActivity(id);
+    };
+    // Cycle: none → high → medium → low → none
+    const cycleActivityPriority = (activity: ActivityDef) => {
+        const next =
+            activity.priority === 'high' ? 'medium' :
+            activity.priority === 'medium' ? 'low' :
+            activity.priority === 'low' ? undefined :
+            'high';
+        editActivity(activity.id, { priority: next });
     };
 
     const LEFT_W = 192; // px — must match w-48
@@ -156,10 +165,10 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                     background: _today ? 'var(--primary-light)' : weekend ? 'var(--bg-subtle)' : 'var(--bg-surface)',
                                 }}
                             >
-                                <span className="text-[9px] font-bold uppercase" style={{ color: _today ? 'var(--primary)' : 'var(--text-muted)' }}>
+                                <span className="text-[9px] font-bold uppercase" style={{ color: _today ? 'var(--today-label)' : 'var(--text-muted)' }}>
                                     {date.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0)}
                                 </span>
-                                <span className="text-[11px] font-black" style={{ color: _today ? 'var(--primary)' : 'var(--text-primary)' }}>
+                                <span className="text-[11px] font-black" style={{ color: _today ? 'var(--today-label)' : 'var(--text-primary)' }}>
                                     {day}
                                 </span>
                             </div>
@@ -260,15 +269,37 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                         {/* sticky label */}
                                         <div
                                             className="flex-shrink-0 sticky left-0 z-20 flex items-center justify-between px-2 border-r"
-                                            style={{ width: LEFT_W, background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+                                            style={{
+                                                width: LEFT_W,
+                                                background:
+                                                    activity.priority === 'high' ? 'var(--priority-high-bg)' :
+                                                    activity.priority === 'medium' ? 'var(--priority-medium-bg)' :
+                                                    activity.priority === 'low' ? 'var(--priority-low-bg)' :
+                                                    'var(--bg-surface)',
+                                                borderColor: 'var(--border)',
+                                            }}
                                         >
                                             <span
                                                 className="text-[11px] font-semibold leading-tight truncate"
-                                                style={{ color: 'var(--text-secondary)' }}
+                                                style={{ color: activity.priority ? 'var(--text-primary)' : 'var(--text-secondary)' }}
                                             >
                                                 {activity.name}
                                             </span>
                                             <div className="hidden group-hover:flex items-center gap-1 shrink-0">
+                                                <button
+                                                    onClick={() => cycleActivityPriority(activity)}
+                                                    title={`Priority: ${activity.priority ?? 'none'} — click to cycle`}
+                                                    className="p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
+                                                    style={{
+                                                        color:
+                                                            activity.priority === 'high' ? 'var(--error)' :
+                                                            activity.priority === 'medium' ? 'var(--warning)' :
+                                                            activity.priority === 'low' ? 'var(--success)' :
+                                                            'var(--text-muted)',
+                                                    }}
+                                                >
+                                                    <Flag size={10} />
+                                                </button>
                                                 <button
                                                     onClick={() => handleEditActivity(activity.id, activity.name)}
                                                     className="p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"

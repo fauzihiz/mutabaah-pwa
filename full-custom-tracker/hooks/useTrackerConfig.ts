@@ -1,7 +1,7 @@
 'use client';
 
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '@/lib/db';
+import { db, type ActivityDef } from '@/lib/db';
 
 function generateId(): string {
     if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
@@ -46,8 +46,11 @@ export function useTrackerConfig() {
         await db.activities.add({ id, categoryId, name, order });
     };
 
-    const editActivity = async (id: string, name: string) => {
-        await db.activities.update(id, { name });
+    const editActivity = async (
+        id: string,
+        patch: Partial<Pick<ActivityDef, 'name' | 'priority'>>
+    ) => {
+        await db.activities.update(id, patch);
     };
 
     const deleteActivity = async (id: string) => {

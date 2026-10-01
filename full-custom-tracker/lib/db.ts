@@ -19,6 +19,7 @@ export interface ActivityDef {
     categoryId: string;
     name: string;
     order: number;
+    priority?: 'high' | 'medium' | 'low' | null;
 }
 
 export interface PlannerNote {
@@ -36,7 +37,7 @@ export class MutabaahDatabase extends Dexie {
 
     constructor() {
         super('FullCustomTrackerDB');
-        this.version(6).stores({
+        this.version(7).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             categories: 'id, order',
             activities: 'id, categoryId, order',
