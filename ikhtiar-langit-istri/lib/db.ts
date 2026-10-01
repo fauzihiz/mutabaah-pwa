@@ -1,10 +1,29 @@
 import Dexie, { type Table } from 'dexie';
 
+/** Kode status yang disimpan di `ActivityLog.completed`. */
+export type LogStatus = 0 | 1 | 2 | 3;
+
+export const STATUS = {
+    /** Belum dikerjakan */
+    EMPTY: 0,
+    /** Selesai (tepat waktu) */
+    DONE: 1,
+    /** Selesai tapi tidak tepat waktu — hanya kategori Sholat Tepat Waktu */
+    LATE: 2,
+    /** Haid / berhalangan */
+    HAID: 3,
+} as const;
+
+/** Status yang dihitung "selesai" untuk statistik (tepat waktu maupun telat). */
+export function isDone(status: number): boolean {
+    return status === STATUS.DONE || status === STATUS.LATE;
+}
+
 export interface ActivityLog {
     id?: number;
     date: string; // YYYY-MM-DD
     activityId: string;
-    completed: number; // 1 for true, 0 for false (better for indexing)
+    completed: LogStatus; // Lihat STATUS di atas (better for indexing)
     synced: boolean; // Legacy field, kept for schema compatibility
 }
 

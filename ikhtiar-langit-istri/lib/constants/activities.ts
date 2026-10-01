@@ -44,8 +44,8 @@ export const ACTIVITIES: Activity[] = [
   // Interaksi Al Quran
   { id: 'tilawah', name: 'Tilawah Al Quran 1 Halaman', category: 'Interaksi Al Quran' },
   { id: 'al_mulk', name: 'Membaca Surat Almulk Malam Hari', category: 'Interaksi Al Quran' },
-  { id: 'attalaq', name: 'Membaca Surat Attalaq ayat 2-3 dan artinya', category: 'Interaksi Al Quran' },
-  { id: 'alqashas', name: 'Membaca Surat Alqashas ayat 24 dan artinya', category: 'Interaksi Al Quran' },
+  { id: 'attalaq', name: 'Membaca Ayat Seribu Dinar', category: 'Interaksi Al Quran' },
+  { id: 'alqashas', name: 'Membaca Doa Nabi Musa memohon rezeki', category: 'Interaksi Al Quran' },
 
   // Sedekah
   { id: 'sedekah_uang', name: 'Sedekah Uang', category: 'Sedekah' },
@@ -56,7 +56,7 @@ export const ACTIVITIES: Activity[] = [
   // Ibadah Lainnya
   { id: 'mendoakan', name: 'Mendoakan Minimal 5 Orang Lain', category: 'Ibadah Lainnya' },
   { id: 'bersih', name: 'Membersihkan Rumah', category: 'Ibadah Lainnya' },
-  { id: 'tidak_bentak', name: 'Tidak Bentak Suami & Anak', category: 'Ibadah Lainnya' },
+  { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
   { id: 'gerak', name: 'Ikhtiar Gerak Antusias', category: 'Ibadah Lainnya' },
   
   // Curhat Berulang

@@ -5,10 +5,14 @@ import { useTheme } from '@/components/providers/ThemeProvider';
 import { Menu, Sun, Moon, Pencil } from 'lucide-react';
 
 const GREETING_KEY = 'greetingName';
+const DEFAULT_NAME = 'Tulis Target yang ingin dicapai';
 
 function getStoredName(): string {
-    if (typeof window === 'undefined') return 'Bunda';
-    return localStorage.getItem(GREETING_KEY) || 'Bunda';
+    if (typeof window === 'undefined') return DEFAULT_NAME;
+    const stored = localStorage.getItem(GREETING_KEY);
+    // 'Bunda' was the old default — treat it as unset so the new default shows
+    if (stored === null || stored === 'Bunda') return DEFAULT_NAME;
+    return stored;
 }
 
 interface DashboardHeaderProps {
@@ -17,9 +21,9 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
     const { isDark, toggleTheme } = useTheme();
-    const [name, setName] = useState('Bunda');
+    const [name, setName] = useState(DEFAULT_NAME);
     const [isEditing, setIsEditing] = useState(false);
-    const [draft, setDraft] = useState('Bunda');
+    const [draft, setDraft] = useState(DEFAULT_NAME);
     const inputRef = useRef<HTMLInputElement>(null);
 
     // Load from localStorage on mount
@@ -34,7 +38,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
 
     const commitEdit = () => {
         const trimmed = draft.trim();
-        const final = trimmed.length > 0 ? trimmed : 'Bunda';
+        const final = trimmed.length > 0 ? trimmed : DEFAULT_NAME;
         setName(final);
         localStorage.setItem(GREETING_KEY, final);
         setIsEditing(false);
@@ -75,7 +79,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                     </div>
                     <div>
                         <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-medium leading-none mb-1">
-                            Assalamualaikum,
+                            Semangat Menarik Keberlimpahan,
                         </p>
                         {isEditing ? (
                             <input
@@ -85,21 +89,21 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                                 onChange={(e) => setDraft(e.target.value)}
                                 onBlur={commitEdit}
                                 onKeyDown={handleKeyDown}
-                                maxLength={20}
+                                maxLength={60}
                                 style={{
                                     background: 'var(--bg-surface)',
                                     color: 'var(--text-primary)',
                                     borderColor: 'var(--border)',
                                 }}
-                                className="text-xs font-bold leading-none border-b-2 outline-none px-0 py-0 w-[120px]"
+                                className="text-xs font-bold leading-none border-b-2 outline-none px-0 py-0 w-[160px]"
                             />
                         ) : (
                             <button
                                 onClick={startEditing}
-                                className="group flex items-center gap-1 max-w-[140px]"
-                                title="Tap untuk mengganti nama"
+                                className="group flex items-start gap-1 max-w-[160px] text-left"
+                                title="Tap untuk mengganti target"
                             >
-                                <p style={{ color: 'var(--text-primary)' }} className="text-xs font-bold leading-none truncate">
+                                <p style={{ color: 'var(--text-primary)' }} className="text-xs font-bold leading-snug break-words">
                                     {name}
                                 </p>
                                 <Pencil size={10} className="opacity-0 group-hover:opacity-60 transition-opacity shrink-0" style={{ color: 'var(--text-muted)' }} />

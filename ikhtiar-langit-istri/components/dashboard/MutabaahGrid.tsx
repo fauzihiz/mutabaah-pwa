@@ -1,8 +1,9 @@
 'use client';
 
 import { useMemo, useState, useEffect, useRef } from 'react';
+import { Clock, Heart } from 'lucide-react';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
-import { ActivityLog } from '@/lib/db';
+import { ActivityLog, STATUS } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
 
 interface MutabaahGridProps {
@@ -16,17 +17,24 @@ function toLocalDateStr(y: number, m: number, d: number) {
     return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 }
 
+const STATUS_LABEL: Record<number, string> = {
+    [STATUS.EMPTY]: 'Belum dikerjakan',
+    [STATUS.DONE]: 'Selesai',
+    [STATUS.LATE]: 'Selesai telat',
+    [STATUS.HAID]: 'Haid/berhalangan',
+};
+
 export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
 
     const { getActivityName, renameActivity } = useActivitySettings();
 
-    // Pre-compute a lookup Map: "date:activityId" → completed — O(1) per cell instead of O(n)
+    // Pre-compute a lookup Map: "date:activityId" → status (0/1/2/3) — O(1) per cell instead of O(n)
     const logMap = useMemo(() => {
-        const m = new Map<string, boolean>();
+        const m = new Map<string, number>();
         for (const l of logs) {
-            m.set(`${l.date}:${l.activityId}`, l.completed === 1);
+            m.set(`${l.date}:${l.activityId}`, l.completed);
         }
         return m;
     }, [logs]);
@@ -120,7 +128,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         >
             {/* ── LEFT: static activity names ── */}
             <div
-                className="w-36 flex-shrink-0 border-r z-20"
+                className="w-44 flex-shrink-0 border-r z-20"
                 style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
             >
                 {/* empty top-left corner */}
@@ -151,11 +159,11 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 return (
        <div
                                         key={activity.id}
-                                        className="h-12 px-3 flex items-center border-b group relative"
+                                        className="h-14 px-3 flex items-center border-b group relative"
                                         style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                                     >
                                         <span
-                                            className="text-[11px] font-semibold leading-tight pr-4"
+                                            className="text-[11px] font-semibold leading-snug pr-4 line-clamp-2"
                                             style={{ color: 'var(--text-secondary)' }}
                                         >
                                             {displayName}
@@ -230,13 +238,13 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 {ACTIVITIES.filter(a => a.category === category).map(activity => (
                                     <div
                                         key={activity.id}
-                                        className="flex h-12 border-b"
+                                        className="flex h-14 border-b"
                                         style={{ borderColor: 'var(--border)' }}
                                     >
                                         {days.map(day => {
                                             const dateStr = formatDate(day);
                                             const locked = isFuture(day);
-                                            const completed = logMap.get(`${dateStr}:${activity.id}`) ?? false;
+                                            const status = logMap.get(`${dateStr}:${activity.id}`) ?? STATUS.EMPTY;
                                             const _today = isToday(day);
 
                                             return (
@@ -251,18 +259,30 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                                     <button
                                                         disabled={locked}
                                                         onClick={() => onToggle(dateStr, activity.id)}
+                                                        title={locked ? 'Hari mendatang' : STATUS_LABEL[status]}
+                                                        aria-label={`${getActivityName(activity.id)} — ${locked ? 'Hari mendatang' : STATUS_LABEL[status]}`}
                                                         className={[
                                                             'w-6 h-6 rounded-lg flex items-center justify-center transition-all active:scale-90',
-                                                            completed ? 'bg-green-600 text-white shadow-sm shadow-green-300 dark:shadow-green-900/30' : 'border hover:border-green-400 dark:hover:border-green-500',
+                                                            status === STATUS.DONE
+                                                                ? 'bg-green-600 text-white shadow-sm shadow-green-300 dark:shadow-green-900/30'
+                                                                : status === STATUS.LATE
+                                                                    ? 'bg-amber-500 text-white shadow-sm shadow-amber-300 dark:shadow-amber-900/30'
+                                                                    : status === STATUS.HAID
+                                                                        ? 'bg-rose-500 text-white shadow-sm shadow-rose-300 dark:shadow-rose-900/30'
+                                                                        : 'border hover:border-green-400 dark:hover:border-green-500',
                                                             locked ? 'cursor-not-allowed opacity-40' : '',
                                                         ].join(' ')}
-                                                        style={!completed ? { borderColor: 'var(--border)', background: 'var(--bg-subtle)' } : undefined}
+                                                        style={status === STATUS.EMPTY ? { borderColor: 'var(--border)', background: 'var(--bg-subtle)' } : undefined}
                                                     >
                                                         {locked
                                                             ? <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                            : completed
+                                                            : status === STATUS.DONE
                                                                 ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                                                : null
+                                                                : status === STATUS.LATE
+                                                                    ? <Clock size={12} strokeWidth={2.5} />
+                                                                    : status === STATUS.HAID
+                                                                        ? <Heart size={12} fill="currentColor" strokeWidth={0} />
+                                                                        : null
                                                         }
                                                     </button>
                                                 </div>
