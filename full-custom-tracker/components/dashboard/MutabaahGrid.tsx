@@ -75,8 +75,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         if (!el || !today || !todayStr) return;
         const isCurrentMonth = currentDate.getFullYear() === today.getFullYear() && currentDate.getMonth() === today.getMonth();
         if (isCurrentMonth) {
-            // LEFT_COL_WIDTH px for the sticky label column
-            const LEFT = 192;
+            // Sticky label column width (responsive: 220px mobile / 192px sm+)
+            const LEFT = el.querySelector('[data-label-col]')?.clientWidth ?? 192;
             const colWidth = 40;
             const target = Math.max(0, LEFT + (today.getDate() - 1) * colWidth - el.clientWidth * 0.5);
             el.scrollTo({ left: target, behavior: 'smooth' });
@@ -117,16 +117,14 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         editActivity(activity.id, { priority: next });
     };
 
-    const LEFT_W = 192; // px — must match w-48
-
     return (
         <div
-            className="flex-1 overflow-auto border-t scrollbar-hide"
+            className="mutabaah-grid flex-1 overflow-auto border-t scrollbar-hide"
             style={{ borderColor: 'var(--border)' }}
             ref={scrollRef}
         >
             {/* The whole grid is one scroll context. Left labels are sticky. */}
-            <div style={{ minWidth: LEFT_W + days.length * 40 }}>
+            <div style={{ minWidth: 'calc(var(--label-col-w) + ' + days.length * 40 + 'px)' }}>
 
                 {/* ── HEADER ROW ── */}
                 <div
@@ -135,8 +133,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                 >
                     {/* sticky top-left corner with Add Category button */}
                     <div
-                        className="flex-shrink-0 sticky left-0 z-30 flex items-center justify-between px-2 border-r"
-                        style={{ width: LEFT_W, background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+                        data-label-col
+                        className="flex-shrink-0 sticky left-0 z-30 flex items-center justify-between px-2 border-r w-[220px] sm:w-48"
+                        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                     >
                         <span className="text-xs font-bold" style={{ color: 'var(--text-secondary)' }}>
                             Activities
@@ -194,8 +193,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                             >
                                 {/* sticky label */}
                                 <div
-                                    className="flex-shrink-0 sticky left-0 z-20 flex items-center justify-between px-2 border-r"
-                                    style={{ width: LEFT_W, background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
+                                    className="flex-shrink-0 sticky left-0 z-20 flex items-center justify-between px-2 border-r w-[220px] sm:w-48"
+                                    style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
                                 >
                                     <span
                                         className="text-[10px] font-black uppercase tracking-tighter truncate"
@@ -203,29 +202,29 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                     >
                                         {category.name}
                                     </span>
-                                    <div className="hidden group-hover:flex items-center gap-1 shrink-0">
+                                    <div className="flex sm:hidden sm:group-hover:flex items-center gap-1 shrink-0">
                                         <button
                                             onClick={() => handleAddActivity(category.id)}
                                             title="Add Activity"
-                                            className="p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
+                                            className="p-1 sm:p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
                                             style={{ color: 'var(--text-muted)' }}
                                         >
-                                            <Plus size={11} />
+                                            <Plus size={12} />
                                         </button>
                                         <button
                                             onClick={() => handleEditCategory(category.id, category.name)}
                                             title="Edit Category"
-                                            className="p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
+                                            className="p-1 sm:p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
                                             style={{ color: 'var(--text-muted)' }}
                                         >
-                                            <Edit2 size={10} />
+                                            <Edit2 size={12} />
                                         </button>
                                         <button
                                             onClick={() => handleDeleteCategory(category.id)}
                                             title="Delete Category"
-                                            className="p-0.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500"
+                                            className="p-1 sm:p-0.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500"
                                         >
-                                            <Trash size={10} />
+                                            <Trash size={12} />
                                         </button>
                                     </div>
                                 </div>
@@ -246,8 +245,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                     style={{ borderColor: 'var(--border)' }}
                                 >
                                     <div
-                                        className="flex-shrink-0 sticky left-0 z-20 flex items-center px-3 border-r"
-                                        style={{ width: LEFT_W, background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+                                        className="flex-shrink-0 sticky left-0 z-20 flex items-center px-3 border-r w-[220px] sm:w-48"
+                                        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                                     >
                                         <span className="text-[10px] opacity-40 italic">No activities — tap + above</span>
                                     </div>
@@ -268,9 +267,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                     >
                                         {/* sticky label */}
                                         <div
-                                            className="flex-shrink-0 sticky left-0 z-20 flex items-center justify-between px-2 border-r"
+                                            className="flex-shrink-0 sticky left-0 z-20 flex items-center justify-between px-2 border-r w-[220px] sm:w-48"
                                             style={{
-                                                width: LEFT_W,
                                                 background:
                                                     activity.priority === 'high' ? 'var(--priority-high-bg)' :
                                                     activity.priority === 'medium' ? 'var(--priority-medium-bg)' :
@@ -285,33 +283,33 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                             >
                                                 {activity.name}
                                             </span>
-                                            <div className="hidden group-hover:flex items-center gap-1 shrink-0">
+                                            <div className="flex sm:hidden sm:group-hover:flex items-center gap-1 shrink-0">
                                                 <button
                                                     onClick={() => cycleActivityPriority(activity)}
                                                     title={`Priority: ${activity.priority ?? 'none'} — click to cycle`}
-                                                    className="p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
+                                                    className="p-1 sm:p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
                                                     style={{
                                                         color:
-                                                            activity.priority === 'high' ? 'var(--error)' :
-                                                            activity.priority === 'medium' ? 'var(--warning)' :
-                                                            activity.priority === 'low' ? 'var(--success)' :
+                                                            activity.priority === 'high' ? 'var(--priority-high)' :
+                                                            activity.priority === 'medium' ? 'var(--priority-medium)' :
+                                                            activity.priority === 'low' ? 'var(--priority-low)' :
                                                             'var(--text-muted)',
                                                     }}
                                                 >
-                                                    <Flag size={10} />
+                                                    <Flag size={12} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleEditActivity(activity.id, activity.name)}
-                                                    className="p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
+                                                    className="p-1 sm:p-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-600"
                                                     style={{ color: 'var(--text-muted)' }}
                                                 >
-                                                    <Edit2 size={10} />
+                                                    <Edit2 size={12} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteActivity(activity.id)}
-                                                    className="p-0.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500"
+                                                    className="p-1 sm:p-0.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500"
                                                 >
-                                                    <Trash size={10} />
+                                                    <Trash size={12} />
                                                 </button>
                                             </div>
                                         </div>

@@ -4,87 +4,87 @@
   --font-sans: var(--font-geist-sans);
 
   /* ─── Palette overrides (Tailwind v4) ────────────────────────────
-     Guide: PRIMARY Sage Green #7A8C6E · SECONDARY Warm Brown #8B5E52
-            ACCENT Coral Pink #E8897E · Gold #E5B65A
+     Guide: PRIMARY Sage Green #6F845F · DEEP FOREST #3F5138 · SOFT SAGE #A8B99B
+            ACCENT Coral Pink #E8756D · Gold #E9AD32 · Lavender #9278B5
      Families without a guide hue are derived to stay in-palette:
        blue   → deep sage-teal (from PRIMARY DARK)
        cyan   → light sage-mint (from PRIMARY LIGHT)
-       purple → deep plum-brown (from SECONDARY DARK + ACCENT)
+       purple → lavender (guide hue)
   ─────────────────────────────────────────────────────────────── */
 
   /* green → Sage Green (primary / success) */
-  --color-green-50: #F0F4EC;
-  --color-green-100: #E1E9DA;
-  --color-green-200: #C9D4BA;
-  --color-green-300: #A8B69A;
-  --color-green-400: #94A486;
-  --color-green-500: #7A8C6E;
-  --color-green-600: #6B7C60;
-  --color-green-700: #5F7054;
-  --color-green-800: #4E5C46;
-  --color-green-900: #3F4B39;
-  --color-green-950: #2E3829;
+  --color-green-50: #F3F6EF;
+  --color-green-100: #E4EBDA;
+  --color-green-200: #C9D6B9;
+  --color-green-300: #A8B99B;
+  --color-green-400: #8FA680;
+  --color-green-500: #6F845F;
+  --color-green-600: #5C7050;
+  --color-green-700: #3F5138;
+  --color-green-800: #33422D;
+  --color-green-900: #263222;
+  --color-green-950: #192117;
 
   /* slate / gray → warm neutrals (text / border / surface) */
-  --color-slate-50: #FAF7F2;
-  --color-slate-100: #F0E9DD;
-  --color-slate-200: #DED5C8;
-  --color-slate-300: #C9BFB0;
-  --color-slate-400: #A69B92;
-  --color-slate-500: #8B8078;
-  --color-slate-600: #7C716A;
-  --color-slate-700: #5E564F;
-  --color-slate-800: #4A403B;
-  --color-slate-900: #2E2722;
-  --color-slate-950: #1F1A16;
-  --color-gray-50: #FAF7F2;
-  --color-gray-100: #F0E9DD;
-  --color-gray-200: #DED5C8;
-  --color-gray-300: #C9BFB0;
-  --color-gray-400: #A69B92;
-  --color-gray-500: #8B8078;
-  --color-gray-600: #7C716A;
-  --color-gray-700: #5E564F;
-  --color-gray-800: #4A403B;
-  --color-gray-900: #2E2722;
-  --color-gray-950: #1F1A16;
+  --color-slate-50: #FAF7F1;
+  --color-slate-100: #F0E9DC;
+  --color-slate-200: #E2D9CA;
+  --color-slate-300: #D8CEC1;
+  --color-slate-400: #B5A99B;
+  --color-slate-500: #9A8D84;
+  --color-slate-600: #6B5C54;
+  --color-slate-700: #564A42;
+  --color-slate-800: #3B302B;
+  --color-slate-900: #2B231F;
+  --color-slate-950: #1C1714;
+  --color-gray-50: #FAF7F1;
+  --color-gray-100: #F0E9DC;
+  --color-gray-200: #E2D9CA;
+  --color-gray-300: #D8CEC1;
+  --color-gray-400: #B5A99B;
+  --color-gray-500: #9A8D84;
+  --color-gray-600: #6B5C54;
+  --color-gray-700: #564A42;
+  --color-gray-800: #3B302B;
+  --color-gray-900: #2B231F;
+  --color-gray-950: #1C1714;
 
   /* red → error coral */
-  --color-red-50: #F9EDEB;
-  --color-red-100: #F3D9D4;
-  --color-red-200: #EBBDB6;
-  --color-red-300: #E19C93;
-  --color-red-400: #D9857B;
-  --color-red-500: #C96F67;
-  --color-red-600: #B45F58;
-  --color-red-700: #964E47;
-  --color-red-800: #7A403A;
-  --color-red-900: #5E322D;
-  --color-red-950: #44241F;
+  --color-red-50: #FBE4E4;
+  --color-red-100: #F5C8C8;
+  --color-red-200: #EBA0A0;
+  --color-red-300: #DD7777;
+  --color-red-400: #D94B4B;
+  --color-red-500: #C94343;
+  --color-red-600: #AE3838;
+  --color-red-700: #8F2D2D;
+  --color-red-800: #732424;
+  --color-red-900: #5A1D1D;
+  --color-red-950: #401515;
 
   /* amber / yellow → Warm Gold (accent / warning) */
-  --color-amber-50: #FBF3E2;
-  --color-amber-100: #F6E5C0;
-  --color-amber-200: #EFD29A;
-  --color-amber-300: #E9C276;
-  --color-amber-400: #E5B65A;
-  --color-amber-500: #D4A244;
-  --color-amber-600: #B8882F;
-  --color-amber-700: #966D24;
-  --color-amber-800: #75551D;
-  --color-amber-900: #563F15;
-  --color-amber-950: #3D2C0E;
-  --color-yellow-50: #FBF3E2;
-  --color-yellow-100: #F6E5C0;
-  --color-yellow-200: #EFD29A;
-  --color-yellow-300: #E9C276;
-  --color-yellow-400: #E5B65A;
-  --color-yellow-500: #D4A244;
-  --color-yellow-600: #B8882F;
-  --color-yellow-700: #966D24;
-  --color-yellow-800: #75551D;
-  --color-yellow-900: #563F15;
-  --color-yellow-950: #3D2C0E;
+  --color-amber-50: #FFF8EA;
+  --color-amber-100: #FFF3D2;
+  --color-amber-200: #F8E4A9;
+  --color-amber-300: #F1CE75;
+  --color-amber-400: #E9AD32;
+  --color-amber-500: #E5A928;
+  --color-amber-600: #D99A20;
+  --color-amber-700: #B27C19;
+  --color-amber-800: #8B6114;
+  --color-amber-900: #6C4B10;
+  --color-amber-950: #4A340B;
+  --color-yellow-50: #FFF8EA;
+  --color-yellow-100: #FFF3D2;
+  --color-yellow-200: #F8E4A9;
+  --color-yellow-300: #F1CE75;
+  --color-yellow-400: #E9AD32;
+  --color-yellow-500: #E5A928;
+  --color-yellow-600: #D99A20;
+  --color-yellow-700: #B27C19;
+  --color-yellow-800: #8B6114;
+  --color-yellow-900: #6C4B10;
+  --color-yellow-950: #4A340B;
 
   /* orange → Warm Brown / terracotta (secondary) */
   --color-orange-50: #F7EFEC;
@@ -112,31 +112,31 @@
   --color-blue-900: #26342E;
   --color-blue-950: #1B241F;
 
-  /* purple → plum-brown (derived from SECONDARY DARK + ACCENT) */
-  --color-purple-50: #F8F1EF;
-  --color-purple-100: #F0DCD7;
-  --color-purple-200: #E1B9B0;
-  --color-purple-300: #CD9689;
-  --color-purple-400: #B87A6B;
-  --color-purple-500: #9E6257;
-  --color-purple-600: #8A544A;
-  --color-purple-700: #73463E;
-  --color-purple-800: #5C3932;
-  --color-purple-900: #472D28;
-  --color-purple-950: #33211D;
+  /* purple → lavender (guide hue) */
+  --color-purple-50: #F5F2FA;
+  --color-purple-100: #EAE3F5;
+  --color-purple-200: #D5C8EA;
+  --color-purple-300: #BCA7D6;
+  --color-purple-400: #A68CC6;
+  --color-purple-500: #9278B5;
+  --color-purple-600: #7C619D;
+  --color-purple-700: #664D81;
+  --color-purple-800: #533D67;
+  --color-purple-900: #423052;
+  --color-purple-950: #2C2038;
 
-  /* pink → Soft Coral Pink (accent) */
-  --color-pink-50: #FDF2F0;
-  --color-pink-100: #FAE0DC;
-  --color-pink-200: #F3B3AA;
-  --color-pink-300: #EE9F94;
-  --color-pink-400: #E8897E;
-  --color-pink-500: #DB7469;
-  --color-pink-600: #C96F67;
-  --color-pink-700: #A85A52;
-  --color-pink-800: #874841;
-  --color-pink-900: #663731;
-  --color-pink-950: #4A2823;
+  /* pink → Coral (accent) */
+  --color-pink-50: #FDEEEC;
+  --color-pink-100: #FBDAD6;
+  --color-pink-200: #F5B4AD;
+  --color-pink-300: #EE9189;
+  --color-pink-400: #E8756D;
+  --color-pink-500: #D45D55;
+  --color-pink-600: #B94A43;
+  --color-pink-700: #983B35;
+  --color-pink-800: #7A302B;
+  --color-pink-900: #642824;
+  --color-pink-950: #431815;
 
   /* cyan → light sage-mint (derived from PRIMARY LIGHT) */
   --color-cyan-50: #F2F6F1;
@@ -154,56 +154,62 @@
 
 /* ─── Light Mode ─────────────────────────────── */
 :root {
-  --bg-base: #F5EFE6; /* Soft Cream */
-  --bg-surface: #FFFDF9; /* Warm White */
-  --bg-subtle: #F0E9DD; /* Surface Alt */
-  --border: #DED5C8; /* Border */
-  --text-primary: #4A403B; /* Text Primary */
-  --text-secondary: #7C716A; /* Text Secondary */
-  --text-muted: #A69B92; /* Text Muted */
-  --primary: #7A8C6E; /* Sage Green */
-  --primary-dark: #5F7054; /* Primary Dark */
-  --primary-light: #A8B69A; /* Primary Light */
+  --bg-base: #F7F1E7; /* Warm Cream */
+  --bg-surface: #FFFFFF; /* White */
+  --bg-subtle: #EDE3D4; /* Soft Beige */
+  --border: #D8CEC1; /* Warm Border */
+  --text-primary: #3B302B; /* Dark Brown */
+  --text-secondary: #6B5C54; /* Secondary Text */
+  --text-muted: #9A8D84; /* Muted Text */
+  --primary: #6F845F; /* Sage Green */
+  --primary-dark: #3F5138; /* Deep Forest */
+  --primary-light: #A8B99B; /* Soft Sage */
   --secondary: #8B5E52; /* Warm Brown */
   --secondary-dark: #6F473E; /* Secondary Dark */
-  --accent: #E8897E; /* Soft Coral Pink */
-  --accent-light: #F3B3AA; /* Accent Light */
-  --gold: #E5B65A; /* Warm Gold */
-  --success: #7A9B72; /* Success */
-  --warning: #E5B65A; /* Warning */
-  --error: #C96F67; /* Error */
+  --accent: #E8756D; /* Coral Pink */
+  --accent-light: #F2A9A2; /* Accent Light */
+  --gold: #E9AD32; /* Warm Gold */
+  --success: #4F8F5B; /* Success Green */
+  --warning: #D99A20; /* Warning Amber */
+  --error: #C94343; /* Error Red */
   --white: #FFFFFF; /* White */
-  --today-label: #28321F; /* PRIMARY DARK turunan — kontras di atas --primary-light #A8B69A (6.27:1, lolos AA) */
-  --priority-high-bg: #F3D9D4;   /* red-100 — latar prioritas HIGH */
-  --priority-medium-bg: #F6E5C0; /* yellow-100 — latar prioritas MEDIUM */
-  --priority-low-bg: #E1E9DA;    /* green-100 — latar prioritas LOW */
+  --today-label: #28321F; /* turunan gelap — kontras di atas --primary-light #A8B99B (6.4:1, lolos AA) */
+  --priority-high: #D94B4B;       /* HIGH RED — flag foreground prioritas */
+  --priority-high-bg: #FBE4E4;   /* RED LIGHT — latar prioritas HIGH */
+  --priority-medium: #E5A928;     /* MEDIUM YELLOW — flag foreground prioritas */
+  --priority-medium-bg: #FFF3D2; /* YELLOW LIGHT — latar prioritas MEDIUM */
+  --priority-low: #5F9B68;       /* LOW GREEN — flag foreground prioritas */
+  --priority-low-bg: #E4F2E6;    /* GREEN LIGHT — latar prioritas LOW */
 }
 
 /* ─── Dark Mode (turunan hangat dari palet) ──── */
 :root.dark {
-  --bg-base: #241F1A;
-  --bg-surface: #2E2823;
-  --bg-subtle: #453B33;
-  --border: #5C5147;
-  --text-primary: #F5EFE6;
-  --text-secondary: #C4B8AB;
-  --text-muted: #9A8D80;
-  --primary: #A8B69A;
-  --primary-dark: #7A8C6E;
-  --primary-light: #5F7054;
+  --bg-base: #221D18;
+  --bg-surface: #2C2721;
+  --bg-subtle: #423931;
+  --border: #584E44;
+  --text-primary: #F7F1E7;
+  --text-secondary: #CFC4B6;
+  --text-muted: #9A8D84;
+  --primary: #A8B99B;
+  --primary-dark: #6F845F;
+  --primary-light: #3F5138;
   --secondary: #C49A8E;
   --secondary-dark: #8B5E52;
-  --accent: #E8897E;
-  --accent-light: #F3B3AA;
-  --gold: #E5B65A;
-  --success: #93B089;
-  --warning: #E5B65A;
-  --error: #D98A81;
+  --accent: #E8756D;
+  --accent-light: #F2A9A2;
+  --gold: #E9AD32;
+  --success: #7FAE8B;
+  --warning: #E5A928;
+  --error: #DE7B72;
   --white: #FFFFFF;
-  --today-label: #F5EFE6; /* SOFT CREAM — kontras di atas --primary-light #5F7054 (4.67:1, lolos AA) */
-  --priority-high-bg: #7A403A;   /* red-800, opaque — latar prioritas HIGH */
-  --priority-medium-bg: #75551D; /* yellow-800, opaque — latar prioritas MEDIUM */
-  --priority-low-bg: #4E5C46;    /* green-800, opaque — latar prioritas LOW */
+  --today-label: #F7F1E7; /* WARM CREAM — kontras di atas --primary-light #3F5138 (7.6:1, lolos AA) */
+  --priority-high: #E87A72;       /* HIGH RED — flag foreground prioritas (dark) */
+  --priority-high-bg: #6B3030;   /* opaque — latar prioritas HIGH */
+  --priority-medium: #E9AD32;     /* MEDIUM YELLOW — flag foreground prioritas (dark) */
+  --priority-medium-bg: #6E541A; /* opaque — latar prioritas MEDIUM */
+  --priority-low: #7FAE8B;       /* LOW GREEN — flag foreground prioritas (dark) */
+  --priority-low-bg: #3C6146;    /* opaque — latar prioritas LOW */
 }
 
 * {
@@ -240,6 +246,17 @@ body {
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ─── MutabaahGrid responsive sticky label column ─── */
+.mutabaah-grid {
+  --label-col-w: 220px;
+}
+
+@media (min-width: 640px) {
+  .mutabaah-grid {
+    --label-col-w: 12rem; /* 192px — w-48 */
+  }
 }
 
 /* ─── Semantic utility classes ───────────────── */
