@@ -1,0 +1,37 @@
+npm notice run ikhtiar-langit-istri@1.3.0 build
+npm notice run next build
+[@serwist/next] WARNING: You are using '@serwist/next' with `next dev --turbopack`, but it doesn't support Turbopack. Do one of the following:
+
+- Set `disable` to `process.env.NODE_ENV !== "production"`.
+
+- Use webpack by running `next dev --webpack` instead of `next dev --turbopack`.
+
+- Migrate to '@serwist/turbopack' which has experimental support for Turbopack. See https://serwist.pages.dev/docs/next/turbo for more information.
+
+- Migrate to configurator mode which has support for Turbopack. See https://serwist.pages.dev/docs/next/config for more information. 
+
+Follow https://github.com/serwist/serwist/issues/54 for progress on Serwist + Turbopack. You can also suppress this warning by setting SERWIST_SUPPRESS_TURBOPACK_WARNING=1.
+
+▲ Next.js 16.1.6 (Turbopack)
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.5s
+  Running TypeScript ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/5) ...
+  Generating static pages using 3 workers (1/5) 
+  Generating static pages using 3 workers (2/5) 
+  Generating static pages using 3 workers (3/5) 
+✓ Generating static pages using 3 workers (5/5) in 1069.5ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ○ /~offline
+
+
+○  (Static)  prerendered as static content
+

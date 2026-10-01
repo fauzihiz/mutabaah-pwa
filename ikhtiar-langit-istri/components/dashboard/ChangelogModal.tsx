@@ -7,6 +7,11 @@ const Bg = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" str
 const Zp = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
 type IF = () => React.JSX.Element;
 const CL = [
+  { v:'v1.6.0', d:'Oktober 2026', items:[
+    {t:'feature',i:Sp,x:'Klik nama kategori atau aktivitas di grid untuk membuka info keutamaan, dalil, dan lafadz bacaan.'},
+    {t:'feature',i:Sp,x:'Ikon info di setiap baris kategori dan aktivitas — tap untuk melihat penjelasan amalan.'},
+    {t:'removed',i:Zp,x:'Sistem pencapaian/badge dihapus dari aplikasi.'},
+  ]},
   { v:'v1.5.0', d:'Agustus 2026', items:[
     {t:'fix',i:Bg,x:'Kolom hari ini kini tetap ter-highlight hijau meski melewati pergantian hari (midnight).'},
     {t:'feature',i:Sp,x:'Grid otomatis scroll ke kolom hari ini saat aplikasi dibuka.'},
@@ -63,7 +68,7 @@ export function ChangelogModal({ isOpen, onClose }: ChangelogModalProps) {
                     ))}
                 </div>
                 <div className="border-t bg-slate-50/50 dark:bg-slate-900/20 px-6 py-4 text-center" style={{ borderColor: 'var(--border)' }}>
-                    <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Ikhtiar Langit Istri v1.5.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
+                    <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Ikhtiar Langit Istri v1.6.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
                 </div>
             </div>
         </div>

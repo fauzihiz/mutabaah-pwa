@@ -5,6 +5,14 @@ import { Clock, Heart } from 'lucide-react';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
 import { ActivityLog, STATUS } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
+import dynamic from 'next/dynamic';
+
+// Modal info (keutamaan/dalil/lafadz) di-load secara dinamis client-side,
+// mengikuti pola modal lain agar teks Arab tidak ikut terproses saat SSR.
+const ActivityInfoModal = dynamic(
+    () => import('./ActivityInfoModal').then(m => m.ActivityInfoModal),
+    { ssr: false }
+);
 
 interface MutabaahGridProps {
     currentDate: Date;
@@ -28,7 +36,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
 
-    const { getActivityName, renameActivity } = useActivitySettings();
+    const { getActivityName } = useActivitySettings();
 
     // Pre-compute a lookup Map: "date:activityId" → status (0/1/2/3) — O(1) per cell instead of O(n)
     const logMap = useMemo(() => {
@@ -44,6 +52,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
     // Seeded to the real device date only after the first client render.
     const [today, setToday] = useState<Date | null>(null);
     const [todayStr, setTodayStr] = useState('');
+
+    // Info modal target — null = closed
+    const [infoTarget, setInfoTarget] = useState<{ kind: 'category' | 'activity'; id: string } | null>(null);
 
     useEffect(() => {
         const sync = () => {
@@ -115,12 +126,6 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         }
     }, [currentDate, todayStr]); // re-run when month changes or todayStr updates
 
-    const handleRename = async (id: string, currentName: string) => {
-        const newName = prompt(`Ganti nama baris ini:`, currentName);
-        if (newName === null) return; // user pressed Cancel
-        await renameActivity(id, newName);
-    };
-
     return (
         <div
             className="flex-1 flex overflow-hidden border-t"
@@ -140,35 +145,73 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                 <div className="overflow-y-auto h-full scrollbar-hide pb-24">
                     {CATEGORIES.map(category => (
                         <div key={category}>
-                            {/* Category label */}
-                            <div
-                                className="h-7 px-3 flex items-center border-b"
-                                style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
+                            {/* Category label — clickable → info modal */}
+                            <button
+                                type="button"
+                                onClick={() => setInfoTarget({ kind: 'category', id: category })}
+                                className="h-9 px-3 flex items-center gap-1.5 border-b w-full text-left cursor-pointer transition-opacity hover:opacity-80"
+                                style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)', color: 'var(--text-muted)' }}
+                                title={`Info ${category}`}
+                                aria-label={`Informasi kategori ${category}`}
                             >
+                                <svg
+                                    className="flex-shrink-0"
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 16v-4M12 8h.01" />
+                                </svg>
                                 <span
                                     className="text-[9px] font-black uppercase tracking-tighter truncate"
-                                    style={{ color: 'var(--text-muted)' }}
                                 >
                                     {category}
                                 </span>
-                            </div>
+                            </button>
 
                             {ACTIVITIES.filter(a => a.category === category).map(activity => {
                                 const displayName = getActivityName(activity.id);
 
                                 return (
-       <div
+                                    <button
                                         key={activity.id}
-                                        className="h-14 px-3 flex items-center border-b group relative"
+                                        type="button"
+                                        onClick={() => setInfoTarget({ kind: 'activity', id: activity.id })}
+                                        className="h-14 px-3 flex items-center border-b group relative w-full text-left cursor-pointer transition-opacity hover:opacity-80"
                                         style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+                                        title={`Info ${displayName}`}
+                                        aria-label={`Informasi ${displayName}`}
                                     >
                                         <span
-                                            className="text-[11px] font-semibold leading-snug pr-4 line-clamp-2"
+                                            className="text-[11px] font-semibold leading-snug pr-2 min-w-0 flex-1 line-clamp-2"
                                             style={{ color: 'var(--text-secondary)' }}
                                         >
                                             {displayName}
                                         </span>
-                                    </div>
+                                        <svg
+                                            className="flex-shrink-0"
+                                            width="12"
+                                            height="12"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            aria-hidden="true"
+                                            style={{ color: 'var(--text-muted)' }}
+                                        >
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M12 16v-4M12 8h.01" />
+                                        </svg>
+                                    </button>
                                 );
                             })}
                         </div>
@@ -220,9 +263,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                     <div className="overflow-y-auto scrollbar-hide pb-24">
                         {CATEGORIES.map(category => (
                             <div key={category}>
-                                {/* Category spacer */}
+                                {/* Category spacer (mirrors left column height h-9) */}
                                 <div
-                                    className="h-7 flex border-b"
+                                    className="h-9 flex border-b"
                                     style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
                                 >
                                     {days.map(day => (
@@ -296,6 +339,12 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
 
                 </div>
             </div>
+            <ActivityInfoModal
+                isOpen={infoTarget !== null}
+                onClose={() => setInfoTarget(null)}
+                target={infoTarget}
+                onSelectActivity={id => setInfoTarget({ kind: 'activity', id })}
+            />
         </div>
     );
 }

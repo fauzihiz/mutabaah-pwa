@@ -1,0 +1,305 @@
+'use client';
+
+import React, { useEffect } from 'react';
+import { ACTIVITIES, type ActivityCategory } from '@/lib/constants/activities';
+import { ACTIVITY_INFO, CATEGORY_INFO, type ActivityInfo } from '@/lib/constants/activityInfo';
+import { useActivitySettings } from '@/hooks/useActivitySettings';
+
+export type InfoTarget = { kind: 'category' | 'activity'; id: string };
+
+interface ActivityInfoModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    target: InfoTarget | null;
+    onSelectActivity?: (id: string) => void;
+}
+
+function SumberBadge({ sumber }: { sumber: string }) {
+    return (
+        <span
+            className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full"
+            style={{ background: 'var(--success-soft, #e6f4ec)', color: 'var(--success-text, #127c3f)' }}
+        >
+            {sumber}
+        </span>
+    );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+    return (
+        <h3
+            className="text-[10px] font-black uppercase tracking-wider mb-2"
+            style={{ color: 'var(--text-muted)' }}
+        >
+            {children}
+        </h3>
+    );
+}
+
+export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }: ActivityInfoModalProps) {
+    const { getActivityName } = useActivitySettings();
+
+    // Escape to close + lock body scroll while open
+    useEffect(() => {
+        if (!isOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        document.addEventListener('keydown', onKey);
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.removeEventListener('keydown', onKey);
+            document.body.style.overflow = '';
+        };
+    }, [isOpen, onClose]);
+
+    if (!isOpen || !target) return null;
+
+    const isCategory = target.kind === 'category';
+    const info: ActivityInfo | undefined = isCategory
+        ? CATEGORY_INFO[target.id as ActivityCategory]
+        : ACTIVITY_INFO[target.id];
+
+    const title = isCategory ? target.id : getActivityName(target.id);
+    const categoryOf = isCategory
+        ? null
+        : ACTIVITIES.find(a => a.id === target.id)?.category ?? null;
+    const subtitle = isCategory ? 'Kategori' : categoryOf ? `Kategori: ${categoryOf}` : undefined;
+
+    const hasContent =
+        !!info &&
+        (!!info.ringkasan ||
+            !!info.keutamaan?.length ||
+            !!info.dalil?.length ||
+            !!info.lafadz?.length ||
+            !!info.catatan);
+
+    const activities = isCategory ? ACTIVITIES.filter(a => a.category === target.id) : [];
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
+            {/* Backdrop */}
+            <div
+                className="absolute inset-0"
+                style={{ background: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(4px)' }}
+            />
+
+            {/* Card */}
+            <div
+                className="relative rounded-xl shadow-2xl w-full max-w-md max-h-[70vh] flex flex-col"
+                style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+                onClick={e => e.stopPropagation()}
+            >
+                {/* Header */}
+                <div className="flex items-start justify-between gap-3 p-5 pb-3">
+                    <div className="min-w-0">
+                        <h2
+                            className="text-lg font-bold leading-tight"
+                            style={{ color: 'var(--text-primary)' }}
+                        >
+                            {title}
+                        </h2>
+                        {subtitle && (
+                            <p
+                                className="text-[10px] font-bold uppercase tracking-wider mt-0.5"
+                                style={{ color: 'var(--text-muted)' }}
+                            >
+                                {subtitle}
+                            </p>
+                        )}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="p-1.5 rounded-md transition-opacity hover:opacity-70 cursor-pointer"
+                        aria-label="Tutup"
+                        title="Tutup"
+                    >
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            style={{ color: 'var(--text-muted)' }}
+                        >
+                            <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Body */}
+                <div className="px-5 pb-5 overflow-y-auto scrollbar-hide space-y-4">
+                    {!hasContent && (
+                        <p
+                            className="text-[12px] py-6 text-center"
+                            style={{ color: 'var(--text-muted)' }}
+                        >
+                            Belum ada bahan keutamaan untuk aktivitas ini.
+                        </p>
+                    )}
+
+                    {info?.ringkasan && (
+                        <p
+                            className="text-[12px] leading-relaxed italic pl-3 border-l-2"
+                            style={{ color: 'var(--text-secondary)', borderColor: 'var(--primary)' }}
+                        >
+                            {info.ringkasan}
+                        </p>
+                    )}
+
+                    {info?.keutamaan && info.keutamaan.length > 0 && (
+                        <section>
+                            <SectionLabel>Keutamaan</SectionLabel>
+                            <div className="space-y-2">
+                                {info.keutamaan.map((p, i) => (
+                                    <p
+                                        key={i}
+                                        className="text-[12px] leading-relaxed"
+                                        style={{ color: 'var(--text-secondary)' }}
+                                    >
+                                        {p}
+                                    </p>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {info?.dalil && info.dalil.length > 0 && (
+                        <section>
+                            <SectionLabel>Dalil</SectionLabel>
+                            <div className="space-y-3">
+                                {info.dalil.map((d, i) => (
+                                    <div
+                                        key={i}
+                                        className="rounded-lg p-3 space-y-2"
+                                        style={{
+                                            background: 'var(--bg-subtle)',
+                                            border: '1px solid var(--border)',
+                                        }}
+                                    >
+                                        {d.arab && (
+                                            <p
+                                                dir="rtl"
+                                                className="font-arabic text-[18px] leading-loose text-center whitespace-pre-line"
+                                                style={{ color: 'var(--text-primary)' }}
+                                            >
+                                                {d.arab}
+                                            </p>
+                                        )}
+                                        <p
+                                            className="text-[11px] leading-relaxed italic"
+                                            style={{ color: 'var(--text-secondary)' }}
+                                        >
+                                            {d.arti}
+                                        </p>
+                                        <SumberBadge sumber={d.sumber} />
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                    {info?.lafadz && info.lafadz.length > 0 && (
+                        <section>
+                            <SectionLabel>Lafadz Bacaan</SectionLabel>
+                            <div className="space-y-3">
+                                {info.lafadz.map((l, i) => (
+                                    <div
+                                        key={i}
+                                        className="rounded-lg p-3 space-y-2"
+                                        style={{
+                                            background: 'var(--bg-subtle)',
+                                            border: '1px solid var(--border)',
+                                        }}
+                                    >
+                                        {l.judul && (
+                                            <p
+                                                className="text-[12px] font-semibold"
+                                                style={{ color: 'var(--text-primary)' }}
+                                            >
+                                                {l.judul}
+                                            </p>
+                                        )}
+                                        <p
+                                            dir="rtl"
+                                            className="font-arabic text-[18px] leading-loose text-center whitespace-pre-line"
+                                            style={{ color: 'var(--text-primary)' }}
+                                        >
+                                            {l.arab}
+                                        </p>
+                                        {l.arti && (
+                                            <p
+                                                className="text-[11px] leading-relaxed"
+                                                style={{ color: 'var(--text-secondary)' }}
+                                            >
+                                                {l.arti}
+                                            </p>
+                                        )}
+                                        {l.sumber && <SumberBadge sumber={l.sumber} />}
+                                        {l.catatan && (
+                                            <p
+                                                className="text-[11px] leading-relaxed"
+                                                style={{ color: 'var(--text-muted)' }}
+                                            >
+                                                {l.catatan}
+                                            </p>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {info?.catatan && (
+                        <div
+                            className="rounded-lg p-3"
+                            style={{
+                                background: 'var(--bg-subtle)',
+                                border: '1px solid var(--border)',
+                            }}
+                        >
+                            <p
+                                className="text-[11px] leading-relaxed whitespace-pre-line"
+                                style={{ color: 'var(--text-secondary)' }}
+                            >
+                                {info.catatan}
+                            </p>
+                        </div>
+                    )}
+
+                    {isCategory && activities.length > 0 && onSelectActivity && (
+                        <section>
+                            <SectionLabel>Aktivitas dalam kategori ini</SectionLabel>
+                            <div className="flex flex-wrap gap-1.5">
+                                {activities.map(a => (
+                                    <button
+                                        key={a.id}
+                                        type="button"
+                                        onClick={() => onSelectActivity(a.id)}
+                                        className="text-[11px] font-medium px-2.5 py-1 rounded-full transition-opacity hover:opacity-70 cursor-pointer"
+                                        style={{
+                                            background: 'var(--bg-subtle)',
+                                            border: '1px solid var(--border)',
+                                            color: 'var(--text-secondary)',
+                                        }}
+                                    >
+                                        {getActivityName(a.id)}
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                </div>
+
+                {/* Footer */}
+                <div className="px-5 py-3 border-t text-center" style={{ borderColor: 'var(--border)' }}>
+                    <p className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                        Sumber: Penjelasan &amp; Keutamaan Aktivitas — Ikhtiar Langit Istri
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}

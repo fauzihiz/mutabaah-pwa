@@ -1,11 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Amiri } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+});
+
+// Amiri — font klasik untuk teks Arab (dalil & lafadz bacaan).
+// Di-bundle oleh Next.js saat build sehingga tetap tampil saat offline.
+const amiri = Amiri({
+  variable: "--font-amiri",
+  subsets: ["arabic"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -41,7 +50,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${geistSans.variable} antialiased h-full`}
+      <body className={`${geistSans.variable} ${amiri.variable} antialiased h-full`}
         style={{ background: 'var(--bg-base)' }}
       >
         <ThemeProvider>

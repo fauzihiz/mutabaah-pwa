@@ -67,6 +67,11 @@ body {
   scrollbar-width: none;
 }
 
+/* ─── Arabic font utility (dalil / lafadz) ────── */
+.font-arabic {
+  font-family: var(--font-amiri), "Amiri", "Scheherazade New", serif;
+}
+
 /* ─── Semantic utility classes ───────────────── */
 .surface {
   background: var(--bg-surface);
