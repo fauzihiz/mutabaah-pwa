@@ -7,6 +7,9 @@ const Bg = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" str
 const Zp = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
 type IF = () => React.JSX.Element;
 const CL = [
+  { v:'v1.7.0', d:'Oktober 2026', items:[
+    {t:'feature',i:Sp,x:'Script Doa Saya — satu script doa pribadi: tulis, baca dengan tampilan nyaman, edit, atau hapus. Akses dari panduan Curhat Berulang, menu, dan tombol di beranda.'},
+  ]},
   { v:'v1.6.0', d:'Oktober 2026', items:[
     {t:'feature',i:Sp,x:'Klik nama kategori atau aktivitas di grid untuk membuka info keutamaan, dalil, dan lafadz bacaan.'},
     {t:'feature',i:Sp,x:'Ikon info di setiap baris kategori dan aktivitas — tap untuk melihat penjelasan amalan.'},
@@ -49,18 +52,18 @@ export function ChangelogModal({ isOpen, onClose }: ChangelogModalProps) {
             <div onClick={onClose} className="absolute inset-0 bg-slate-900/40 backdrop-blur-md animate-[fadeIn_0.2s_ease-out]" />
             <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border shadow-2xl animate-[scaleIn_0.2s_ease-out]" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
                 <div className="flex items-center justify-between border-b px-6 py-4" style={{ borderColor: 'var(--border)' }}>
-                    <div><h2 className="text-lg font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Changelog</h2><p className="text-[10px] uppercase font-bold tracking-widest" style={{ color: 'var(--text-muted)' }}>Pembaruan Aplikasi</p></div>
+                    <div><h2 className="text-xl font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Changelog</h2><p className="text-xs uppercase font-bold tracking-widest" style={{ color: 'var(--text-muted)' }}>Pembaruan Aplikasi</p></div>
                     <button onClick={onClose} className="rounded-full p-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"><span style={{ color: 'var(--text-muted)' }}><X /></span></button>
                 </div>
                 <div className="max-h-[60vh] overflow-y-auto px-6 py-4 space-y-8 scrollbar-hide">
                     {CL.map((r) => (
                         <div key={r.v} className="space-y-4">
-                            <div className="flex items-baseline justify-between"><h3 className="text-md font-bold text-green-600 dark:text-green-500">{r.v}</h3><span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>{r.d}</span></div>
+                            <div className="flex items-baseline justify-between"><h3 className="text-base font-bold text-green-600 dark:text-green-500">{r.v}</h3><span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{r.d}</span></div>
                             <div className="space-y-3">
                                 {r.items.map((it, idx) => (
                                     <div key={idx} className="flex gap-3">
                                         <div className={'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md '+(it.t==='feature'?'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400':'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400')}><it.i /></div>
-                                        <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{it.x}</p>
+                                        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{it.x}</p>
                                     </div>
                                 ))}
                             </div>
@@ -68,7 +71,7 @@ export function ChangelogModal({ isOpen, onClose }: ChangelogModalProps) {
                     ))}
                 </div>
                 <div className="border-t bg-slate-50/50 dark:bg-slate-900/20 px-6 py-4 text-center" style={{ borderColor: 'var(--border)' }}>
-                    <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Ikhtiar Langit Istri v1.6.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
+                    <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Ikhtiar Langit Istri v1.7.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
                 </div>
             </div>
         </div>

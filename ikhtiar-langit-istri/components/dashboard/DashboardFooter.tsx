@@ -10,7 +10,7 @@ export function DashboardFooter() {
                     Ikhtiar Langit Istri
                 </h3>
                 <p className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>
-                    v1.3.0 • Built for your spiritual journey
+                    v1.0.0 • Built for helping you reaching your goals
                 </p>
                 <div className="flex items-center space-x-1 pt-2">
                     <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Crafted by</span>

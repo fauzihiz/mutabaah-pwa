@@ -25,6 +25,18 @@ export interface ActivityInfo {
     dalil?: Dalil[];
     lafadz?: Lafadz[];
     catatan?: string;
+    /** Teks bacaan panjang (mis. selftalk) — dirender khusus dengan jarak baris & paragraf */
+    bacaan?: string;
+    /** Segmen panduan khusus (mis. panduan script menulis doa) — dirender dengan tampilan khusus */
+    panduan?: {
+        judul: string;
+        komponen: {
+            judul: string;
+            isi: string;
+            contoh: string;
+        }[];
+        penutup: string;
+    };
 }
 
 // ── Lafadz bersama (dipakai lebih dari satu aktivitas) ──────────────────────
@@ -105,10 +117,32 @@ export const CATEGORY_INFO: Record<ActivityCategory, ActivityInfo> = {
         ],
         dalil: [
             {
+                arab: 'الدُّعَاءُ هُوَ الْعِبَادَةُ',
                 arti: '"Doa adalah ibadah."',
                 sumber: 'HR. At-Tirmidzi',
             },
         ],
+        panduan: {
+            judul: 'Panduan Script Menulis Doa: 3 Komponen',
+            komponen: [
+                {
+                    judul: 'Komponen 1: Apa yang Benar-benar Diinginkan',
+                    isi: 'Tanyakan ke dalam diri, apa saja yang benar-benar menjadi keinginan kita. Tulis konkret dan terukur.',
+                    contoh: 'Profit usaha saya minimal 200 juta di akhir tahun 2026.',
+                },
+                {
+                    judul: 'Komponen 2: Alasan/Motivasi Terbesar',
+                    isi: 'Tuliskan apa saja alasan yang benar-benar menjadi motivasi terbesar untuk mencapai keinginan tersebut.',
+                    contoh: 'Dengan profit tersebut, saya akan mengumrohkan orang tua saya, dan bersedekah membantu fakir miskin dan yatim.',
+                },
+                {
+                    judul: 'Komponen 3: Implementasi — Libatkan Allah',
+                    isi: 'Tuliskan implementasi apa saja yang bisa kita lakukan agar doa tersebut terwujud, dengan melibatkan Allah dalam prosesnya. Sebelum membaca komponen 3, rasakan dan bayangkan bahwa keinginan itu sudah dalam genggaman kita — rasakan sampai masuk ke hati, lalu baca:',
+                    contoh: 'Terima kasih ya Allah, saya bahagia, saya bersyukur dengan uang 200 juta ini, saya umrohkan orang tua saya. Saya juga jadi lebih banyak bersedekah kepada fakir miskin dan anak yatim.',
+                },
+            ],
+            penutup: 'Gabungkan ketiga komponen tersebut menjadi satu kalimat doa yang utuh, lalu ucapkan dengan penuh penghayatan.',
+        },
     },
 };
 // ── Info per aktivitas ───────────────────────────────────────────────────────
@@ -296,6 +330,8 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
                 catatan: 'Salawat yang utama tetap salawat lengkap (sholawat Jum\'at); lafadz ini adalah bentuk ringkasnya untuk dipakai sehari-hari.',
             },
         ],
+        catatan:
+            'Penanda "10+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Setiap satu salawat dibalas sepuluh kali oleh Allah (HR. Muslim no. 384), sehingga makin banyak dibaca makin besar balasannya.',
     },
     la_haula: {
         ringkasan:
@@ -364,10 +400,12 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
         ],
         lafadz: [
             {
-                arab: 'أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ',
-                arti: 'Artinya: "Aku memohon ampun kepada Allah dan bertobat kepada-Nya."',
+                arab: 'أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ',
+                arti: 'Artinya: "Aku memohon ampun kepada Allah Yang Maha Agung dan bertobat kepada-Nya."',
             },
         ],
+        catatan:
+            'Penanda "10+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Sebagai gambaran, Nabi ﷺ beristighfar lebih dari 70 kali dalam sehari (lihat dalil di atas).',
     },
     yunus: {
         ringkasan:
@@ -446,20 +484,18 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Disarankan untuk dibaca dan ditadabburi setelah sholat Tahajud.',
+            'Berisi petunjuk tentang penyelesaian masa tunggu (iddah) serta janji Allah bagi siapa saja yang bertakwa dan bertawakal kepada-Nya. Bagian akhir ayat 2 dan seluruh ayat 3 sering disebut sebagai Ayat Seribu Dinar karena keutamaannya dalam melapangkan rezeki.',
     },
     alqashas: {
         ringkasan:
             'Al-Qashash menceritakan kisah para nabi — sumber pelajaran dan ketenangan. Di dalamnya ada doa Nabi Musa a.s. yang sarat tawakal.',
         lafadz: [
             {
-                arab: 'وَلَمَّا وَرَدَ مَاء مَّدْيَنَ وَجَدَ عَلَيْهِ أُمَّةً مِّنَ النَّاسِ يَسْقُونَ وَوَجَدَ مِن دُونِهِمُ امْرَأَتَيْنِ تَذُودَانِ قَالَ مَا خَطْبُكُمَا قَالَتَا لَا نَسْقِي حَتَّىٰ يُصْرِعَ الرِّعَاءُ وَأَبُونَا شَيْخٌ كَبِيرٌ- فَأَسْلَمَ مُوسَىٰ لَهُمَا- فَكَانَ مِنَ الْمَظْلُومِينَ- فَأَتَىٰ عَلَيْهِ إِحْدَاهُمَا تَمْشِي عَلَىٰ حَيَاءٍ قَالَتْ إِنَّ أَبِي يَدْعُوكَ لِيَجْزِيَكَ أَجْرَ مَا سَقَيْتَ لَنَا',
-                arti: 'Artinya: "Dan ketika ia (Musa) sampai ke mata air (penduduk) Madyan, ia mendapati sekumpulan orang sedang memberi minum (ternak) mereka, dan di sebelah mereka ia mendapati dua orang wanita sedang menghalau (ternak). (Musa) berkata: "Apakah yang menyebabkan kalian berdua?" Keduanya menjawab: "Kami tidak akan memberi minum (ternak) sebelum penggembala menarik (ternaknya) ke tempat, dan bapak kami sudah tua." Maka (Musa) menolong mereka…"',
-                sumber: 'QS. Al-Qashas: 24-26',
+                arab: 'فَسَقٰى لَهُمَا ثُمَّ تَوَلّٰىٓ اِلَى الظِّلِّ فَقَالَ رَبِّ اِنِّيْ لِمَآ اَنْزَلْتَ اِلَيَّ مِنْ خَيْرٍ فَقِيْرٍ',
+                arti: 'Artinya: "Maka Musa memberi minum ternak itu untuk (menolong) keduanya, kemudian dia kembali ke tempat yang teduh lalu berdoa: "Ya Tuhanku sesungguhnya aku sangat memerlukan sesuatu kebaikan yang Engkau turunkan kepadaku."',
+                sumber: 'QS. Al-Qashash: 24',
             },
         ],
-        catatan:
-            'Doa Nabi Musa a.s. yang penuh tawakal. Disarankan untuk dibaca dan ditadabburi setelah sholat Tahajud.',
     },
     // ── Sedekah ──
     sedekah_uang: {
@@ -506,6 +542,29 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
     },
+    sedekah_senyum: {
+        ringkasan:
+            'Senyum adalah sedekah termudah dan termurah — amalan ringan di lisan yang Allah catat sebagai sedekah, dan tidak membutuhkan harta sama sekali.',
+        dalil: [
+            {
+                arab: 'تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ',
+                arti: '"Senyummu di wajah saudaramu adalah sedekah bagimu."',
+                sumber: 'HR. At-Tirmidzi no. 1956 (hasan)',
+            },
+            {
+                arab: 'لَا تَحْقِرَنَّ مِنَ الْمَعْرُوفِ شَيْئًا وَلَوْ أَنْ تَلْقَى أَخَاكَ بِوَجْهٍ طَلْقٍ',
+                arti: '"Jangan anggap remeh kebaikan sedikit pun, walaupun (kebaikan itu hanya) berupa menemui saudaramu dengan wajah berseri-seri (senyum)."',
+                sumber: 'HR. Muslim no. 2626',
+            },
+        ],
+        keutamaan: [
+            'Senyum adalah sedekah yang paling ringan namun pahalanya nyata di sisi Allah — amalan yang dimulai dari hati melalui wajah.',
+            'Senyum menyejukkan hubungan dan mencairkan hati — kadang satu senyum tulus menyembuhkan hati yang sedang lelah lebih dari seribu kata.',
+        ],
+        catatan:
+            'Mulai hari ini, senyumlah kepada siapa pun yang kamu temui — suami, anak, keluarga, bahkan orang yang tidak kamu kenal. Senyum tulus adalah sedekah yang tidak akan menguras harta maupun tenagamu.',
+    },
+
     // ── Ibadah Lainnya ──
     bersih: {
         ringkasan:
@@ -534,7 +593,28 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
         catatan:
             'Kalau kamu bingung harus mendoakan apa untuk orang lain, doakan kebaikan, kesehatan, kesuksesan, dan keberlimpahan bagi mereka.',
     },
-    memaafkan: {},
+    memaafkan: {
+        ringkasan:
+            'Memaafkan orang lain sebelum tidur adalah cara menutup hari tanpa dendam — hati yang memaaf adalah hati yang Allah ampuni.',
+        keutamaan: [
+            'Memaafkan melegakan hati kita sendiri — kita tidur tanpa beban dendam, dan Allah justru mengampuni orang yang memaafkan.',
+            'Memaafkan bukan berarti membenarkan kesalahan orang lain — memaafkan berarti membebaskan diri dari beban dendam dan menyerahkan urusannya kepada Allah.',
+        ],
+        dalil: [
+            {
+                arab: 'خُذِ الْعَفْوَ وَأْمُرْ بِالْعُرْفِ وَأَعْرِضْ عَنِ الْجَاهِلِينَ',
+                arti: '"Ambillah maaf (apabila seseorang berbuat salah kepadamu), perintahkanlah (kepada manusia) berbuat yang makruf, dan berpalinglah dari orang-orang yang bodoh."',
+                sumber: 'QS. Al-A\'raf: 199',
+            },
+            {
+                arab: 'وَلْيَعْفُوا وَلْيَصْفَحُوا ۚ أَلَا تُحِبُّونَ أَن يَغْفِرَ اللَّهُ لَكُمْ',
+                arti: '"Dan hendaklah mereka memaafkan dan berlapang dada. Apakah kamu tidak menginginkan Allah mengampuni kamu?"',
+                sumber: 'QS. An-Nur: 22',
+            },
+        ],
+        catatan:
+            'Pikirkan satu orang yang pernah menyakiti atau mengecewakanmu, lalu maafkan dia dalam hati sebelum tidur — doakan kebaikan baginya, dan kamu akan tidur dengan hati yang ringan.',
+    },
     gerak: {
         ringkasan:
             'Ikhtiar gerak adalah usaha nyata yang dilakukan di jalan Allah — berusaha bukan berarti melemahkan doa, justru keduanya beriringan.',
@@ -548,6 +628,34 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
         catatan:
             'Usaha ini dilakukan atas dasar prinsip — berusaha sungguh-sungguh di jalan Allah, lalu hasilnya diserahkan kepada Allah.',
     },
+    menjaga_ucapan: {
+        ringkasan:
+            'Lisan lembut kepada anak dan suami adalah sedekah bagi keluarga sendiri — satu kalimat yang dijaga bisa membentuk hati yang tenang di rumah.',
+        keutamaan: [
+            'Menjaga ucapan adalah bagian dari taqwa — kata yang baik menyejukkan hati anak dan menghormati suami, sebagaimana Allah perintahkan.',
+            'Rumah yang penuh kalimat lembut melahirkan anak-anak yang tenang dan keluarga yang harmonis — lisan yang terjaga adalah awal dari sakinah.',
+        ],
+        dalil: [
+            {
+                arab: 'يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ وَقُولُوا قَوْلًا سَدِيدًا',
+                arti: '"Wahai orang-orang yang beriman! Bertakwalah kepada Allah dan ucapkanlah perkataan yang benar."',
+                sumber: 'QS. Al-Ahzab: 70',
+            },
+            {
+                arab: 'وَمَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ',
+                arti: '"Dan barangsiapa beriman kepada Allah dan hari akhir, maka hendaklah ia berkata baik atau diam."',
+                sumber: 'HR. Al-Bukhari no. 6018',
+            },
+            {
+                arab: 'خَيْرُكُمْ خَيْرُكُمْ لِأَهْلِهِ وَأَنَا خَيْرُكُمْ لِأَهْلِي',
+                arti: '"Sebaik-baik kalian adalah yang terbaik kepada keluarganya, dan aku adalah yang terbaik di antara kalian kepada keluargaku."',
+                sumber: 'HR. At-Tirmidzi no. 3895 (hasan sahih)',
+            },
+        ],
+        catatan:
+            'Hari ini, perhatikan setiap kalimat yang keluar di rumah — ganti nada tinggi dengan kalimat yang lembut, dan ucapkan terima kasih pada hal-hal kecil dari anak dan suami.',
+    },
+
 
     // ── Curhat Berulang ──
     doa_setelah_sholat: {
@@ -596,7 +704,44 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
                 sumber: 'HR. Bukhari no. 7405, Muslim no. 2675',
             },
         ],
-        catatan:
-            'Ya Allah, hari ini aku sudah melakukan kebaikan sesuai kewajibanku, berbuat baik untukmu, berbuat baik untuk keluargaku, untuk diriku, untuk saudaraku, untuk orang-orang yang aku cintai, untuk orang-orang yang ada di sekitarku. Berusaha maksimal semampuku, berupaya dan berikhtiar sungguh-sungguh untuk mewujudkan impian besarku, sebisa yang aku mampu. Berikhtiar sungguh-sungguh, berusaha dengan sebaik-baiknya, sekuat tenagaku.\n\nHari ini, malam ini aku serahkan semua hasilnya kepadamu ya Allah. Aku ikhlas ya Allah, apapun keputusanmu, aku terima apapun ketetapanmu, aku pasrah atas apapun ketentuan yang kau takdirkan padaku, ya Allah.\n\nTerimakasih ya Allah, atas semua kemudahan demi kemudahan yang aku terima hari ini, atas semua nikmat sehat yang aku rasakan hari ini, atas semua rezeki yang kau berikan padaku hari ini.\n\nYa Allah, aku bersyukur sekali, telah kau jadikan aku sebagai kepanjangan tanganmu, sebab engkau izinkan aku untuk menjadi pengusaha dengan banyak karyawan yang menggantungkan hidupnya kepadaku.\n\nAku yakin dan percaya, semua keajaiban hidup dan kehidupanku ini, semuanya adalah sebab engkau mengasihiku, sebab diriku layak dan pantas untuk mendapatkan keajaiban hidup ini, sebab diriku adalah diri yang penuh welas asih kepada sesama dan alam semesta ini, sebab diriku adalah diri yang penuh rasa syukur, sebab diriku adalah diri yang penuh terima kasih atas segala nikmat, kebaikan dan kemudahan yang engkau berikan padaku hari ini, ya Allah.\n\nYa Allah, sebab diriku adalah diri yang selalu mensyukuri apapun yang kau berikan padaku saat ini, aku yakin dan percaya, semua kebaikan, kebaikan, keberkahan, kesuksesan, kesehatan, keberlimpahan, kemudahan, yang belum pernah aku alami sebelumnya akan kau curahkan padaku ya Allah dengan semudah-mudahnya. Aku bersyukur ya Allah, telah kau berikan aku hari ini, dengan semudah-mudahnya, dengan mudah ya Allah.\n\nEntah kenapa, mulai sekarang dan seterusnya, aku semakin yakin dan percaya, bahwa aku layak dan pantas jadi pengusaha sukses, pengusaha besar, yang memberikan banyak manfaat bagi banyak orang, yang selalu berusaha membahagiakan orang lain dengan penuh keikhlasan.\n\nEntah kenapa, mulai sekarang dan seterusnya, aku semakin yakin dan percaya, bahwa semua urusanku, semuanya akan engkau mudahkan, semuanya akan engkau permudah, semua jalan menuju impian besarku ini terbuka lebar dan semakin mewujud nyata, dan itu dimulai sejak saat ini. Aku bersyukur sebab engkau telah mengizinkan aku untuk membahagiakan orang-orang yang ada di sekitarku, untuk membahagiakan keluargaku, untuk membahagiakan anak-anakku, untuk membahagiakan orang tuaku, untuk membahagiakan mertuaku, aku bersyukur sebab kau telah mengizinkan aku menjadi penolong hidup orang lain, menjadi jalan pembuka rezeki yang mempermudah kesulitan orang lain.',
+        bacaan: 
+		`Ya Allah, hari ini aku sudah melakukan kebaikan sesuai kewajibanku, 
+		berbuat baik untukmu, 
+		berbuat baik untuk keluargaku, 
+		untuk diriku, untuk saudaraku, 
+		untuk orang-orang yang aku cintai, 
+		untuk orang-orang yang ada di sekitarku. 
+
+		Berusaha maksimal semampuku, 
+		berupaya dan berikhtiar sungguh-sungguh untuk mewujudkan impian besarku, 
+		sebisa yang aku mampu. 
+		Berikhtiar sungguh-sungguh, berusaha dengan sebaik-baiknya, sekuat tenagaku.
+
+		Hari ini, malam ini aku serahkan semua hasilnya kepadamu ya Allah. 
+		Aku ikhlas ya Allah, apapun keputusanmu, aku terima apapun ketetapanmu, 
+		aku pasrah atas apapun ketentuan yang kau takdirkan padaku, ya Allah.
+
+		Terimakasih ya Allah, 
+		atas semua kemudahan demi kemudahan yang aku terima hari ini, 
+		atas semua nikmat sehat yang aku rasakan hari ini, 
+		atas semua rezeki yang kau berikan padaku hari ini.
+
+		Aku yakin dan percaya, 
+		semua keajaiban hidup dan kehidupanku ini, 
+		semuanya adalah sebab engkau mengasihiku, 
+		sebab diriku layak dan pantas untuk mendapatkan keajaiban hidup ini, 
+		sebab diriku adalah diri yang penuh belas kasih kepada sesama, 
+		sebab diriku adalah diri yang penuh rasa syukur, 
+		sebab diriku adalah diri yang penuh terima kasih atas segala nikmat, 
+		kebaikan dan kemudahan yang engkau berikan padaku hari ini, ya Allah.
+
+		Entah kenapa, 
+		mulai sekarang dan seterusnya, 
+		aku semakin yakin dan percaya, 
+		bahwa semua urusanku, 
+		semuanya akan engkau mudahkan, 
+		semuanya akan engkau permudah, 
+		semua jalan menuju impian besarku ini terbuka lebar dan semakin mewujud nyata, 
+		dan itu dimulai sejak saat ini. `,
     },
 };

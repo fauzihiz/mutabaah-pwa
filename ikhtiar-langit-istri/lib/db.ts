@@ -39,10 +39,20 @@ export interface PlannerNote {
     synced: boolean;
 }
 
+/** Script doa pribadi yang ditulis & disimpan user (fitur Script Doa Saya). */
+export interface DoaScript {
+    id?: number;
+    judul: string;
+    isi: string;
+    createdAt: number; // epoch ms
+    updatedAt: number; // epoch ms
+}
+
 export class MutabaahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
+    doaScripts!: Table<DoaScript, number>;
 
     constructor() {
         super('MutabaahDB');
@@ -50,6 +60,12 @@ export class MutabaahDatabase extends Dexie {
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             activitySettings: 'activityId',
             planner: '++id, date, synced',
+        });
+        this.version(6).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed',
+            activitySettings: 'activityId',
+            planner: '++id, date, synced',
+            doaScripts: '++id, updatedAt',
         });
     }
 }
@@ -64,5 +80,6 @@ export async function resetAllData(): Promise<void> {
     await db.logs.clear();
     await db.activitySettings.clear();
     await db.planner.clear();
+    await db.doaScripts.clear();
     localStorage.removeItem('greetingName');
 }

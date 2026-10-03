@@ -37,12 +37,12 @@ export const ACTIVITIES: Activity[] = [
   { id: 'hasbi_rabbi', name: "Hasbunallahu wa ni'mal wakil 10x", category: 'Zikir Harian' },
   { id: 'subhanallah', name: 'Subhanallah Wabihamdihi Subhanallahiladzim 10x', category: 'Zikir Harian' },
   { id: 'yunus', name: 'Doa Nabi Yunus 10x', category: 'Zikir Harian' },
-  { id: 'astagfirullah', name: 'Astagfirullah Waatuubuilaihi 100x', category: 'Zikir Harian' },
-  { id: 'sholawat', name: 'Sholawat 100x', category: 'Zikir Harian' },
+  { id: 'astagfirullah', name: 'Astagfirullahaladzim Waatuubuilaihi 10+', category: 'Zikir Harian' },
+  { id: 'sholawat', name: 'Sholawat 10+', category: 'Zikir Harian' },
   { id: 'zikir_petang', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas Waktu Petang', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
-  { id: 'tilawah', name: 'Tilawah Al Quran 1 Halaman', category: 'Interaksi Al Quran' },
+  { id: 'tilawah', name: 'Tilawah Al Quran minimal 1 Halaman', category: 'Interaksi Al Quran' },
   { id: 'al_mulk', name: 'Membaca Surat Almulk Malam Hari', category: 'Interaksi Al Quran' },
   { id: 'attalaq', name: 'Membaca Ayat Seribu Dinar', category: 'Interaksi Al Quran' },
   { id: 'alqashas', name: 'Membaca Doa Nabi Musa memohon rezeki', category: 'Interaksi Al Quran' },
@@ -52,12 +52,14 @@ export const ACTIVITIES: Activity[] = [
   { id: 'sedekah_tenaga', name: 'Sedekah Tenaga', category: 'Sedekah' },
   { id: 'sedekah_ilmu', name: 'Sedekah Ilmu', category: 'Sedekah' },
   { id: 'sedekah_makanan', name: 'Sedekah Makanan', category: 'Sedekah' },
+  { id: 'sedekah_senyum', name: 'Sedekah Senyum', category: 'Sedekah' },
 
   // Ibadah Lainnya
   { id: 'mendoakan', name: 'Mendoakan Minimal 5 Orang Lain', category: 'Ibadah Lainnya' },
   { id: 'bersih', name: 'Membersihkan Rumah', category: 'Ibadah Lainnya' },
   { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
   { id: 'gerak', name: 'Ikhtiar Gerak Antusias', category: 'Ibadah Lainnya' },
+  { id: 'menjaga_ucapan', name: 'Menjaga Ucapan Kepada Anak atau Suami', category: 'Ibadah Lainnya' },
   
   // Curhat Berulang
   { id: 'doa_setelah_sholat', name: 'Doa Setelah Sholat Wajib', category: 'Curhat Berulang' },

@@ -8,6 +8,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
+import { DoaScriptCard } from '@/components/dashboard/DoaScriptCard';
 
 // Lazy-load heavy components that aren't needed on initial render
 const NavigationDrawer = dynamic(
@@ -17,6 +18,11 @@ const NavigationDrawer = dynamic(
 
 const ChangelogModal = dynamic(
   () => import('@/components/dashboard/ChangelogModal').then(m => m.ChangelogModal),
+  { ssr: false }
+);
+
+const DoaScriptModal = dynamic(
+  () => import('@/components/dashboard/DoaScriptModal').then(m => m.DoaScriptModal),
   { ssr: false }
 );
 
@@ -32,6 +38,9 @@ export default function Dashboard() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
   const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
+
+  // Doa script modal target — null = tertutup, 'read' = baca (single-script), 'edit' = menulis
+  const [doaModalTarget, setDoaModalTarget] = useState<'read' | 'edit' | null>(null);
 
   const { logs, toggleActivity } = useMutabaahMonth(
     currentDate.getFullYear(),
@@ -62,12 +71,22 @@ export default function Dashboard() {
           setActiveView('dashboard');
           setIsDrawerOpen(false);
         }}
+        onOpenDoaScripts={() => {
+          setDoaModalTarget('read');
+          setIsDrawerOpen(false);
+        }}
         activeView={activeView}
       />
 
       <ChangelogModal
         isOpen={isChangelogOpen}
         onClose={() => setIsChangelogOpen(false)}
+      />
+
+      <DoaScriptModal
+        isOpen={doaModalTarget !== null}
+        openMode={doaModalTarget ?? 'read'}
+        onClose={() => setDoaModalTarget(null)}
       />
 
       <main className="flex-1 flex flex-col overflow-hidden relative">
@@ -81,7 +100,10 @@ export default function Dashboard() {
               currentDate={currentDate}
               logs={logs || []}
               onToggle={toggleActivity}
+              onOpenDoaScripts={() => setDoaModalTarget('edit')}
             />
+
+            <DoaScriptCard onOpen={() => setDoaModalTarget('read')} />
           </>
         ) : (
           <StatsView stats={stats} />

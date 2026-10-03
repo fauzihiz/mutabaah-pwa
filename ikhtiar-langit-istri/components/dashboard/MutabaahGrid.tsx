@@ -18,6 +18,8 @@ interface MutabaahGridProps {
     currentDate: Date;
     logs: ActivityLog[];
     onToggle: (date: string, activityId: string) => void;
+    /** Buka modal Script Doa Saya (dari CTA panduan di ActivityInfoModal) */
+    onOpenDoaScripts?: () => void;
 }
 
 /** Build a YYYY-MM-DD string from local date components (timezone-safe). */
@@ -32,7 +34,7 @@ const STATUS_LABEL: Record<number, string> = {
     [STATUS.HAID]: 'Haid/berhalangan',
 };
 
-export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps) {
+export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
 
@@ -344,6 +346,15 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                 onClose={() => setInfoTarget(null)}
                 target={infoTarget}
                 onSelectActivity={id => setInfoTarget({ kind: 'activity', id })}
+                onOpenDoaScripts={
+                    onOpenDoaScripts
+                        ? () => {
+                              // Tutup info modal dulu — tidak pernah ada dua modal bertumpuk
+                              setInfoTarget(null);
+                              onOpenDoaScripts();
+                          }
+                        : undefined
+                }
             />
         </div>
     );

@@ -16,6 +16,8 @@
   --primary: #285848; /* Primary */
   --primary-light: #78A888; /* Sage */
   --gold: #C89838; /* Gold */
+  --gold-soft: #f7ecd4; /* Background lembut kartu emas */
+  --gold-text: #8a5a1b; /* Teks emas di atas gold-soft */
 }
 
 /* ─── Dark Mode ──────────────────────────────── */
@@ -29,6 +31,9 @@
   --text-muted: #64748b;
   --primary: #4ade80;
   --primary-light: #14532d;
+  --gold: #d4a952; /* Gold — dark mode variant (terang agar menonjol di bg gelap) */
+  --gold-soft: #3a3222; /* Tint emas gelap untuk kartu emas */
+  --gold-text: #e8c987; /* Emas terang agar menonjol di bg gelap */
 }
 
 * {

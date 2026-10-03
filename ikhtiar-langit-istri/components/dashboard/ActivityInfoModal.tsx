@@ -12,12 +12,14 @@ interface ActivityInfoModalProps {
     onClose: () => void;
     target: InfoTarget | null;
     onSelectActivity?: (id: string) => void;
+    /** Buka modal Script Doa Saya (dipanggil dari tombol CTA di segmen panduan) */
+    onOpenDoaScripts?: () => void;
 }
 
 function SumberBadge({ sumber }: { sumber: string }) {
     return (
         <span
-            className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full"
+            className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full"
             style={{ background: 'var(--success-soft, #e6f4ec)', color: 'var(--success-text, #127c3f)' }}
         >
             {sumber}
@@ -28,7 +30,7 @@ function SumberBadge({ sumber }: { sumber: string }) {
 function SectionLabel({ children }: { children: React.ReactNode }) {
     return (
         <h3
-            className="text-[10px] font-black uppercase tracking-wider mb-2"
+            className="text-xs font-black uppercase tracking-wider mb-2"
             style={{ color: 'var(--text-muted)' }}
         >
             {children}
@@ -36,7 +38,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
     );
 }
 
-export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }: ActivityInfoModalProps) {
+export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity, onOpenDoaScripts }: ActivityInfoModalProps) {
     const { getActivityName } = useActivitySettings();
 
     // Escape to close + lock body scroll while open
@@ -72,7 +74,9 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
             !!info.keutamaan?.length ||
             !!info.dalil?.length ||
             !!info.lafadz?.length ||
-            !!info.catatan);
+            !!info.catatan ||
+            !!info.panduan ||
+            !!info.bacaan);
 
     const activities = isCategory ? ACTIVITIES.filter(a => a.category === target.id) : [];
 
@@ -94,14 +98,14 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                 <div className="flex items-start justify-between gap-3 p-5 pb-3">
                     <div className="min-w-0">
                         <h2
-                            className="text-lg font-bold leading-tight"
+                            className="text-xl font-bold leading-tight"
                             style={{ color: 'var(--text-primary)' }}
                         >
                             {title}
                         </h2>
                         {subtitle && (
                             <p
-                                className="text-[10px] font-bold uppercase tracking-wider mt-0.5"
+                                className="text-xs font-bold uppercase tracking-wider mt-0.5"
                                 style={{ color: 'var(--text-muted)' }}
                             >
                                 {subtitle}
@@ -134,7 +138,7 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                 <div className="px-5 pb-5 overflow-y-auto scrollbar-hide space-y-4">
                     {!hasContent && (
                         <p
-                            className="text-[12px] py-6 text-center"
+                            className="text-sm py-6 text-center"
                             style={{ color: 'var(--text-muted)' }}
                         >
                             Belum ada bahan keutamaan untuk aktivitas ini.
@@ -143,11 +147,41 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
 
                     {info?.ringkasan && (
                         <p
-                            className="text-[12px] leading-relaxed italic pl-3 border-l-2"
+                            className="text-sm leading-relaxed italic pl-3 border-l-2"
                             style={{ color: 'var(--text-secondary)', borderColor: 'var(--primary)' }}
                         >
                             {info.ringkasan}
                         </p>
+                    )}
+
+                    {info?.bacaan && (
+                        <section>
+                            <SectionLabel>Teks Bacaan</SectionLabel>
+                            <div
+                                className="rounded-xl p-4 sm:p-5 space-y-4"
+                                style={{
+                                    background: 'var(--gold-soft, #f7ecd4)',
+                                    border: '1px solid var(--gold, #C89838)',
+                                    borderLeft: '3px solid var(--gold, #C89838)',
+                                }}
+                            >
+                                <p
+                                    className="text-xs italic"
+                                    style={{ color: 'var(--gold-text, #8a5a1b)' }}
+                                >
+                                    Baca perlahan dengan penuh penghayatan…
+                                </p>
+                                {info.bacaan.split('\n\n').map((para, idx) => (
+                                    <p
+                                        key={idx}
+                                        className="text-[15px] leading-[1.9] whitespace-pre-line"
+                                        style={{ color: 'var(--text-primary)' }}
+                                    >
+                                        {para}
+                                    </p>
+                                ))}
+                            </div>
+                        </section>
                     )}
 
                     {info?.keutamaan && info.keutamaan.length > 0 && (
@@ -157,7 +191,7 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                                 {info.keutamaan.map((p, i) => (
                                     <p
                                         key={i}
-                                        className="text-[12px] leading-relaxed"
+                                        className="text-sm leading-relaxed"
                                         style={{ color: 'var(--text-secondary)' }}
                                     >
                                         {p}
@@ -183,14 +217,14 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                                         {d.arab && (
                                             <p
                                                 dir="rtl"
-                                                className="font-arabic text-[18px] leading-loose text-center whitespace-pre-line"
+                                                className="font-arabic text-[22px] leading-loose text-center whitespace-pre-line"
                                                 style={{ color: 'var(--text-primary)' }}
                                             >
                                                 {d.arab}
                                             </p>
                                         )}
                                         <p
-                                            className="text-[11px] leading-relaxed italic"
+                                            className="text-sm leading-relaxed italic"
                                             style={{ color: 'var(--text-secondary)' }}
                                         >
                                             {d.arti}
@@ -201,6 +235,74 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                             </div>
                         </section>
                     )}
+
+                    {info?.panduan && (
+                        <section>
+                            <SectionLabel>{info.panduan.judul}</SectionLabel>
+                            <div
+                                className="rounded-lg p-4 space-y-3"
+                                style={{ background: 'var(--bg-surface)', border: '1px solid var(--gold)' }}
+                            >
+                                {info.panduan.komponen.map((k, i) => (
+                                    <div key={i} className="space-y-1.5">
+                                        <div className="flex items-center gap-2">
+                                            <span
+                                                className="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold shrink-0"
+                                                style={{
+                                                    background: 'var(--gold-soft, #f7ecd4)',
+                                                    color: 'var(--gold-text, #8a5a1b)',
+                                                    border: '1px solid var(--gold)',
+                                                }}
+                                            >
+                                                {i + 1}
+                                            </span>
+                                            <p
+                                                className="text-sm font-semibold"
+                                                style={{ color: 'var(--text-primary)' }}
+                                            >
+                                                {k.judul}
+                                            </p>
+                                        </div>
+                                        <p
+                                            className="text-sm leading-relaxed"
+                                            style={{ color: 'var(--text-secondary)' }}
+                                        >
+                                            {k.isi}
+                                        </p>
+                                        <p
+                                            className="text-sm leading-relaxed italic pl-3 border-l-2"
+                                            style={{ color: 'var(--text-secondary)', borderColor: 'var(--gold)' }}
+                                        >
+                                            <span
+                                                className="font-bold not-italic"
+                                                style={{ color: 'var(--text-primary)' }}
+                                            >
+                                                Contoh:{' '}
+                                            </span>
+                                            &quot;{k.contoh}&quot;
+                                        </p>
+                                    </div>
+                                ))}
+                                <p
+                                    className="text-xs italic leading-relaxed text-center pt-2 border-t"
+                                    style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}
+                                >
+                                    {info.panduan.penutup}
+                                </p>
+                                {onOpenDoaScripts && (
+                                    <button
+                                        type="button"
+                                        onClick={onOpenDoaScripts}
+                                        className="w-full py-2.5 rounded-lg text-sm font-bold transition-opacity hover:opacity-90 active:scale-[0.98] cursor-pointer"
+                                        style={{ background: 'var(--gold, #C89838)', color: '#ffffff' }}
+                                    >
+                                        ✍️ Tulis Script Doa Saya
+                                    </button>
+                                )}
+                            </div>
+                        </section>
+                    )}
+
                     {info?.lafadz && info.lafadz.length > 0 && (
                         <section>
                             <SectionLabel>Lafadz Bacaan</SectionLabel>
@@ -216,7 +318,7 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                                     >
                                         {l.judul && (
                                             <p
-                                                className="text-[12px] font-semibold"
+                                                className="text-sm font-semibold"
                                                 style={{ color: 'var(--text-primary)' }}
                                             >
                                                 {l.judul}
@@ -224,14 +326,14 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                                         )}
                                         <p
                                             dir="rtl"
-                                            className="font-arabic text-[18px] leading-loose text-center whitespace-pre-line"
+                                            className="font-arabic text-[22px] leading-loose text-center whitespace-pre-line"
                                             style={{ color: 'var(--text-primary)' }}
                                         >
                                             {l.arab}
                                         </p>
                                         {l.arti && (
                                             <p
-                                                className="text-[11px] leading-relaxed"
+                                                className="text-sm leading-relaxed"
                                                 style={{ color: 'var(--text-secondary)' }}
                                             >
                                                 {l.arti}
@@ -240,7 +342,7 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                                         {l.sumber && <SumberBadge sumber={l.sumber} />}
                                         {l.catatan && (
                                             <p
-                                                className="text-[11px] leading-relaxed"
+                                                className="text-sm leading-relaxed"
                                                 style={{ color: 'var(--text-muted)' }}
                                             >
                                                 {l.catatan}
@@ -261,7 +363,7 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                             }}
                         >
                             <p
-                                className="text-[11px] leading-relaxed whitespace-pre-line"
+                                className="text-sm leading-relaxed whitespace-pre-line"
                                 style={{ color: 'var(--text-secondary)' }}
                             >
                                 {info.catatan}
@@ -278,7 +380,7 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
                                         key={a.id}
                                         type="button"
                                         onClick={() => onSelectActivity(a.id)}
-                                        className="text-[11px] font-medium px-2.5 py-1 rounded-full transition-opacity hover:opacity-70 cursor-pointer"
+                                        className="text-xs font-medium px-2.5 py-1 rounded-full transition-opacity hover:opacity-70 cursor-pointer"
                                         style={{
                                             background: 'var(--bg-subtle)',
                                             border: '1px solid var(--border)',
@@ -295,7 +397,7 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity }:
 
                 {/* Footer */}
                 <div className="px-5 py-3 border-t text-center" style={{ borderColor: 'var(--border)' }}>
-                    <p className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                         Sumber: Penjelasan &amp; Keutamaan Aktivitas — Ikhtiar Langit Istri
                     </p>
                 </div>
