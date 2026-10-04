@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useEffect, useRef } from 'react';
-import { Clock, Heart } from 'lucide-react';
+import { Clock, Frown, Heart } from 'lucide-react';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
 import { ActivityLog, STATUS } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
@@ -28,10 +28,11 @@ function toLocalDateStr(y: number, m: number, d: number) {
 }
 
 const STATUS_LABEL: Record<number, string> = {
-    [STATUS.EMPTY]: 'Belum dikerjakan',
+    [STATUS.EMPTY]: 'Belum dicatat',
     [STATUS.DONE]: 'Selesai',
     [STATUS.LATE]: 'Selesai telat',
     [STATUS.HAID]: 'Haid/berhalangan',
+    [STATUS.SKIPPED]: 'Tidak mengerjakan',
 };
 
 export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: MutabaahGridProps) {
@@ -40,7 +41,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
 
     const { getActivityName } = useActivitySettings();
 
-    // Pre-compute a lookup Map: "date:activityId" → status (0/1/2/3) — O(1) per cell instead of O(n)
+    // Pre-compute a lookup Map: "date:activityId" → status (0/1/2/3/4) — O(1) per cell instead of O(n)
     const logMap = useMemo(() => {
         const m = new Map<string, number>();
         for (const l of logs) {
@@ -314,7 +315,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                                                     ? 'bg-amber-500 text-white shadow-sm shadow-amber-300 dark:shadow-amber-900/30'
                                                                     : status === STATUS.HAID
                                                                         ? 'bg-rose-500 text-white shadow-sm shadow-rose-300 dark:shadow-rose-900/30'
-                                                                        : 'border hover:border-green-400 dark:hover:border-green-500',
+                                                                        : status === STATUS.SKIPPED
+                                                                            ? 'bg-slate-500 text-white shadow-sm shadow-slate-300 dark:shadow-slate-900/30'
+                                                                            : 'border hover:border-green-400 dark:hover:border-green-500',
                                                             locked ? 'cursor-not-allowed opacity-40' : '',
                                                         ].join(' ')}
                                                         style={status === STATUS.EMPTY ? { borderColor: 'var(--border)', background: 'var(--bg-subtle)' } : undefined}
@@ -327,7 +330,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                                                     ? <Clock size={12} strokeWidth={2.5} />
                                                                     : status === STATUS.HAID
                                                                         ? <Heart size={12} fill="currentColor" strokeWidth={0} />
-                                                                        : null
+                                                                        : status === STATUS.SKIPPED
+                                                                            ? <Frown size={12} strokeWidth={2.5} />
+                                                                            : null
                                                         }
                                                     </button>
                                                 </div>

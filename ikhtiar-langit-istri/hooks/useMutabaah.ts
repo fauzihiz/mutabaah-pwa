@@ -8,10 +8,10 @@ import { useState, useMemo } from 'react';
 const isSholatTepatWaktu = (activityId: string) =>
     ACTIVITIES.find(a => a.id === activityId)?.category === 'Sholat Tepat Waktu';
 
-// Siklus status per tap: Sholat Tepat Waktu → kosong→check→jam→heart;
-// kategori lain → kosong→check→heart (tanpa jam).
-const SHOLAT_CYCLE: LogStatus[] = [STATUS.EMPTY, STATUS.DONE, STATUS.LATE, STATUS.HAID];
-const DEFAULT_CYCLE: LogStatus[] = [STATUS.EMPTY, STATUS.DONE, STATUS.HAID];
+// Siklus status per tap: kosong, selesai, telat (khusus sholat), haid, frown, ulang.
+// Kategori lain tanpa status telat: kosong, selesai, haid, frown, ulang.
+const SHOLAT_CYCLE: LogStatus[] = [STATUS.EMPTY, STATUS.DONE, STATUS.LATE, STATUS.HAID, STATUS.SKIPPED];
+const DEFAULT_CYCLE: LogStatus[] = [STATUS.EMPTY, STATUS.DONE, STATUS.HAID, STATUS.SKIPPED];
 
 export function useMutabaahMonth(year: number, month: number) {
     const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;

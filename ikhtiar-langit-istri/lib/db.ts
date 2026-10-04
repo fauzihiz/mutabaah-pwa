@@ -1,7 +1,7 @@
 import Dexie, { type Table } from 'dexie';
 
 /** Kode status yang disimpan di `ActivityLog.completed`. */
-export type LogStatus = 0 | 1 | 2 | 3;
+export type LogStatus = 0 | 1 | 2 | 3 | 4;
 
 export const STATUS = {
     /** Belum dikerjakan */
@@ -12,6 +12,8 @@ export const STATUS = {
     LATE: 2,
     /** Haid / berhalangan */
     HAID: 3,
+    /** Tidak mengerjakan */
+    SKIPPED: 4,
 } as const;
 
 /** Status yang dihitung "selesai" untuk statistik (tepat waktu maupun telat). */

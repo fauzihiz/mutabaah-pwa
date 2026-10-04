@@ -31,15 +31,15 @@ export const ACTIVITIES: Activity[] = [
   { id: 'dhuha', name: 'Sholat Sunnah Dhuha', category: 'Sholat Sunnah' },
 
   // Zikir Harian
-  { id: 'zikir_pagi', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas Waktu Pagi', category: 'Zikir Harian' },
+  { id: 'zikir_pagi', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas (Pagi)', category: 'Zikir Harian' },
   { id: 'zikir_bada_sholat', name: 'Ayat Kursi Setelah Sholat Wajib', category: 'Zikir Harian' },
   { id: 'la_haula', name: 'Laa haula walaa quwwata illa billah 10x', category: 'Zikir Harian' },
   { id: 'hasbi_rabbi', name: "Hasbunallahu wa ni'mal wakil 10x", category: 'Zikir Harian' },
   { id: 'subhanallah', name: 'Subhanallah Wabihamdihi Subhanallahiladzim 10x', category: 'Zikir Harian' },
   { id: 'yunus', name: 'Doa Nabi Yunus 10x', category: 'Zikir Harian' },
-  { id: 'astagfirullah', name: 'Astagfirullahaladzim Waatuubuilaihi 10+', category: 'Zikir Harian' },
-  { id: 'sholawat', name: 'Sholawat 10+', category: 'Zikir Harian' },
-  { id: 'zikir_petang', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas Waktu Petang', category: 'Zikir Harian' },
+  { id: 'astagfirullah', name: 'Astagfirullahaladzim Waatuubuilaihi 33+', category: 'Zikir Harian' },
+  { id: 'sholawat', name: 'Sholawat 33+', category: 'Zikir Harian' },
+  { id: 'zikir_petang', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas (Sore)', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
   { id: 'tilawah', name: 'Tilawah Al Quran minimal 1 Halaman', category: 'Interaksi Al Quran' },

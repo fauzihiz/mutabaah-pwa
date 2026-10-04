@@ -7,6 +7,9 @@ const Bg = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" str
 const Zp = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
 type IF = () => React.JSX.Element;
 const CL = [
+  { v:'v1.8.0', d:'Oktober 2026', items:[
+    {t:'feature',i:Sp,x:'Status baru Tidak mengerjakan (emote frown) di grid: tap sel untuk menandai aktivitas tidak dikerjakan. Sel kosong kini berarti belum dicatat.'},
+  ]},
   { v:'v1.7.0', d:'Oktober 2026', items:[
     {t:'feature',i:Sp,x:'Script Doa Saya — satu script doa pribadi: tulis, baca dengan tampilan nyaman, edit, atau hapus. Akses dari panduan Curhat Berulang, menu, dan tombol di beranda.'},
   ]},
@@ -71,7 +74,7 @@ export function ChangelogModal({ isOpen, onClose }: ChangelogModalProps) {
                     ))}
                 </div>
                 <div className="border-t bg-slate-50/50 dark:bg-slate-900/20 px-6 py-4 text-center" style={{ borderColor: 'var(--border)' }}>
-                    <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Ikhtiar Langit Istri v1.7.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
+                    <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Ikhtiar Langit Istri v1.8.0 • <a href="https://fauzihiz.github.io/" target="_blank" rel="noopener noreferrer" className="text-green-600 dark:text-green-500 font-bold hover:underline">FAUZI HIZ</a></p>
                 </div>
             </div>
         </div>

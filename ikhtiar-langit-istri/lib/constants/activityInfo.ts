@@ -99,7 +99,7 @@ export const CATEGORY_INFO: Record<ActivityCategory, ActivityInfo> = {
     },
     Sedekah: {
         ringkasan:
-            'Sedekah membuka pintu rezeki dan menjadi pelindung dari musibah. Sedekah tidak melulu soal harta — ada empat jenis yang bisa dijalani sesuai kemampuan. Ketika kamu mendoakan orang lain, sesungguhnya kamu sedang mendoakan kehidupan kamu sendiri.',
+            'Sedekah membuka pintu rezeki dan menjadi pelindung dari musibah. Sedekah tidak melulu soal harta — ada empat jenis yang bisa dijalani sesuai kemampuan.',
         keutamaan: [
             'Ketika kamu melakukan hal-hal baik, secara otomatis saldo tabungan kebaikan kamu akan bertambah, begitu juga sebaliknya — sekecil apapun perbuatan buruk akan mengurangi saldo kebaikan di "rekening bank semesta" kamu.',
             'Permudah urusan orang lain, bantu dan tolonglah orang lain yang kamu lihat membutuhkan pertolongan meskipun mereka tidak minta bantuan kepadamu, rajin-rajinlah menyedekahkan diri kamu.',
@@ -331,7 +331,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Penanda "10+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Setiap satu salawat dibalas sepuluh kali oleh Allah (HR. Muslim no. 384), sehingga makin banyak dibaca makin besar balasannya.',
+            'Penanda "33+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Setiap satu salawat dibalas sepuluh kali oleh Allah (HR. Muslim no. 384), sehingga makin banyak dibaca makin besar balasannya.',
     },
     la_haula: {
         ringkasan:
@@ -405,7 +405,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Penanda "10+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Sebagai gambaran, Nabi ﷺ beristighfar lebih dari 70 kali dalam sehari (lihat dalil di atas).',
+            'Penanda "33+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Sebagai gambaran, Nabi ﷺ beristighfar lebih dari 70 kali dalam sehari (lihat dalil di atas).',
     },
     yunus: {
         ringkasan:
@@ -582,7 +582,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
     },
     mendoakan: {
         ringkasan:
-            'Mendoakan orang lain — keluarga, sahabat, tetangga, bahkan orang yang pernah menyakiti — adalah amalan ringan yang dampaknya luar biasa.',
+            'Mendoakan orang lain — keluarga, sahabat, tetangga, bahkan orang yang pernah menyakiti — adalah amalan ringan yang dampaknya luar biasa. Ketika kamu mendoakan orang lain, sesungguhnya kamu sedang mendoakan kehidupan kamu sendiri.',
         dalil: [
             {
                 arab: 'دَعْوَةُ الْمَرْءِ الْمُسْلِمِ لِأَخِيهِ بِظَهْرِ الْغَيْبِ مُسْتَجَابَةٌ',
