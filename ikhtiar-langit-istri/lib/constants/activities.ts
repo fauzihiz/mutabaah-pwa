@@ -5,7 +5,7 @@ export type ActivityCategory =
   | 'Interaksi Al Quran'
   | 'Sedekah'
   | 'Ibadah Lainnya'
-  | 'Curhat Berulang';
+  | 'Baca Script Doa';
 
 export interface Activity {
   id: string;
@@ -60,12 +60,14 @@ export const ACTIVITIES: Activity[] = [
   { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
   { id: 'gerak', name: 'Ikhtiar Gerak Antusias', category: 'Ibadah Lainnya' },
   { id: 'menjaga_ucapan', name: 'Menjaga Ucapan Kepada Anak atau Suami', category: 'Ibadah Lainnya' },
+  { id: 'syukur_harian', name: 'Mengucapkan 5 Hal yang disyukuri hari ini', category: 'Ibadah Lainnya' },
+  { id: 'selftalk_syukur', name: 'Membaca Selftalk Syukur', category: 'Ibadah Lainnya' },
   
-  // Curhat Berulang
-  { id: 'doa_setelah_sholat', name: 'Doa Setelah Sholat Wajib', category: 'Curhat Berulang' },
-  { id: 'doa_sepertiga_malam', name: 'Doa Pada Sepertiga Malam', category: 'Curhat Berulang' },
-  { id: 'doa_setelah_azan', name: 'Doa Antara Adzan dan Iqomah', category: 'Curhat Berulang' },
-  { id: 'selftalk_berlimpah', name: 'Baca Selftalk Keberlimpahan', category: 'Curhat Berulang' },
+  // Baca Script Doa
+  { id: 'doa_setelah_sholat', name: 'Waktu Mustajab Setelah Sholat Wajib', category: 'Baca Script Doa' },
+  { id: 'doa_sepertiga_malam', name: 'Waktu Mustajab Pada Sepertiga Malam', category: 'Baca Script Doa' },
+  { id: 'doa_setelah_azan', name: 'Waktu Mustajab Antara Adzan dan Iqomah', category: 'Baca Script Doa' },
+  { id: 'selftalk_berlimpah', name: 'Baca Selftalk Keberlimpahan', category: 'Baca Script Doa' },
 ];
 
 export const CATEGORIES: ActivityCategory[] = [
@@ -75,5 +77,5 @@ export const CATEGORIES: ActivityCategory[] = [
   'Interaksi Al Quran',
   'Sedekah',
   'Ibadah Lainnya',
-  'Curhat Berulang',
+  'Baca Script Doa',
 ];

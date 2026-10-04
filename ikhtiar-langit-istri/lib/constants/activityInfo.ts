@@ -104,14 +104,20 @@ export const CATEGORY_INFO: Record<ActivityCategory, ActivityInfo> = {
             'Ketika kamu melakukan hal-hal baik, secara otomatis saldo tabungan kebaikan kamu akan bertambah, begitu juga sebaliknya — sekecil apapun perbuatan buruk akan mengurangi saldo kebaikan di "rekening bank semesta" kamu.',
             'Permudah urusan orang lain, bantu dan tolonglah orang lain yang kamu lihat membutuhkan pertolongan meskipun mereka tidak minta bantuan kepadamu, rajin-rajinlah menyedekahkan diri kamu.',
         ],
+        dalil: [
+            {
+                arti: 'Dari Abu Hurairah radhiyallahu anhu, Nabi ﷺ bersabda: "Barangsiapa melepaskan satu kesusahan seorang mukmin, pasti Allah akan melepaskan darinya satu kesusahan pada hari kiamat. Barangsiapa menjadikan mudah urusan orang lain, pasti Allah akan memudahkannya di dunia dan di akhirat. Barangsiapa menutupi aib seorang muslim, pasti Allah akan menutupi aibnya di dunia dan di akhirat. Allah senantiasa menolong hamba-Nya selama hamba-Nya itu menolong saudaranya."',
+                sumber: 'HR. Muslim',
+            },
+        ],
     },
     'Ibadah Lainnya': {
         ringkasan:
             'Ibadah tidak hanya soal sholat dan zikir. Ada juga ibadah sosial dan ikhtiar gerak yang sama pentingnya untuk mendukung usaha suami dan keluarga.',
     },
-    'Curhat Berulang': {
+    'Baca Script Doa': {
         ringkasan:
-            'Curhat berulang adalah doa yang kita persiapkan dengan panduan script sedemikian rupa dan spesifik, yang selalu diulang dan dipanjatkan kepada Allah pada waktu-waktu mustajab.',
+            'Membaca script doa yang sudah kita persiapkan, dengan panduan script sedemikian rupa dan spesifik, yang selalu diulang dan dipanjatkan kepada Allah pada waktu-waktu mustajab.',
         keutamaan: [
             'Rasulullah ﷺ bersabda, "Doa adalah ibadah" (HR. Tirmidzi) — jadi mengulang doa bukan tanda putus asa, tapi tanda ibadah yang terus dijaga. Allah justru menyukai hamba yang terus memintanya berulang kali, karena setiap kali kita berdoa, di situ ada kedekatan yang sedang dirawat.',
         ],
@@ -128,7 +134,7 @@ export const CATEGORY_INFO: Record<ActivityCategory, ActivityInfo> = {
                 {
                     judul: 'Komponen 1: Apa yang Benar-benar Diinginkan',
                     isi: 'Tanyakan ke dalam diri, apa saja yang benar-benar menjadi keinginan kita. Tulis konkret dan terukur.',
-                    contoh: 'Profit usaha saya minimal 200 juta di akhir tahun 2026.',
+                    contoh: 'Pada akhir bulan ini saya mendapatkan penghasilan minimal 5 juta rupiah.',
                 },
                 {
                     judul: 'Komponen 2: Alasan/Motivasi Terbesar',
@@ -219,7 +225,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Sepertiga malam terakhir juga disebut sebagai waktu mustajab untuk berdoa (lihat penjelasan di kategori Curhat Berulang).',
+            'Sepertiga malam terakhir juga disebut sebagai waktu mustajab untuk berdoa (lihat penjelasan di kategori Baca Script Doa).',
     },
     taubat: {
         ringkasan: 'Sholat 2 rakaat untuk memohon ampunan atas dosa yang telah lalu.',
@@ -655,9 +661,75 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
         catatan:
             'Hari ini, perhatikan setiap kalimat yang keluar di rumah — ganti nada tinggi dengan kalimat yang lembut, dan ucapkan terima kasih pada hal-hal kecil dari anak dan suami.',
     },
+    syukur_harian: {
+        ringkasan:
+            'Mengucapkan lima hal yang disyukuri hari ini — menyebut nikmat dengan lisan menumbuhkan hati yang tenang dan melipatgandakan nikmat dari Allah.',
+        keutamaan: [
+            'Syukur yang diucapkan dengan lisan adalah bagian sempurna dari iman — nikmat yang disebut dan disyukuri akan terasa, dan nikmat yang dilupakan akan hilang perlahan.',
+            'Menyebut lima nikmat setiap hari melatih hati untuk melihat kebaikan di tengah kesibukan rumah — dari anak yang sehat, suami yang bekerja, hingga hal-hal kecil yang sering terlupa.',
+            'Syukur tidak harus dengan hal besar — sebutkan yang nyata hari ini: makanan hangat, tidur cukup, satu tawa anak, atau satu percakapan yang menyenangkan.',
+        ],
+        dalil: [
+            {
+                arab: 'لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ ۖ وَلَئِن كَفَرْتُمْ إِنَّ عَذَابِي لَشَدِيدٌ',
+                arti: '"Jika kamu bersyukur, sungguh akan Aku tambahkan (nikmat) untukmu; dan jika kamu ingkar, sesungguhnya azab-Ku sangat pedih."',
+                sumber: 'QS. Ibrahim: 7',
+            },
+            {
+                arab: 'وَأَمَّا بِنِعْمَةِ رَبِّكَ فَحَدِّثْ',
+                arti: '"Dan terhadap nikmat Tuhanmu, maka beritahukanlah (kepada manusia)."',
+                sumber: 'QS. An-Naml: 19',
+            },
+            {
+                arab: 'الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ',
+                arti: '"Alhamdulillah — segala puji bagi Allah, yang dengan nikmat-Nya segala kebaikan sempurna."',
+                sumber: 'HR. At-Tirmidzi no. 3466 (hasan), Ahmad no. 12951',
+            },
+        ],
+        catatan:
+            'Sebutkan lima hal yang spesifik hari ini — bukan hal yang sama setiap hari, tapi yang benar-benar terjadi hari ini. Ucapkan dengan kalimat terima kasih kepada Allah, misalnya: "Terima kasih ya Allah, hari ini anakku sehat, aku bisa menyiapkan makanan, suamiku pulang dengan selamat."',
+    },
+    selftalk_syukur: {
+        ringkasan:
+            'Membaca selftalk syukur — mengucapkan rasa syukur dengan penuh keyakinan agar hati semakin menyadari keberuntungan, kemudahan, dan keajaiban yang terus menghampiri.',
+        keutamaan: [
+            'Mengucapkan syukur dengan kata-kata yang diyakini melatih hati untuk melihat kebaikan di mana pun — dan Allah menambah nikmat bagi hamba yang bersyukur.',
+            'Selftalk syukur menumbuhkan perasaan dicintai dan dijaga oleh Allah — hati yang merasa disayangi Allah akan menjalani hari dengan tenang, berprasangka baik, dan penuh syukur.',
+        ],
+        dalil: [
+            {
+                arab: 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا * وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ',
+                arti: '"Barangsiapa bertakwa kepada Allah, niscaya Dia akan mengadakan jalan keluar baginya (dari segala kesulitan), dan memberinya rezeki dari arah yang tiada disangka-sangkanya."',
+                sumber: 'QS. At-Talaq: 2-3',
+            },
+            {
+                arab: 'عَجَبًا لِأَمْرِ الْمُؤْمِنِ إِنَّ أَمْرَهُ كُلَّهُ خَيْرٌ، وَلَيْسَ ذَاكَ لِأَحَدٍ إِلَّا لِلْمُؤْمِنِ: إِنْ أَصَابَتْهُ سَرَّاءُ شَكَرَ فَكَانَ خَيْرًا لَهُ، وَإِنْ أَصَابَتْهُ ضَرَّاءُ صَبَرَ فَكَانَ خَيْرًا لَهُ',
+                arti: '"Sungguh menakjubkan urusan orang mukmin, seluruhnya urusannya baik — dan itu tidak dimiliki kecuali orang mukmin: bila mendapat kesenangan ia bersyukur, maka itu baik baginya; dan bila mendapat kesusahan ia sabar, maka itu baik baginya."',
+                sumber: 'HR. Muslim no. 2999',
+            },
+        ],
+        catatan:
+            'Baca perlahan sambil merasakan setiap kalimat — dengan nada meyakini, seolah-olah memang demikian adanya. Waktu terbaik: pagi hari sebelum memulai aktivitas, atau malam hari sebelum tidur.',
+        bacaan:
+`Silahkan posisikan diri senyaman mungkin,
+sambil tarik nafas perlahan lewat hidung,
+buang perlahan lewat mulut,
+ulangi sampai 3 kali...
+baru baca perlahan penuh kesadaran
+
+Sebagai manusia pilihan Allah,
+aku sangat bersyukur,
+
+hidupku senantiasa diliputi keberuntungan demi keberuntungan,
+kemudahan demi kemudahan,
+keajaiban demi keajaiban,
+seolah-olah tiada henti dan terus menerus menghampiri hidupku...
+
+Aku tahu, ini adalah cara Allah menyayangiku...`,
+    },
 
 
-    // ── Curhat Berulang ──
+    // ── Baca Script Doa ──
     doa_setelah_sholat: {
         ringkasan:
             'Salah satu waktu mustajab untuk berdoa: segera setelah sholat wajib, hati lebih tenang dan lebih dekat kepada Allah.',
@@ -682,7 +754,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
     },
     doa_setelah_azan: {
         ringkasan:
-            'Doa setelah azan — diantara azan dan iqamah doa tidak akan tertolak.',
+            'Waktu mustajab di antara azan dan iqamah — doa di waktu ini tidak akan ditolak.',
         dalil: [
             {
                 arab: 'الدُّعَاءُ لَا يُرَّدُّ بَيْنَ الْأَذَانِ وَالْإِقَامَةِ، فَادْعُوا',
@@ -705,7 +777,13 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         bacaan: 
-		`Ya Allah, hari ini aku sudah melakukan kebaikan sesuai kewajibanku, 
+		`Silahkan posisikan diri senyaman mungkin, 
+		sambil tarik nafas perlahan lewat hidung, 
+		buang perlahan lewat mulut, 
+		ulangi sampai 3 kali... 
+		baru baca perlahan penuh kesadaran 
+
+		Ya Allah, hari ini aku sudah melakukan kebaikan sesuai kewajibanku, 
 		berbuat baik untukmu, 
 		berbuat baik untuk keluargaku, 
 		untuk diriku, untuk saudaraku, 

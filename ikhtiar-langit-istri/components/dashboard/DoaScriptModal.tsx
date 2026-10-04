@@ -10,7 +10,7 @@ interface DoaScriptModalProps {
     openMode: 'read' | 'edit';
 }
 
-/** Skeleton 3 Komponen — sinkron dengan panduan di CATEGORY_INFO['Curhat Berulang']. */
+/** Skeleton 3 Komponen — sinkron dengan panduan di CATEGORY_INFO['Baca Script Doa']. */
 const TEMPLATE = `Keinginan:
  (tuliskan keinginan Anda yang paling ingin terwujud)
 
