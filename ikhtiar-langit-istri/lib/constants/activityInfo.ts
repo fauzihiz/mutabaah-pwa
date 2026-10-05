@@ -27,6 +27,8 @@ export interface ActivityInfo {
     catatan?: string;
     /** Teks bacaan panjang (mis. selftalk) — dirender khusus dengan jarak baris & paragraf */
     bacaan?: string;
+    /** Instruksi persiapan sebelum membaca (mis. tarik & buang nafas) — dirender di luar kotak teks bacaan */
+    instruksi?: string;
     /** Segmen panduan khusus (mis. panduan script menulis doa) — dirender dengan tampilan khusus */
     panduan?: {
         judul: string;
@@ -710,14 +712,14 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
         ],
         catatan:
             'Baca perlahan sambil merasakan setiap kalimat — dengan nada meyakini, seolah-olah memang demikian adanya. Waktu terbaik: pagi hari sebelum memulai aktivitas, atau malam hari sebelum tidur.',
-        bacaan:
+        instruksi:
 `Silahkan posisikan diri senyaman mungkin,
 sambil tarik nafas perlahan lewat hidung,
 buang perlahan lewat mulut,
 ulangi sampai 3 kali...
-baru baca perlahan penuh kesadaran
-
-Sebagai manusia pilihan Allah,
+baru baca perlahan penuh kesadaran`,
+        bacaan:
+`Sebagai manusia pilihan Allah,
 aku sangat bersyukur,
 
 hidupku senantiasa diliputi keberuntungan demi keberuntungan,
@@ -776,14 +778,14 @@ Aku tahu, ini adalah cara Allah menyayangiku...`,
                 sumber: 'HR. Bukhari no. 7405, Muslim no. 2675',
             },
         ],
+        instruksi:
+`Silahkan posisikan diri senyaman mungkin,
+sambil tarik nafas perlahan lewat hidung,
+buang perlahan lewat mulut,
+ulangi sampai 3 kali...
+baru baca perlahan penuh kesadaran`,
         bacaan: 
-		`Silahkan posisikan diri senyaman mungkin, 
-		sambil tarik nafas perlahan lewat hidung, 
-		buang perlahan lewat mulut, 
-		ulangi sampai 3 kali... 
-		baru baca perlahan penuh kesadaran 
-
-		Ya Allah, hari ini aku sudah melakukan kebaikan sesuai kewajibanku, 
+		`Ya Allah, hari ini aku sudah melakukan kebaikan sesuai kewajibanku, 
 		berbuat baik untukmu, 
 		berbuat baik untuk keluargaku, 
 		untuk diriku, untuk saudaraku, 

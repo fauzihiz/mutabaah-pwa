@@ -157,6 +157,22 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity, o
                     {info?.bacaan && (
                         <section>
                             <SectionLabel>Teks Bacaan</SectionLabel>
+                            <div className="mb-3 space-y-1">
+                                <p
+                                    className="text-xs italic"
+                                    style={{ color: 'var(--gold-text, #8a5a1b)' }}
+                                >
+                                    Baca perlahan dengan penuh penghayatan…
+                                </p>
+                                {info.instruksi && (
+                                    <p
+                                        className="text-xs leading-relaxed whitespace-pre-line"
+                                        style={{ color: 'var(--gold-text, #8a5a1b)' }}
+                                    >
+                                        {info.instruksi}
+                                    </p>
+                                )}
+                            </div>
                             <div
                                 className="rounded-xl p-4 sm:p-5 space-y-4"
                                 style={{
@@ -165,12 +181,6 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity, o
                                     borderLeft: '3px solid var(--gold, #C89838)',
                                 }}
                             >
-                                <p
-                                    className="text-xs italic"
-                                    style={{ color: 'var(--gold-text, #8a5a1b)' }}
-                                >
-                                    Baca perlahan dengan penuh penghayatan…
-                                </p>
                                 {info.bacaan.split('\n\n').map((para, idx) => (
                                     <p
                                         key={idx}
