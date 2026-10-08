@@ -50,11 +50,30 @@ export interface DoaScript {
     updatedAt: number; // epoch ms
 }
 
+/**
+ * Goal Planning — daftar goal pribadi bergaya S.M.A.R.T (fitur Goal Planning).
+ * `judul` = Specific, `terukur` = Measurable, `usaha` = Achievable,
+ * `motivasi` = Relevant, `tenggat` = Time-bound (YYYY-MM-DD).
+ */
+export interface GoalPlanning {
+    id?: number;
+    judul: string; // S — Specific: goal konkret (mis. "Dapatkan uang 1 juta dalam 1 minggu")
+    terukur: string; // M — Measurable: angka/indikator keberhasilan
+    usaha: string; // A — Achievable: langkah/ikhtiar konkret yang akan dilakukan
+    motivasi: string; // R — Relevant: mengapa penting & untuk siapa
+    tenggat: string; // T — Time-bound: YYYY-MM-DD
+    done: boolean; // goal sudah tercapai (dicoret)
+    doneAt?: number; // epoch ms saat ditandai tercapai
+    createdAt: number; // epoch ms
+    updatedAt: number; // epoch ms
+}
+
 export class MutabaahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
     doaScripts!: Table<DoaScript, number>;
+    goals!: Table<GoalPlanning, number>;
 
     constructor() {
         super('MutabaahDB');
@@ -68,6 +87,14 @@ export class MutabaahDatabase extends Dexie {
             activitySettings: 'activityId',
             planner: '++id, date, synced',
             doaScripts: '++id, updatedAt',
+        });
+        // v7: tambah tabel goals (Goal Planning) — penambahan tabel saja, upgrade path aman
+        this.version(7).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed',
+            activitySettings: 'activityId',
+            planner: '++id, date, synced',
+            doaScripts: '++id, updatedAt',
+            goals: '++id, done, createdAt',
         });
     }
 }
@@ -83,5 +110,6 @@ export async function resetAllData(): Promise<void> {
     await db.activitySettings.clear();
     await db.planner.clear();
     await db.doaScripts.clear();
+    await db.goals.clear();
     localStorage.removeItem('greetingName');
 }

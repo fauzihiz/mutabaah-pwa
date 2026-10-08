@@ -8,7 +8,9 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
-import { DoaScriptCard } from '@/components/dashboard/DoaScriptCard';
+// [SEMBUNYI SEMENTARA] Fitur Script Doa Saya — kembalikan saat fitur diaktifkan lagi:
+// import { DoaScriptCard } from '@/components/dashboard/DoaScriptCard';
+import { GoalPlanningCard } from '@/components/dashboard/GoalPlanningCard';
 
 // Lazy-load heavy components that aren't needed on initial render
 const NavigationDrawer = dynamic(
@@ -21,8 +23,14 @@ const ChangelogModal = dynamic(
   { ssr: false }
 );
 
-const DoaScriptModal = dynamic(
-  () => import('@/components/dashboard/DoaScriptModal').then(m => m.DoaScriptModal),
+// [SEMBUNYI SEMENTARA] Modal Script Doa Saya — kembalikan saat fitur diaktifkan lagi:
+// const DoaScriptModal = dynamic(
+//   () => import('@/components/dashboard/DoaScriptModal').then(m => m.DoaScriptModal),
+//   { ssr: false }
+// );
+
+const GoalPlanningModal = dynamic(
+  () => import('@/components/dashboard/GoalPlanningModal').then(m => m.GoalPlanningModal),
   { ssr: false }
 );
 
@@ -39,8 +47,11 @@ export default function Dashboard() {
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
   const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
 
-  // Doa script modal target — null = tertutup, 'read' = baca (single-script), 'edit' = menulis
-  const [doaModalTarget, setDoaModalTarget] = useState<'read' | 'edit' | null>(null);
+  // [SEMBUNYI SEMENTARA] Doa script modal target — kembalikan saat fitur diaktifkan lagi:
+  // const [doaModalTarget, setDoaModalTarget] = useState<'read' | 'edit' | null>(null);
+
+  // Goal planning modal (pengganti sementara Script Doa Saya)
+  const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
 
   const { logs, toggleActivity } = useMutabaahMonth(
     currentDate.getFullYear(),
@@ -71,8 +82,8 @@ export default function Dashboard() {
           setActiveView('dashboard');
           setIsDrawerOpen(false);
         }}
-        onOpenDoaScripts={() => {
-          setDoaModalTarget('read');
+        onOpenGoals={() => {
+          setIsGoalModalOpen(true);
           setIsDrawerOpen(false);
         }}
         activeView={activeView}
@@ -83,10 +94,16 @@ export default function Dashboard() {
         onClose={() => setIsChangelogOpen(false)}
       />
 
+      {/* [SEMBUNYI SEMENTARA] Modal Script Doa Saya — kembalikan saat fitur diaktifkan lagi:
       <DoaScriptModal
         isOpen={doaModalTarget !== null}
         openMode={doaModalTarget ?? 'read'}
         onClose={() => setDoaModalTarget(null)}
+      /> */}
+
+      <GoalPlanningModal
+        isOpen={isGoalModalOpen}
+        onClose={() => setIsGoalModalOpen(false)}
       />
 
       <main className="flex-1 flex flex-col overflow-hidden relative">
@@ -100,10 +117,11 @@ export default function Dashboard() {
               currentDate={currentDate}
               logs={logs || []}
               onToggle={toggleActivity}
-              onOpenDoaScripts={() => setDoaModalTarget('edit')}
             />
 
-            <DoaScriptCard onOpen={() => setDoaModalTarget('read')} />
+            {/* [SEMBUNYI SEMENTARA] Kartu Script Doa Saya — kembalikan saat fitur diaktifkan lagi:
+            <DoaScriptCard onOpen={() => setDoaModalTarget('read')} /> */}
+            <GoalPlanningCard onOpen={() => setIsGoalModalOpen(true)} />
           </>
         ) : (
           <StatsView stats={stats} />

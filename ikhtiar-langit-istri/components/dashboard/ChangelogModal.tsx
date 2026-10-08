@@ -7,6 +7,12 @@ const Bg = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" str
 const Zp = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
 type IF = () => React.JSX.Element;
 const CL = [
+  { v:'v1.9.0', d:'Oktober 2026', items:[
+    {t:'feature',i:Sp,x:'Goal Planning (S.M.A.R.T) — tulis goal pribadi yang konkret & terukur, mis. "Dapatkan uang 1 juta dalam 1 minggu", lengkap dengan Terukur, Usaha Nyata, Motivasi, dan Batas Waktu.'},
+    {t:'feature',i:Sp,x:'Baca kembali goal-mu sebagai penyemangat; ketuk lingkaran di kiri goal untuk mencoret goal yang sudah tercapai (otomatis turun ke bawah sebagai rekam jejak). Bisa diedit & dihapus.'},
+    {t:'feature',i:Sp,x:'Akses dari kartu "Goal Planning Saya" di beranda dan menu "Goal Planning" di navigasi.'},
+    {t:'removed',i:Zp,x:'Fitur "Script Doa Saya" (script doa pribadi + panduan 3 Komponen di info aktivitas) disembunyikan sementara — data & kodenya tetap tersimpan dan mudah diaktifkan kembali.'},
+  ]},
   { v:'v1.8.0', d:'Oktober 2026', items:[
     {t:'feature',i:Sp,x:'Status baru Tidak mengerjakan (emote frown) di grid: tap sel untuk menandai aktivitas tidak dikerjakan. Sel kosong kini berarti belum dicatat.'},
   ]},

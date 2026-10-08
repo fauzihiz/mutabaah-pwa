@@ -7,6 +7,14 @@ import { useActivitySettings } from '@/hooks/useActivitySettings';
 
 export type InfoTarget = { kind: 'category' | 'activity'; id: string };
 
+/**
+ * Flag panduan 3 Komponen di segmen info aktivitas.
+ * Disembunyikan sementara mengikuti fitur Script Doa Saya (CTA panduan membuka
+ * modal Script Doa Saya). Keutamaan & dalil di atas tetap tampil.
+ * Set ke true untuk mengembalikan segmen panduan beserta tombol CTA-nya.
+ */
+const SHOW_SCRIPT_DOA_PANDUAN = false;
+
 interface ActivityInfoModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -257,7 +265,10 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity, o
                         </section>
                     )}
 
-                    {info?.panduan && (
+                    {/* Segmen panduan 3 Komponen — disembunyikan sementara (mengikuti fitur
+                        Script Doa Saya yang CTA-nya ada di segmen ini). Keutamaan & dalil di atas
+                        tetap tampil. Kembalikan dengan SHOW_SCRIPT_DOA_PANDUAN = true. */}
+                    {SHOW_SCRIPT_DOA_PANDUAN && info?.panduan && (
                         <section>
                             <SectionLabel>{info.panduan.judul}</SectionLabel>
                             <div

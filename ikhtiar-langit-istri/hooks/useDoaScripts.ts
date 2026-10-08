@@ -6,6 +6,8 @@ import { db, type DoaScript } from '@/lib/db';
 /**
  * Hook Script Doa Saya — model single-script (maksimal 1 script tersimpan).
  * `script` = script terbaru (satu-satunya); simpan baru berarti mengganti yang lama.
+ * CATATAN: fitur Script Doa Saya sedang disembunyikan sementara dari UI —
+ * hook & tabel `doaScripts` dipertahankan agar mudah diaktifkan kembali.
  */
 export function useDoaScripts() {
     // Maksimal satu script — ambil yang terbaru diubah (orderBy updatedAt desc)
