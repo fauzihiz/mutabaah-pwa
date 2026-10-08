@@ -4,7 +4,7 @@ export type ActivityCategory =
   | 'Zikir Harian'
   | 'Interaksi Al Quran'
   | 'Sedekah'
-  | 'Ibadah Lainnya'
+  | 'Membangun Kebiasaan Baik'
   | 'Baca Script Doa';
 
 export interface Activity {
@@ -32,14 +32,14 @@ export const ACTIVITIES: Activity[] = [
 
   // Zikir Harian
   { id: 'zikir_pagi', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas (Pagi)', category: 'Zikir Harian' },
+  { id: 'zikir_petang', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas (Sore)', category: 'Zikir Harian' },
   { id: 'zikir_bada_sholat', name: 'Ayat Kursi Setelah Sholat Wajib', category: 'Zikir Harian' },
   { id: 'la_haula', name: 'Laa haula walaa quwwata illa billah 10x', category: 'Zikir Harian' },
   { id: 'hasbi_rabbi', name: "Hasbunallahu wa ni'mal wakil 10x", category: 'Zikir Harian' },
   { id: 'subhanallah', name: 'Subhanallah Wabihamdihi Subhanallahiladzim 10x', category: 'Zikir Harian' },
   { id: 'yunus', name: 'Doa Nabi Yunus 10x', category: 'Zikir Harian' },
-  { id: 'astagfirullah', name: 'Astagfirullahaladzim Waatuubuilaihi 33+', category: 'Zikir Harian' },
-  { id: 'sholawat', name: 'Sholawat 33+', category: 'Zikir Harian' },
-  { id: 'zikir_petang', name: 'Ayat Kursi + Alikhlas, Alfalaq, Annas (Sore)', category: 'Zikir Harian' },
+  { id: 'astagfirullah', name: 'Astagfirullahaladzim Waatuubuilaihi 10x', category: 'Zikir Harian' },
+  { id: 'sholawat', name: 'Sholawat 10x', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
   { id: 'tilawah', name: 'Tilawah Al Quran minimal 1 Halaman', category: 'Interaksi Al Quran' },
@@ -54,20 +54,23 @@ export const ACTIVITIES: Activity[] = [
   { id: 'sedekah_makanan', name: 'Sedekah Makanan', category: 'Sedekah' },
   { id: 'sedekah_senyum', name: 'Sedekah Senyum', category: 'Sedekah' },
 
-  // Ibadah Lainnya
-  { id: 'mendoakan', name: 'Mendoakan Minimal 5 Orang Lain', category: 'Ibadah Lainnya' },
-  { id: 'bersih', name: 'Membersihkan Rumah', category: 'Ibadah Lainnya' },
-  { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
-  { id: 'gerak', name: 'Ikhtiar Gerak Antusias', category: 'Ibadah Lainnya' },
-  { id: 'menjaga_ucapan', name: 'Menjaga Ucapan Kepada Anak atau Suami', category: 'Ibadah Lainnya' },
-  { id: 'syukur_harian', name: 'Mengucapkan 5 Hal yang disyukuri hari ini', category: 'Ibadah Lainnya' },
-  { id: 'selftalk_syukur', name: 'Membaca Selftalk Syukur', category: 'Ibadah Lainnya' },
+  // Membangun Kebiasaan Baik
+  { id: 'baca_script_niat', name: 'Baca Script Meluruskan Niat', category: 'Membangun Kebiasaan Baik' },
+  { id: 'tidur_awal', name: 'Tidur Lebih Awal', category: 'Membangun Kebiasaan Baik' },
+  { id: 'bangun_awal', name: 'Bangun Lebih Awal', category: 'Membangun Kebiasaan Baik' },
+  { id: 'bersih', name: 'Membersihkan Rumah', category: 'Membangun Kebiasaan Baik' },
+  { id: 'gerak', name: 'Ikhtiar Gerak Antusias', category: 'Membangun Kebiasaan Baik' },
+  { id: 'menjaga_ucapan', name: 'Menjaga Ucapan Kepada Anak atau Suami', category: 'Membangun Kebiasaan Baik' },
+  { id: 'syukur_harian', name: 'Mengucapkan 5 Hal yang disyukuri hari ini', category: 'Membangun Kebiasaan Baik' },
+  { id: 'selftalk_syukur', name: 'Membaca Selftalk Syukur', category: 'Membangun Kebiasaan Baik' },
+  { id: 'mendoakan', name: 'Mendoakan Minimal 5 Orang Lain', category: 'Membangun Kebiasaan Baik' },
+  { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Membangun Kebiasaan Baik' },
   
   // Baca Script Doa
   { id: 'doa_setelah_sholat', name: 'Waktu Mustajab Setelah Sholat Wajib', category: 'Baca Script Doa' },
   { id: 'doa_sepertiga_malam', name: 'Waktu Mustajab Pada Sepertiga Malam', category: 'Baca Script Doa' },
   { id: 'doa_setelah_azan', name: 'Waktu Mustajab Antara Adzan dan Iqomah', category: 'Baca Script Doa' },
-  { id: 'selftalk_berlimpah', name: 'Baca Selftalk Keberlimpahan', category: 'Baca Script Doa' },
+  { id: 'selftalk_berlimpah', name: 'Baca Selftalk Keberlimpahan (Malam)', category: 'Baca Script Doa' },
 ];
 
 export const CATEGORIES: ActivityCategory[] = [
@@ -76,6 +79,6 @@ export const CATEGORIES: ActivityCategory[] = [
   'Zikir Harian',
   'Interaksi Al Quran',
   'Sedekah',
-  'Ibadah Lainnya',
+  'Membangun Kebiasaan Baik',
   'Baca Script Doa',
 ];

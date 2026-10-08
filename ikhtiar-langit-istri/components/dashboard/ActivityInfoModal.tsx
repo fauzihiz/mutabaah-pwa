@@ -145,6 +145,15 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity, o
                         </p>
                     )}
 
+                    {isCategory && target.id === 'Membangun Kebiasaan Baik' && (
+                        <p
+                            className="text-sm leading-relaxed italic pl-3 border-l-2"
+                            style={{ color: 'var(--text-secondary)', borderColor: 'var(--primary)' }}
+                        >
+                            &quot;Dari Kebiasaan ke karakter, dari karakter bisa mengubah nasib&quot;
+                        </p>
+                    )}
+
                     {info?.ringkasan && (
                         <p
                             className="text-sm leading-relaxed italic pl-3 border-l-2"
@@ -158,12 +167,14 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity, o
                         <section>
                             <SectionLabel>Teks Bacaan</SectionLabel>
                             <div className="mb-3 space-y-1">
-                                <p
-                                    className="text-xs italic"
-                                    style={{ color: 'var(--gold-text, #8a5a1b)' }}
-                                >
-                                    Baca perlahan dengan penuh penghayatan…
-                                </p>
+                                {!['selftalk_syukur', 'selftalk_berlimpah'].includes(target.id) && (
+                                    <p
+                                        className="text-xs italic"
+                                        style={{ color: 'var(--gold-text, #8a5a1b)' }}
+                                    >
+                                        Baca perlahan dengan penuh penghayatan…
+                                    </p>
+                                )}
                                 {info.instruksi && (
                                     <p
                                         className="text-xs leading-relaxed whitespace-pre-line"
@@ -401,6 +412,28 @@ export function ActivityInfoModal({ isOpen, onClose, target, onSelectActivity, o
                                     </button>
                                 ))}
                             </div>
+                        </section>
+                    )}
+                    {isCategory && target.id === 'Sedekah' && activities.length > 0 && onSelectActivity && (
+                        <section className="space-y-2">
+                            <p
+                                className="text-sm leading-relaxed"
+                                style={{ color: 'var(--text-secondary)' }}
+                            >
+                                Silahkan pilih satu saja aktivitas yang bisa fokus dan konsisten.
+                            </p>
+                            <p
+                                className="text-sm leading-relaxed italic pl-3 border-l-2"
+                                style={{ color: 'var(--text-secondary)', borderColor: 'var(--primary)' }}
+                            >
+                                &quot;Permudah urusan orang lain, bantu dan tolonglah orang lain yang anda lihat mereka membutuhkan pertolongan, meskipun mereka tidak minta bantuan kepada anda.&quot;
+                            </p>
+                            <p
+                                className="text-sm leading-relaxed italic pl-3 border-l-2"
+                                style={{ color: 'var(--text-secondary)', borderColor: 'var(--primary)' }}
+                            >
+                                &quot;Rajin-rajinlah menyedekahkan diri anda, jika anda punya ilmu, bagikan ilmu anda, jika anda punya uang, bersedekahlah dengan uang, jika anda punya tenaga, bantu kesulitan orang lain dengan tenaga anda.&quot;
+                            </p>
                         </section>
                     )}
                 </div>

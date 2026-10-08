@@ -113,7 +113,7 @@ export const CATEGORY_INFO: Record<ActivityCategory, ActivityInfo> = {
             },
         ],
     },
-    'Ibadah Lainnya': {
+    'Membangun Kebiasaan Baik': {
         ringkasan:
             'Ibadah tidak hanya soal sholat dan zikir. Ada juga ibadah sosial dan ikhtiar gerak yang sama pentingnya untuk mendukung usaha suami dan keluarga.',
     },
@@ -339,7 +339,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Penanda "33+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Setiap satu salawat dibalas sepuluh kali oleh Allah (HR. Muslim no. 384), sehingga makin banyak dibaca makin besar balasannya.',
+            'Dibaca minimal 10 kali. Setiap satu salawat dibalas sepuluh kali oleh Allah (HR. Muslim no. 384), sehingga makin banyak dibaca makin besar balasannya.',
     },
     la_haula: {
         ringkasan:
@@ -413,7 +413,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Penanda "33+" bermakna sebanyak-banyaknya — minimal 10 kali, dan dianjurkan terus bertambah semampunya. Sebagai gambaran, Nabi ﷺ beristighfar lebih dari 70 kali dalam sehari (lihat dalil di atas).',
+            'Dibaca minimal 10 kali. Sebagai gambaran, Nabi ﷺ beristighfar lebih dari 70 kali dalam sehari (lihat dalil di atas).',
     },
     yunus: {
         ringkasan:
@@ -573,7 +573,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             'Mulai hari ini, senyumlah kepada siapa pun yang kamu temui — suami, anak, keluarga, bahkan orang yang tidak kamu kenal. Senyum tulus adalah sedekah yang tidak akan menguras harta maupun tenagamu.',
     },
 
-    // ── Ibadah Lainnya ──
+    // ── Membangun Kebiasaan Baik ──
     bersih: {
         ringkasan:
             'Rumah yang bersih mencerminkan jiwa yang sehat — kebersihan adalah bagian dari iman.',
@@ -599,7 +599,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Kalau kamu bingung harus mendoakan apa untuk orang lain, doakan kebaikan, kesehatan, kesuksesan, dan keberlimpahan bagi mereka.',
+            'Kalau kamu bingung harus mendoakan apa untuk orang lain, doakan kebaikan, kesehatan, kesuksesan, dan keberlimpahan bagi mereka. Ketika anda mendoakan orang lain, sesungguhnya anda sedang mendoakan kehidupan anda sendiri.',
     },
     memaafkan: {
         ringkasan:
@@ -729,6 +729,72 @@ seolah-olah tiada henti dan terus menerus menghampiri hidupku...
 
 Aku tahu, ini adalah cara Allah menyayangiku...`,
     },
+    baca_script_niat: {
+        ringkasan:
+            'Membaca script meluruskan niat — mengingatkan kembali tujuan beramal: murni karena Allah, mengikuti sunnah Rasul ﷺ, demi kebaikan keluarga dan bekal akhirat.',
+        keutamaan: [
+            'Niat adalah fondasi setiap amal — amalan yang lurus niatnya akan diterima dan dilipatgandakan oleh Allah, sekalipun kecil di mata manusia.',
+            'Membaca script niat secara berkala menegaskan kembali arah hidup: setiap amalan sehari-hari — sholat, mengurus rumah, mendidik anak, melayani suami — bernilai ibadah ketika diniatkan karena Allah.',
+        ],
+        dalil: [
+            {
+                arab: 'قَالَ إِنِّي عَبْدُ اللَّهِ ۖ أَنْزَلَنِيَ الْكِتَابَ وَجَعَلَنِي نَبِيًّا ۖ وَجَعَلَنِي مُبَارَكًا أَيْنَ مَا كُنْتُ وَأَوْصَانِي بِالصَّلَاةِ وَالزَّكَاةِ مَا دُمْتُ حَيًّا',
+                arti: '"Dia (Nabi Isa) berkata: Sesungguhnya aku hamba Allah. Dia menurunkan Al-Kitab (Injil) kepadaku dan Dia menjadikan aku seorang nabi. Dan Dia menjadikan aku seorang yang diberkahi di mana saja aku berada, dan Dia memerintahkan kepadaku (mendirikan) sholat dan (menunaikan) zakat selama aku hidup."',
+                sumber: 'QS. Maryam: 30-31',
+            },
+            {
+                arab: 'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى',
+                arti: '"Sesungguhnya setiap amal tergantung pada niatnya, dan sesungguhnya setiap orang akan mendapatkan sesuai apa yang dia niatkan."',
+                sumber: 'HR. Bukhari no. 1, Muslim no. 1907',
+            },
+        ],
+        catatan:
+            'Baca perlahan sambil meresapi setiap kalimat — pastikan niat lurus sebelum memulai amalan hari ini. Waktu terbaik: pagi hari sebelum memulai kegiatan, atau malam hari sebelum tidur.',
+    },
+    tidur_awal: {
+        ringkasan:
+            'Tidur lebih awal — menjaga tubuh tetap sehat, menepati sunnah Rasul ﷺ, dan menjaga niat tetap kuat karena bangun dalam keadaan lebih segar.',
+        keutamaan: [
+            'Tidur segera setelah sholat Isya adalah sunnah — Rasul ﷺ melarang tidur sebelum Isya karena khawatir sholat Isya ditinggalkan dan malam terbuang percuma.',
+            'Tidur lebih awal membuat bangun lebih segar untuk sholat subuh tepat waktu, dan menghindari kebiasaan begadang yang melemahkan badan serta mengaburkan niat.',
+        ],
+        dalil: [
+            {
+                arab: 'نَهَى رَسُولُ اللَّهِ ﷺ عَنِ النَّوْمِ قَبْلَ الْعِشَاءِ وَالْحَدِيثِ بَعْدَهَا',
+                arti: '"Rasulullah ﷺ melarang tidur sebelum sholat Isya dan berbicara (yang tidak perlu) sesudahnya."',
+                sumber: 'HR. Bukhari no. 526, Muslim no. 432',
+            },
+            {
+                arab: 'هُوَ الَّذِي جَعَلَ لَكُمُ اللَّيْلَ لِتَسْكُنُوا فِيهِ وَالنَّهَارَ مُبْصِرًا',
+                arti: '"Dialah yang menjadikan malam untuk kamu supaya kamu beristirahat di dalamnya, dan (menjadikan) siang untuk menerangi (dan melakukan pekerjaan)."',
+                sumber: 'QS. Al-Furqan: 47',
+            },
+        ],
+        catatan:
+            'Disarankan tidur maksimal pukul 22.00 (jam 10 malam) — jauhi layar gawai 30 menit sebelum tidur, perbaca zikir dan istighfar sebelum tidur.',
+    },
+    bangun_awal: {
+        ringkasan:
+            'Bangun lebih awal — khususnya di sepertiga malam terakhir — untuk qiyamul lail, istighfar, dan doa sebelum dunia bangun.',
+        keutamaan: [
+            'Sepertiga malam terakhir adalah waktu ketika Allah turun ke langit dunia — doa hamba di waktu ini sangat dekat dengan kehendak-Nya.',
+            'Bangun lebih awal melengkapi amalan pagi: sholat malam, membaca Al Quran, dan memulai hari dengan niat yang lurus sebelum kesibukan datang.',
+        ],
+        dalil: [
+            {
+                arab: 'وَمِنَ اللَّيْلِ فَتَهَجَّدْ بِهِ نَافِلَةً لَّكَ ۖ عَسَىٰ أَن يَبْعَثَكَ رَبُّكَ مَقَامًا مَّحْمُودًا',
+                arti: '"Dan (lakukanlah) salat tahajud pada sebagian malam sebagai ibadah tambahan bagimu — mudah-mudahan Tuhanmu mengangkatmu ke tempat yang terpuji."',
+                sumber: 'QS. Al-Isra: 79',
+            },
+            {
+                arab: 'يَنْزِلُ رَبُّنَا تَبَارَكَ وَتَعَالَى كُلَّ لَيْلَةٍ إِلَى السَّمَاءِ الدُّنْيَا حِينَ يَبْقَى ثُلُثُ اللَّيْلِ الْآخِرُ، يَقُولُ: مَنْ يَدْعُونِي فَأَسْتَجِيبَ لَهُ؟ مَنْ يَسْأَلُنِي فَأُعْطِيَهُ؟ مَنْ يَسْتَغْفِرُنِي فَأَغْفِرَ لَهُ؟',
+                arti: '"Tuhan kami yang Maha Mulia dan Maha Tinggi turun setiap malam ke langit dunia ketika sepertiga malam yang terakhir tersisa, lalu berdoa: "Siapakah yang berdoa kepada-Ku, niscaya akan Aku kabulkan? Siapa yang memohon kepada-Ku, niscaya akan Aku beri? Siapa yang memohon ampun kepada-Ku, niscaya akan Aku ampuni?""',
+                sumber: 'HR. Bukhari no. 1145, Muslim no. 758',
+            },
+        ],
+        catatan:
+            'Disarankan diusahakan bangun tidur jam 3 pagi (sepertiga malam terakhir) — meski tidak wajib, bahkan sepuluh hingga lima belas menit di penghujung malam sangat berharga untuk berdoa dan bermunajat.',
+    },
 
 
     // ── Baca Script Doa ──
@@ -823,5 +889,7 @@ baru baca perlahan penuh kesadaran`,
 		semuanya akan engkau permudah, 
 		semua jalan menuju impian besarku ini terbuka lebar dan semakin mewujud nyata, 
 		dan itu dimulai sejak saat ini. `,
+        catatan:
+            'Waktu terbaik: malam hari sebelum tidur — saat hati tenang dan tubuh bersiap beristirahat, sehingga prasangka baik kepada Allah tertanam kuat sepanjang malam.',
     },
 };
