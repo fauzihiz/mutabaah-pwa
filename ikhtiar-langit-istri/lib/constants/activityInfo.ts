@@ -117,40 +117,25 @@ export const CATEGORY_INFO: Record<ActivityCategory, ActivityInfo> = {
         ringkasan:
             'Ibadah tidak hanya soal sholat dan zikir. Ada juga ibadah sosial dan ikhtiar gerak yang sama pentingnya untuk mendukung usaha suami dan keluarga.',
     },
-    'Baca Script Doa': {
+    'Berdoa pada Waktu Mustajab': {
         ringkasan:
-            'Membaca script doa yang sudah kita persiapkan, dengan panduan script sedemikian rupa dan spesifik, yang selalu diulang dan dipanjatkan kepada Allah pada waktu-waktu mustajab.',
+            'Berdoa pada waktu-waktu mustajab — saat Allah paling mendekat dan paling siap mengabulkan hamba-Nya. Ulangi doa yang telah kita siapkan dengan penuh penghayatan, pada waktu-waktu yang istimewa tersebut.',
         keutamaan: [
             'Rasulullah ﷺ bersabda, "Doa adalah ibadah" (HR. Tirmidzi) — jadi mengulang doa bukan tanda putus asa, tapi tanda ibadah yang terus dijaga. Allah justru menyukai hamba yang terus memintanya berulang kali, karena setiap kali kita berdoa, di situ ada kedekatan yang sedang dirawat.',
+            'Waktu mustajab adalah momen-momen khusus ketika Allah lebih dekat kepada hamba-Nya — seperti setelah sholat wajib, antara adzan dan iqamah, serta di sepertiga malam terakhir.',
         ],
         dalil: [
             {
-                arab: 'الدُّعَاءُ هُوَ الْعِبَادَةُ',
-                arti: '"Doa adalah ibadah."',
-                sumber: 'HR. At-Tirmidzi',
+                arab: 'أَيُّ الدُّعَاءِ أَسْمَعُ؟ قَال: جَوْفَ اللَّيْلِ الْآخِرِ، وَدُبُرَ الصَّلَوَاتِ الْمَكْتُوبَاتِ',
+                arti: '"Doa manakah yang paling didengar (oleh Allah)?" Beliau menjawab: "Sepertiga malam yang terakhir dan sesudah sholat-sholat wajib."',
+                sumber: 'HR. At-Tirmidzi no. 3499 (hasan)',
+            },
+            {
+                arab: 'الدُّعَاءُ لَا يُرَّدُّ بَيْنَ الْأَذَانِ وَالْإِقَامَةِ، فَادْعُوا',
+                arti: '"Doa di antara azan dan iqamah tidak ditolak, maka berdoalah."',
+                sumber: 'HR. Abu Dawud no. 521, At-Tirmidzi no. 212 (hasan sahih)',
             },
         ],
-        panduan: {
-            judul: 'Panduan Script Menulis Doa: 3 Komponen',
-            komponen: [
-                {
-                    judul: 'Komponen 1: Apa yang Benar-benar Diinginkan',
-                    isi: 'Tanyakan ke dalam diri, apa saja yang benar-benar menjadi keinginan kita. Tulis konkret dan terukur.',
-                    contoh: 'Pada akhir bulan ini saya mendapatkan penghasilan minimal 5 juta rupiah.',
-                },
-                {
-                    judul: 'Komponen 2: Alasan/Motivasi Terbesar',
-                    isi: 'Tuliskan apa saja alasan yang benar-benar menjadi motivasi terbesar untuk mencapai keinginan tersebut.',
-                    contoh: 'Dengan profit tersebut, saya akan mengumrohkan orang tua saya, dan bersedekah membantu fakir miskin dan yatim.',
-                },
-                {
-                    judul: 'Komponen 3: Implementasi — Libatkan Allah',
-                    isi: 'Tuliskan implementasi apa saja yang bisa kita lakukan agar doa tersebut terwujud, dengan melibatkan Allah dalam prosesnya. Sebelum membaca komponen 3, rasakan dan bayangkan bahwa keinginan itu sudah dalam genggaman kita — rasakan sampai masuk ke hati, lalu baca:',
-                    contoh: 'Terima kasih ya Allah, saya bahagia, saya bersyukur dengan uang 200 juta ini, saya umrohkan orang tua saya. Saya juga jadi lebih banyak bersedekah kepada fakir miskin dan anak yatim.',
-                },
-            ],
-            penutup: 'Gabungkan ketiga komponen tersebut menjadi satu kalimat doa yang utuh, lalu ucapkan dengan penuh penghayatan.',
-        },
     },
 };
 // ── Info per aktivitas ───────────────────────────────────────────────────────
@@ -227,7 +212,7 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             },
         ],
         catatan:
-            'Sepertiga malam terakhir juga disebut sebagai waktu mustajab untuk berdoa (lihat penjelasan di kategori Baca Script Doa).',
+            'Sepertiga malam terakhir juga disebut sebagai waktu mustajab untuk berdoa (lihat penjelasan di kategori Berdoa pada Waktu Mustajab).',
     },
     taubat: {
         ringkasan: 'Sholat 2 rakaat untuk memohon ampunan atas dosa yang telah lalu.',
@@ -797,7 +782,7 @@ Aku tahu, ini adalah cara Allah menyayangiku...`,
     },
 
 
-    // ── Baca Script Doa ──
+    // ── Berdoa pada Waktu Mustajab ──
     doa_setelah_sholat: {
         ringkasan:
             'Salah satu waktu mustajab untuk berdoa: segera setelah sholat wajib, hati lebih tenang dan lebih dekat kepada Allah.',

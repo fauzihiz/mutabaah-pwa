@@ -5,7 +5,7 @@ export type ActivityCategory =
   | 'Interaksi Al Quran'
   | 'Sedekah'
   | 'Membangun Kebiasaan Baik'
-  | 'Baca Script Doa';
+  | 'Berdoa pada Waktu Mustajab';
 
 export interface Activity {
   id: string;
@@ -66,11 +66,11 @@ export const ACTIVITIES: Activity[] = [
   { id: 'mendoakan', name: 'Mendoakan Minimal 5 Orang Lain', category: 'Membangun Kebiasaan Baik' },
   { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Membangun Kebiasaan Baik' },
   
-  // Baca Script Doa
-  { id: 'doa_setelah_sholat', name: 'Waktu Mustajab Setelah Sholat Wajib', category: 'Baca Script Doa' },
-  { id: 'doa_sepertiga_malam', name: 'Waktu Mustajab Pada Sepertiga Malam', category: 'Baca Script Doa' },
-  { id: 'doa_setelah_azan', name: 'Waktu Mustajab Antara Adzan dan Iqomah', category: 'Baca Script Doa' },
-  { id: 'selftalk_berlimpah', name: 'Baca Selftalk Keberlimpahan (Malam)', category: 'Baca Script Doa' },
+  // Berdoa pada Waktu Mustajab
+  { id: 'doa_setelah_sholat', name: 'Waktu Mustajab Setelah Sholat Wajib', category: 'Berdoa pada Waktu Mustajab' },
+  { id: 'doa_sepertiga_malam', name: 'Waktu Mustajab Pada Sepertiga Malam', category: 'Berdoa pada Waktu Mustajab' },
+  { id: 'doa_setelah_azan', name: 'Waktu Mustajab Antara Adzan dan Iqomah', category: 'Berdoa pada Waktu Mustajab' },
+  { id: 'selftalk_berlimpah', name: 'Baca Selftalk Keberlimpahan (Malam)', category: 'Berdoa pada Waktu Mustajab' },
 ];
 
 export const CATEGORIES: ActivityCategory[] = [
@@ -80,5 +80,5 @@ export const CATEGORIES: ActivityCategory[] = [
   'Interaksi Al Quran',
   'Sedekah',
   'Membangun Kebiasaan Baik',
-  'Baca Script Doa',
+  'Berdoa pada Waktu Mustajab',
 ];
