@@ -53,8 +53,8 @@ export function useGoals() {
     /** Tandai tercapai (coret) — klik lagi untuk mengembalikan goal ke aktif. */
     const toggleDone = async (id: number, done: boolean) => {
         const now = Date.now();
-        // modify() dipakai agar doneAt bisa benar-benar dihapus (undefined) saat di-uncheck
-        await db.goals.modify(id, {
+        // update() dipakai agar doneAt bisa benar-benar dihapus (undefined) saat di-uncheck
+        await db.goals.update(id, {
             done,
             doneAt: done ? now : undefined,
             updatedAt: now,
