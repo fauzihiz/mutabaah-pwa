@@ -1,14 +1,18 @@
 'use client';
 
 import { useMemo, useState, useEffect, useRef } from 'react';
-import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
+import { CATEGORIES, type ActivityCategory } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
-import { useActivitySettings } from '@/hooks/useActivitySettings';
 
 interface MutabaahGridProps {
     currentDate: Date;
     logs: ActivityLog[];
     onToggle: (date: string, activityId: string) => void;
+    childId: number;
+    activities: { id: string; name: string; category: ActivityCategory }[];
+    onAddActivity: (name: string, category: ActivityCategory) => Promise<string>;
+    onRenameActivity: (activityId: string, newName: string) => Promise<void>;
+    onDeleteActivity: (activityId: string) => Promise<void>;
 }
 
 /** Build a YYYY-MM-DD string from local date components (timezone-safe). */
@@ -16,11 +20,12 @@ function toLocalDateStr(y: number, m: number, d: number) {
     return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 }
 
-export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps) {
+export function MutabaahGrid({
+    currentDate, logs, onToggle, childId,
+    activities, onAddActivity, onRenameActivity, onDeleteActivity,
+}: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
-
-    const { getActivityName, renameActivity } = useActivitySettings();
 
     // Pre-compute a lookup Map: "date:activityId" → completed — O(1) per cell instead of O(n)
     const logMap = useMemo(() => {
@@ -108,10 +113,31 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
     }, [currentDate, todayStr]); // re-run when month changes or todayStr updates
 
     const handleRename = async (id: string, currentName: string) => {
-        const newName = prompt(`Ganti nama baris ini:`, currentName);
+        const newName = prompt(`Ganti nama aktivitas ini:`, currentName);
         if (newName === null) return; // user pressed Cancel
-        await renameActivity(id, newName);
+        await onRenameActivity(id, newName);
     };
+
+    const handleDelete = async (id: string, name: string) => {
+        if (confirm(`Hapus aktivitas "${name}"? Semua log terkait juga akan dihapus.`)) {
+            await onDeleteActivity(id);
+        }
+    };
+
+    const handleAddActivity = async (category: ActivityCategory) => {
+        const name = prompt(`Masukkan nama aktivitas untuk kategori "${category}":`);
+        if (!name || !name.trim()) return;
+        await onAddActivity(name.trim(), category);
+    };
+
+    // Group activities by category
+    const activitiesByCategory = useMemo(() => {
+        const grouped: Record<string, typeof activities> = {};
+        CATEGORIES.forEach(cat => {
+            grouped[cat] = activities.filter(a => a.category === cat);
+        });
+        return grouped;
+    }, [activities]);
 
     return (
         <div
@@ -132,9 +158,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                 <div className="overflow-y-auto h-full scrollbar-hide pb-24">
                     {CATEGORIES.map(category => (
                         <div key={category}>
-                            {/* Category label */}
+                            {/* Category label with add button */}
                             <div
-                                className="h-7 px-3 flex items-center border-b"
+                                className="h-7 px-3 flex items-center justify-between border-b group"
                                 style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
                             >
                                 <span
@@ -143,23 +169,45 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 >
                                     {category}
                                 </span>
+                                <button
+                                    onClick={() => handleAddActivity(category)}
+                                    className="opacity-60 hover:opacity-100 transition-opacity text-xs font-bold px-1.5 py-0.5 rounded"
+                                    style={{ color: 'var(--primary)' }}
+                                    title="Tambah aktivitas"
+                                >
+                                    +
+                                </button>
                             </div>
 
-                            {ACTIVITIES.filter(a => a.category === category).map(activity => {
-                                const displayName = getActivityName(activity.id);
-
+                            {activitiesByCategory[category].map(activity => {
                                 return (
        <div
                                         key={activity.id}
-                                        className="h-12 px-3 flex items-center border-b group relative"
+                                        className="h-12 px-3 flex items-center justify-between border-b group relative"
                                         style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                                     >
                                         <span
-                                            className="text-[11px] font-semibold leading-tight pr-4"
+                                            className="text-[11px] font-semibold leading-tight pr-1 flex-1"
                                             style={{ color: 'var(--text-secondary)' }}
                                         >
-                                            {displayName}
+                                            {activity.name}
                                         </span>
+                                        <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+                                            <button
+                                                onClick={() => handleRename(activity.id, activity.name)}
+                                                className="text-xs px-1 py-0.5 rounded"
+                                                title="Ganti nama"
+                                            >
+                                                ✏️
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(activity.id, activity.name)}
+                                                className="text-xs px-1 py-0.5 rounded"
+                                                title="Hapus"
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
                                     </div>
                                 );
                             })}
@@ -227,7 +275,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 </div>
 
                                 {/* Rows per activity */}
-                                {ACTIVITIES.filter(a => a.category === category).map(activity => (
+                                {activitiesByCategory[category].map(activity => (
                                     <div
                                         key={activity.id}
                                         className="flex h-12 border-b"

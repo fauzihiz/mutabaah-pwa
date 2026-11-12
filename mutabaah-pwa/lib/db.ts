@@ -1,10 +1,13 @@
 import Dexie, { type Table } from 'dexie';
 
+export type LogStatus = 'done' | 'haid' | 'miss' | 'late';
+
 export interface ActivityLog {
     id?: number;
     date: string; // YYYY-MM-DD
     activityId: string;
     completed: number; // 1 for true, 0 for false (better for indexing)
+    status?: LogStatus; // Extended status for 4-state toggle
     synced: boolean; // Legacy field, kept for schema compatibility
 }
 
@@ -31,6 +34,19 @@ export class MutabaahDatabase extends Dexie {
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             activitySettings: 'activityId',
             planner: '++id, date, synced',
+        });
+        this.version(6).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed, status',
+            activitySettings: 'activityId',
+            planner: '++id, date, synced',
+        }).upgrade(async tx => {
+            // Migrasi data lama (belum punya field status) ke status baru.
+            // completed === 1 → 'done', completed === 0 → dihapus (kosong = belum ada data).
+            await tx.table('logs').toCollection().modify(log => {
+                if (!log.status) {
+                    log.status = log.completed === 1 ? 'done' : 'miss';
+                }
+            });
         });
     }
 }

@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { ACTIVITIES, CATEGORIES, ActivityCategory } from '@/lib/constants/activities';
-import { ActivityLog } from '@/lib/db';
+import { ActivityLog, LogStatus } from '@/lib/db';
 
 export interface CategoryStat {
     name: string;
@@ -18,6 +18,11 @@ export interface ActivityStat {
     count: number;
 }
 
+/** Helper: apakah status dianggap "selesai" */
+function isCompleted(status: LogStatus | undefined): boolean {
+    return status === 'done';
+}
+
 export function useMonthlyStats(year: number, month: number, logs: ActivityLog[] | undefined) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -30,7 +35,7 @@ export function useMonthlyStats(year: number, month: number, logs: ActivityLog[]
 
             const completedCount = logs.filter(log => {
                 const activity = categoryActivities.find(a => a.id === log.activityId);
-                return !!activity && log.completed === 1;
+                return !!activity && isCompleted(log.status);
             }).length;
 
             return {
@@ -42,7 +47,7 @@ export function useMonthlyStats(year: number, month: number, logs: ActivityLog[]
         });
 
         const activityStats: ActivityStat[] = ACTIVITIES.map(activity => {
-            const count = logs.filter(log => log.activityId === activity.id && log.completed === 1).length;
+            const count = logs.filter(log => log.activityId === activity.id && isCompleted(log.status)).length;
             return {
                 id: activity.id,
                 name: activity.name,

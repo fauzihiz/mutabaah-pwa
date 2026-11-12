@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useMutabaahMonth, useChildren } from '@/hooks/useMutabaah';
+import { useCustomActivities } from '@/hooks/useCustomActivities';
 import { useMonthlyStats } from '@/hooks/useMonthlyStats';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
@@ -60,10 +61,17 @@ export default function Dashboard() {
     activeChildId
   );
 
+  // Get child-specific custom activities
+  const { activities, addActivity, renameActivity, deleteActivity } = useCustomActivities(activeChildId);
+
   const stats = useMonthlyStats(
     currentDate.getFullYear(),
     currentDate.getMonth(),
-    logs || []
+    logs || [],
+    activities,
+    addActivity,
+    renameActivity,
+    deleteActivity
   );
 
   return (
@@ -111,6 +119,11 @@ export default function Dashboard() {
               currentDate={currentDate}
               logs={logs || []}
               onToggle={toggleActivity}
+              childId={activeChildId}
+              activities={activities}
+              onAddActivity={addActivity}
+              onRenameActivity={renameActivity}
+              onDeleteActivity={deleteActivity}
             />
           </>
         ) : (

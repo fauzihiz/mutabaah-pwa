@@ -52,20 +52,9 @@ export function useMutabaahMonth(year: number, month: number, childId: number = 
 
     };
 
-    const statsForToday = useMemo(() => {
-        const today = new Date().toLocaleDateString('en-CA');
-        const todayLogs = logs?.filter(l => l.date === today && l.completed === 1) || [];
-        return {
-            completed: todayLogs.length,
-            total: ACTIVITIES.length,
-            percentage: Math.round((todayLogs.length / ACTIVITIES.length) * 100) || 0,
-        };
-    }, [logs]);
-
     return {
         logs,
-        toggleActivity,
-        statsForToday,
+        toggleActivity
     };
 }
 

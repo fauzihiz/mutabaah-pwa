@@ -33,7 +33,7 @@ export default function Dashboard() {
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
   const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
 
-  const { logs, toggleActivity } = useMutabaahMonth(
+  const { logs, setStatus } = useMutabaahMonth(
     currentDate.getFullYear(),
     currentDate.getMonth()
   );
@@ -80,7 +80,7 @@ export default function Dashboard() {
             <MutabaahGrid
               currentDate={currentDate}
               logs={logs || []}
-              onToggle={toggleActivity}
+              onSetStatus={setStatus}
             />
           </>
         ) : (

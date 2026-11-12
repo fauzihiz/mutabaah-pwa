@@ -18,14 +18,28 @@ export interface ActivityStat {
     count: number;
 }
 
-export function useMonthlyStats(year: number, month: number, logs: ActivityLog[] | undefined) {
+export function useMonthlyStats(
+    year: number,
+    month: number,
+    logs: ActivityLog[] | undefined,
+    activities: {
+        id: string;
+        name: string;
+        category: ActivityCategory;
+    }[] | undefined,
+    onAddActivity?: (name: string, category: ActivityCategory) => Promise<string>,
+    onRenameActivity?: (activityId: string, newName: string) => Promise<void>,
+    onDeleteActivity?: (activityId: string) => Promise<void>
+) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     const stats = useMemo(() => {
         if (!logs) return null;
 
+        const resolvedActivities = activities ?? [];
+
         const categoryStats: CategoryStat[] = CATEGORIES.map(category => {
-            const categoryActivities = ACTIVITIES.filter(a => a.category === category);
+            const categoryActivities = resolvedActivities.filter(a => a.category === category);
             const totalTarget = categoryActivities.length * daysInMonth;
 
             const completedCount = logs.filter(log => {
@@ -41,7 +55,7 @@ export function useMonthlyStats(year: number, month: number, logs: ActivityLog[]
             };
         });
 
-        const activityStats: ActivityStat[] = ACTIVITIES.map(activity => {
+        const activityStats: ActivityStat[] = resolvedActivities.map(activity => {
             const count = logs.filter(log => log.activityId === activity.id && log.completed === 1).length;
             return {
                 id: activity.id,
@@ -52,7 +66,7 @@ export function useMonthlyStats(year: number, month: number, logs: ActivityLog[]
         }).sort((a, b) => b.count - a.count);
 
         const totalCompleted = categoryStats.reduce((acc, curr) => acc + curr.completed, 0);
-        const totalTarget = ACTIVITIES.length * daysInMonth;
+        const totalTarget = resolvedActivities.length * daysInMonth;
         const overallPercentage = totalTarget > 0 ? Math.round((totalCompleted / totalTarget) * 100) : 0;
 
         return {
@@ -63,7 +77,7 @@ export function useMonthlyStats(year: number, month: number, logs: ActivityLog[]
             totalTarget,
             daysInMonth
         };
-    }, [logs, year, month, daysInMonth]);
+    }, [logs, activities, year, month, daysInMonth]);
 
     return stats;
 }

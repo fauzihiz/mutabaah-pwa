@@ -5,7 +5,8 @@ export type ActivityCategory =
   | 'Zikir Harian'
   | 'Interaksi Al Quran'
   | 'Ibadah Lainnya'
-  | 'Aktivitas Mandiri';
+  | 'Amalan Unggulan'
+  | 'Aktivitas Ramadhan';
 
 export interface Activity {
   id: string;
@@ -57,17 +58,27 @@ export const ACTIVITIES: Activity[] = [
   { id: 'mendoakan', name: 'Mendoakan Orang lain di jalan', category: 'Ibadah Lainnya' },
   { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
 
-  // Aktivitas Mandiri (Custom Slots)
-  { id: 'custom_1', name: 'Aktivitas Kustom 1', category: 'Aktivitas Mandiri' },
-  { id: 'custom_2', name: 'Aktivitas Kustom 2', category: 'Aktivitas Mandiri' },
-  { id: 'custom_3', name: 'Aktivitas Kustom 3', category: 'Aktivitas Mandiri' },
-  { id: 'custom_4', name: 'Aktivitas Kustom 4', category: 'Aktivitas Mandiri' },
-  { id: 'custom_5', name: 'Aktivitas Kustom 5', category: 'Aktivitas Mandiri' },
-  { id: 'custom_6', name: 'Aktivitas Kustom 6', category: 'Aktivitas Mandiri' },
-  { id: 'custom_7', name: 'Aktivitas Kustom 7', category: 'Aktivitas Mandiri' },
-  { id: 'custom_8', name: 'Aktivitas Kustom 8', category: 'Aktivitas Mandiri' },
-  { id: 'custom_9', name: 'Aktivitas Kustom 9', category: 'Aktivitas Mandiri' },
-  { id: 'custom_10', name: 'Aktivitas Kustom 10', category: 'Aktivitas Mandiri' },
+  // Aktivitas Ramadhan
+  { id: 'kajian', name: 'Mengikuti atau Mendengarkan Kajian Ilmu', category: 'Aktivitas Ramadhan' },
+  { id: 'doa_sahur', name: 'Memperbanyak Doa Saat Sahur', category: 'Aktivitas Ramadhan' },
+  { id: 'doa_berbuka', name: 'Memperbanyak Doa Menjelang Berbuka', category: 'Aktivitas Ramadhan' },
+  { id: 'sedekah_berbuka', name: 'Bersedekah Makanan Berbuka', category: 'Aktivitas Ramadhan' },
+  { id: 'menjaga_lisan', name: 'Menjaga Lisan', category: 'Aktivitas Ramadhan' },
+  { id: 'menahan_amarah', name: 'Menahan Amarah', category: 'Aktivitas Ramadhan' },
+  { id: 'menghindari_ghibah', name: 'Menghindari Ghibah', category: 'Aktivitas Ramadhan' },
+
+  // Amalan Unggulan (pilih satu amalan yang ingin dijaga secara istiqamah)
+  { id: 'istigfar', name: 'Memperbanyak Istigfar', category: 'Amalan Unggulan' },
+  { id: 'selawat', name: 'Memperbanyak Selawat', category: 'Amalan Unggulan' },
+  { id: 'sedekah_subuh', name: 'Sedekah Subuh', category: 'Amalan Unggulan' },
+  { id: 'zikir_pagi_petang', name: 'Zikir Pagi dan Petang', category: 'Amalan Unggulan' },
+  { id: 'tahajud_unggulan', name: 'Salat Tahajud', category: 'Amalan Unggulan' },
+  { id: 'duha', name: 'Salat Duha', category: 'Amalan Unggulan' },
+  { id: 'tilawah_harian', name: "Membaca Al-Qur'an Setiap Hari", category: 'Amalan Unggulan' },
+  { id: 'al_mulk_malam', name: 'Membaca Surah Al-Mulk Setiap Malam', category: 'Amalan Unggulan' },
+  { id: 'ayat_kursi', name: 'Membaca Ayat Kursi Setelah Salat Wajib', category: 'Amalan Unggulan' },
+  { id: 'tasbih_tidur', name: 'Membaca Tasbih, Tahmid, dan Takbir Sebelum Tidur', category: 'Amalan Unggulan' },
+  { id: 'bersyukur', name: 'Membiasakan Bersyukur', category: 'Amalan Unggulan' },
 ];
 
 export const CATEGORIES: ActivityCategory[] = [
@@ -77,5 +88,6 @@ export const CATEGORIES: ActivityCategory[] = [
   'Zikir Harian',
   'Interaksi Al Quran',
   'Ibadah Lainnya',
-  'Aktivitas Mandiri',
+  'Aktivitas Ramadhan',
+  'Amalan Unggulan',
 ];

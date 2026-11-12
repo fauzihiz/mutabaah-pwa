@@ -19,6 +19,13 @@ export interface ActivitySetting {
     customName: string;
 }
 
+export interface CustomActivity {
+    id?: number;
+    childId: number;
+    name: string;
+    category: string; // one of the 10 ActivityCategory values
+}
+
 export interface PlannerNote {
     id?: number;
     date: string; // YYYY-MM-DD
@@ -31,6 +38,7 @@ export class MutabaahDatabase extends Dexie {
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
     children!: Table<Child>;
+    customActivities!: Table<CustomActivity, number>;
 
     constructor() {
         super('MutabaahDB');
@@ -52,6 +60,10 @@ export class MutabaahDatabase extends Dexie {
                 }
             });
         });
+        // Version 7: add customActivities table
+        this.version(7).stores({
+            customActivities: '++id, childId, [childId+category+name]',
+        });
     }
 }
 
@@ -66,5 +78,6 @@ export async function resetAllData(): Promise<void> {
     await db.activitySettings.clear();
     await db.planner.clear();
     await db.children.clear();
+    await db.customActivities.clear();
     localStorage.removeItem('greetingName');
 }
