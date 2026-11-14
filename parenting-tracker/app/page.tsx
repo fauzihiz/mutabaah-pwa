@@ -55,7 +55,7 @@ export default function Dashboard() {
     }
   }, [children, activeChildId, addChild]);
 
-  const { logs, toggleActivity } = useMutabaahMonth(
+  const { logs, setSticker } = useMutabaahMonth(
     currentDate.getFullYear(),
     currentDate.getMonth(),
     activeChildId
@@ -118,7 +118,7 @@ export default function Dashboard() {
             <MutabaahGrid
               currentDate={currentDate}
               logs={logs || []}
-              onToggle={toggleActivity}
+              onToggle={setSticker}
               childId={activeChildId}
               activities={activities}
               onAddActivity={addActivity}

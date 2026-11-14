@@ -12,7 +12,7 @@ function toLocal(date: Date): string {
 
 // --- Max consecutive streak within a given set of dated logs ---
 function maxStreak(logs: ActivityLog[]): number {
-    const dates = Array.from(new Set(logs.filter(l => l.completed === 1).map(l => l.date))).sort();
+    const dates = Array.from(new Set(logs.filter(l => l.stickerValue > 0).map(l => l.date))).sort();
     if (dates.length === 0) return 0;
 
     let best = 1, run = 1;
@@ -60,9 +60,9 @@ export function useMonthlyAchievements(year: number, month: number) {
                 const sub = monthLogs.filter(l => l.activityId === rule.target_activity_id);
                 current = maxStreak(sub);
             } else if (rule.condition_type === 'total_count') {
-                current = monthLogs.filter(l => l.completed === 1).length;
+                current = monthLogs.filter(l => l.stickerValue > 0).length;
             } else if (rule.condition_type === 'activity_count') {
-                current = monthLogs.filter(l => l.activityId === rule.target_activity_id && l.completed === 1).length;
+                current = monthLogs.filter(l => l.activityId === rule.target_activity_id && l.stickerValue > 0).length;
             }
 
             const earned = current >= rule.threshold;

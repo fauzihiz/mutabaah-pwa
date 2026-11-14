@@ -3,7 +3,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, ActivityLog } from '@/lib/db';
 import { ACTIVITIES } from '@/lib/constants/activities';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export function useChildren() {
     const children = useLiveQuery(() => db.children.toArray());
@@ -24,6 +24,58 @@ export function useChildren() {
     return { children, addChild, updateChild, removeChild };
 }
 
+/**
+ * Hook for managing supporting stickers (7-10) per activity per child.
+ * Returns a Map: activityId -> array of active flag values (e.g. [7, 10]).
+ * toggleFlag adds/removes a flag for a given activity.
+ */
+export function useActivityFlags(childId: number) {
+    const [flags, setFlags] = useState<Map<string, number[]>>(new Map());
+
+    const flagsArray = useLiveQuery(() =>
+        db.flags.where('childId').equals(childId).toArray(),
+        [childId]
+    );
+
+    // Build the flags map whenever the live query result changes
+    useEffect(() => {
+        const map = new Map<string, number[]>();
+        for (const f of flagsArray ?? []) {
+            const existing = map.get(f.activityId) ?? [];
+            if (!existing.includes(f.flag)) {
+                existing.push(f.flag);
+            }
+            map.set(f.activityId, existing);
+        }
+        setFlags(map);
+    }, [flagsArray, childId]);
+
+    const toggleFlag = async (activityId: string, flag: number) => {
+        const existingFlags = flags.get(activityId) ?? [];
+        if (existingFlags.includes(flag)) {
+            // Remove flag
+            await db.flags.where({ activityId, flag, childId }).delete();
+            setFlags(prev => {
+                const next = new Map(prev);
+                const updated = next.get(activityId)?.filter(f => f !== flag) ?? [];
+                next.set(activityId, updated);
+                return next;
+            });
+        } else {
+            // Add flag
+            await db.flags.add({ activityId, flag, childId });
+            setFlags(prev => {
+                const next = new Map(prev);
+                const updated = [...(next.get(activityId) ?? []), flag];
+                next.set(activityId, updated);
+                return next;
+            });
+        }
+    };
+
+    return { flags, toggleFlag };
+}
+
 export function useMutabaahMonth(year: number, month: number, childId: number = 1) {
     const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
     const endDate = `${year}-${String(month + 1).padStart(2, '0')}-31`;
@@ -35,31 +87,37 @@ export function useMutabaahMonth(year: number, month: number, childId: number = 
         [year, month, childId]
     );
 
-    const toggleActivity = async (date: string, activityId: string) => {
+    const setSticker = async (date: string, activityId: string, stickerValue: number) => {
         const existing = await db.logs.where({ date, activityId, childId }).first();
 
         if (existing) {
-            await db.logs.update(existing.id!, { completed: existing.completed ? 0 : 1 });
+            if (stickerValue === 0) {
+                // Remove the log entry entirely when clearing
+                await db.logs.delete(existing.id!);
+            } else {
+                await db.logs.update(existing.id!, { stickerValue });
+            }
         } else {
-            await db.logs.add({
-                date,
-                activityId,
-                completed: 1,
-                synced: false,
-                childId
-            });
+            if (stickerValue > 0) {
+                await db.logs.add({
+                    date,
+                    activityId,
+                    stickerValue,
+                    synced: false,
+                    childId
+                });
+            }
         }
-
     };
 
     return {
         logs,
-        toggleActivity
+        setSticker
     };
 }
 
 export function useStreak(childId: number = 1) {
-    const allLogs = useLiveQuery(() => db.logs.where('completed').equals(1).filter(log => log.childId === childId).toArray(), [childId]);
+    const allLogs = useLiveQuery(() => db.logs.where('stickerValue').above(0).filter(log => log.childId === childId).toArray(), [childId]);
 
     const streak = useMemo(() => {
         if (!allLogs || allLogs.length === 0) return 0;

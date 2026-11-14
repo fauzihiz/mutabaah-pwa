@@ -3,11 +3,13 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { CATEGORIES, type ActivityCategory } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
+import { ActivityDropdown } from './ActivityDropdown';
+import { getSupportingStickers, getStickerOption } from '@/lib/constants/stickers';
 
 interface MutabaahGridProps {
     currentDate: Date;
     logs: ActivityLog[];
-    onToggle: (date: string, activityId: string) => void;
+    onToggle: (date: string, activityId: string, stickerValue: number) => void;
     childId: number;
     activities: { id: string; name: string; category: ActivityCategory }[];
     onAddActivity: (name: string, category: ActivityCategory) => Promise<string>;
@@ -27,11 +29,11 @@ export function MutabaahGrid({
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
 
-    // Pre-compute a lookup Map: "date:activityId" → completed — O(1) per cell instead of O(n)
+    // Pre-compute a lookup Map: "date:activityId" → stickerValue — O(1) per cell instead of O(n)
     const logMap = useMemo(() => {
-        const m = new Map<string, boolean>();
+        const m = new Map<string, number>();
         for (const l of logs) {
-            m.set(`${l.date}:${l.activityId}`, l.completed === 1);
+            m.set(`${l.date}:${l.activityId}`, l.stickerValue ?? 0);
         }
         return m;
     }, [logs]);
@@ -82,6 +84,101 @@ export function MutabaahGrid({
         const d = String(day).padStart(2, '0');
         return `${y}-${m}-${d}`;
     };
+
+    // ── Supporting stickers state ──
+    // activityId → array of flag values (7-10)
+    const [activityFlags, setActivityFlags] = useState<Record<string, number[]>>({});
+
+    // Persist flags to localStorage so they survive navigation
+    useEffect(() => {
+        try {
+            const raw = localStorage.getItem(`flags:${childId}:${currentDate.getFullYear()}:${currentDate.getMonth()}`);
+            if (raw) setActivityFlags(JSON.parse(raw));
+        } catch { /* ignore */ }
+    }, [childId, currentDate]);
+
+    const toggleFlag = (activityId: string, flag: number) => {
+        setActivityFlags(prev => {
+            const arr = prev[activityId] ?? [];
+            const next = arr.includes(flag) ? arr.filter(f => f !== flag) : [...arr, flag];
+            const updated = { ...prev, [activityId]: next };
+            try {
+                localStorage.setItem(`flags:${childId}:${currentDate.getFullYear()}:${currentDate.getMonth()}`, JSON.stringify(updated));
+            } catch { /* ignore */ }
+            return updated;
+        });
+    };
+
+    // ── Supporting stickers context menu state ──
+    const [showSupportingMenu, setShowSupportingMenu] = useState(false);
+    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+    const [targetActivity, setTargetActivity] = useState<string | null>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
+    const rowRef = useRef<HTMLElement>(null);
+
+    const openSupportingMenu = (activityId: string, anchor: HTMLElement | null) => {
+        if (anchor) rowRef.current = anchor;
+        const rect = anchor?.getBoundingClientRect();
+        if (!rect) return;
+        const menuWidth = 224;
+        const menuHeight = 320;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        let left = rect.left + rect.width / 2 - menuWidth / 2;
+        let top = rect.bottom + 8;
+        if (left < 8) left = 8;
+        if (left + menuWidth > vw - 8) left = Math.max(8, vw - menuWidth - 8);
+        if (top + menuHeight > vh - 8) {
+            top = Math.max(8, rect.top - menuHeight - 8);
+        }
+        setMenuPosition({ x: left, y: top });
+        setTargetActivity(activityId);
+        setShowSupportingMenu(true);
+    };
+
+    const handleLongPress = (e: React.MouseEvent, activityId: string, anchor: HTMLElement) => {
+        e.preventDefault();
+        openSupportingMenu(activityId, anchor);
+    };
+
+    // Close menu on outside click
+    useEffect(() => {
+        if (!showSupportingMenu) return;
+        const onDown = (e: PointerEvent) => {
+            if (menuRef.current && menuRef.current.contains(e.target as Node)) return;
+            setShowSupportingMenu(false);
+        };
+        document.addEventListener('pointerdown', onDown);
+        return () => document.removeEventListener('pointerdown', onDown);
+    }, [showSupportingMenu]);
+
+    // Recompute menu position on scroll/resize to keep it anchored to the row
+    useEffect(() => {
+        if (!showSupportingMenu || !targetActivity) return;
+        const el = rowRef.current;
+        if (!el) return;
+        const update = () => {
+            const rect = el.getBoundingClientRect();
+            if (!rect.width) return;
+            const menuWidth = 224;
+            const menuHeight = 320;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            let left = rect.left + rect.width / 2 - menuWidth / 2;
+            let top = rect.bottom + 8;
+            if (left < 8) left = 8;
+            if (left + menuWidth > vw - 8) left = Math.max(8, vw - menuWidth - 8);
+            if (top + menuHeight > vh - 8) top = Math.max(8, rect.top - menuHeight - 8);
+            setMenuPosition({ x: left, y: top });
+        };
+        update();
+        window.addEventListener('scroll', update, true);
+        window.addEventListener('resize', update);
+        return () => {
+            window.removeEventListener('scroll', update, true);
+            window.removeEventListener('resize', update);
+        };
+    }, [showSupportingMenu, targetActivity]);
 
     const isToday = (day: number) =>
         !!today &&
@@ -181,33 +278,83 @@ export function MutabaahGrid({
 
                             {activitiesByCategory[category].map(activity => {
                                 return (
-       <div
+                                    <div
                                         key={activity.id}
-                                        className="h-12 px-3 flex items-center justify-between border-b group relative"
-                                        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
+                                        className="relative flex flex-col gap-1 border-b group"
+                                        style={{ background: "var(--bg-surface)", borderColor: "var(--border)", cursor: "pointer" }}
+                                        onPointerDown={(e) => {
+                                            if (e.pointerType === "mouse") return;
+                                            const anchor = e.currentTarget as HTMLElement;
+                                            const timer = setTimeout(() => handleLongPress(e, activity.id, anchor), 500);
+                                            (e.target as HTMLElement).dataset.longpressTimer = String(timer);
+                                        }}
+                                        onPointerUp={(e) => {
+                                            const t = (e.target as HTMLElement).dataset.longpressTimer;
+                                            if (t) { clearTimeout(Number(t)); delete (e.target as HTMLElement).dataset.longpressTimer; }
+                                        }}
+                                        onPointerLeave={(e) => {
+                                            const t = (e.target as HTMLElement).dataset.longpressTimer;
+                                            if (t) { clearTimeout(Number(t)); delete (e.target as HTMLElement).dataset.longpressTimer; }
+                                        }}
+                                        onClick={(e) => {
+                                            if (targetActivity === activity.id) {
+                                                setShowSupportingMenu(false);
+                                                setTargetActivity(null);
+                                            } else {
+                                                openSupportingMenu(activity.id, e.currentTarget as HTMLElement);
+                                            }
+                                        }}
                                     >
-                                        <span
-                                            className="text-[11px] font-semibold leading-tight pr-1 flex-1"
-                                            style={{ color: 'var(--text-secondary)' }}
-                                        >
-                                            {activity.name}
-                                        </span>
-                                        <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
-                                            <button
-                                                onClick={() => handleRename(activity.id, activity.name)}
-                                                className="text-xs px-1 py-0.5 rounded"
-                                                title="Ganti nama"
+                                        {/* Row 1: activity name + buttons */}
+                                        <div className="h-12 px-3 flex items-center justify-between">
+                                            <span
+                                                className="text-[11px] font-semibold leading-tight truncate"
+                                                style={{ color: "var(--text-secondary)" }}
                                             >
-                                                ✏️
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(activity.id, activity.name)}
-                                                className="text-xs px-1 py-0.5 rounded"
-                                                title="Hapus"
+                                                {activity.name}
+                                            </span>
+                                            <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-0.5"
+                                                onClick={(e) => e.stopPropagation()}
                                             >
-                                                🗑️
-                                            </button>
+                                                <button
+                                                    onClick={() => handleRename(activity.id, activity.name)}
+                                                    className="text-xs px-1 py-0.5 rounded"
+                                                    title="Ganti nama"
+                                                >
+                                                    ✏️
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(activity.id, activity.name)}
+                                                    className="text-xs px-1 py-0.5 rounded"
+                                                    title="Hapus"
+                                                >
+                                                    🗑️
+                                                </button>
+                                            </div>
                                         </div>
+
+                                        {/* Row 2: supporting stickers, only rendered when any are selected */}
+                                        {(() => {
+                                            const flags = activityFlags[activity.id] ?? [];
+                                            if (flags.length === 0) return null;
+                                            return (
+                                                <div className="flex items-center gap-0.5">
+                                                    {flags.map(flag => {
+                                                        const sticker = getStickerOption(flag);
+                                                        if (!sticker) return null;
+                                                        return (
+                                                            <span
+                                                                key={sticker.value}
+                                                                className="w-5 h-5 rounded-md flex items-center justify-center text-[11px] bg-blue-100 dark:bg-blue-900/40 border border-blue-300 dark:border-blue-700"
+                                                                title={sticker.label + " — " + sticker.description}
+                                                            >
+                                                                {sticker.icon}
+                                                            </span>
+                                                        );
+                                                    })}
+                                                </div>
+                                            );
+                                        })()}
                                     </div>
                                 );
                             })}
@@ -296,23 +443,11 @@ export function MutabaahGrid({
                                                         background: _today ? 'var(--primary-light)' : 'transparent',
                                                     }}
                                                 >
-                                                    <button
+                                                    <ActivityDropdown
+                                                        value={logMap.get(`${dateStr}:${activity.id}`) ?? 0}
                                                         disabled={locked}
-                                                        onClick={() => onToggle(dateStr, activity.id)}
-                                                        className={[
-                                                            'w-6 h-6 rounded-lg flex items-center justify-center transition-all active:scale-90',
-                                                            completed ? 'bg-green-600 text-white shadow-sm shadow-green-300 dark:shadow-green-900/30' : 'border hover:border-green-400 dark:hover:border-green-500',
-                                                            locked ? 'cursor-not-allowed opacity-40' : '',
-                                                        ].join(' ')}
-                                                        style={!completed ? { borderColor: 'var(--border)', background: 'var(--bg-subtle)' } : undefined}
-                                                    >
-                                                        {locked
-                                                            ? <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                            : completed
-                                                                ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                                                : null
-                                                        }
-                                                    </button>
+                                                        onChange={(newValue) => onToggle(dateStr, activity.id, newValue)}
+                                                    />
                                                 </div>
                                             );
                                         })}
@@ -324,6 +459,70 @@ export function MutabaahGrid({
 
                 </div>
             </div>
+            {/* Supporting stickers popover */}
+            {showSupportingMenu && targetActivity && (
+                <div
+                    ref={menuRef}
+                    style={{
+                        position: 'fixed',
+                        left: menuPosition.x,
+                        top: menuPosition.y,
+                        zIndex: 9999,
+                        pointerEvents: 'auto',
+                        maxHeight: 'min(60vh, 320px)',
+                        overflowY: 'auto',
+                    }}
+                    className="bg-white dark:bg-slate-900 border rounded-2xl shadow-xl p-2 space-y-2 w-56 max-w-[80vw]"
+                >
+                    <div className="space-y-1">
+                        {getSupportingStickers().map(sticker => {
+                            const isActive = (activityFlags[targetActivity] ?? []).includes(sticker.value);
+                            return (
+                                <button
+                                    key={sticker.value}
+                                    onClick={() => toggleFlag(targetActivity, sticker.value)}
+                                    className={[
+                                        'w-full text-left px-3 py-2 rounded-lg transition-colors flex items-start gap-2',
+                                        isActive ? 'bg-blue-100 dark:bg-blue-900/30' : 'hover:bg-slate-100 dark:hover:bg-slate-800',
+                                    ].join(' ')}
+                                >
+                                    <span
+                                        className={[
+                                            'w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 text-base',
+                                            isActive ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-slate-700',
+                                        ].join(' ')}
+                                    >
+                                        {sticker.icon}
+                                    </span>
+                                    <span className="flex-1 min-w-0">
+                                        <span className="block text-xs font-bold text-slate-700 dark:text-slate-200 leading-tight">
+                                            {sticker.label}
+                                        </span>
+                                        <span className="block text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                                            {sticker.description}
+                                        </span>
+                                    </span>
+                                    {isActive && (
+                                        <svg
+                                            width="14"
+                                            height="14"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="3"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="text-blue-600 flex-shrink-0 mt-1"
+                                        >
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg>
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

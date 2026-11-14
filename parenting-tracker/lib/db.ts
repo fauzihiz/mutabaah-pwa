@@ -9,7 +9,7 @@ export interface ActivityLog {
     id?: number;
     date: string; // YYYY-MM-DD
     activityId: string;
-    completed: number; // 1 for true, 0 for false (better for indexing)
+    stickerValue: number; // 0 = empty, 1-6 = primary, 7-10 = supporting
     synced: boolean; // Legacy field, kept for schema compatibility
     childId?: number; // Optional for backward compatibility
 }
@@ -33,12 +33,20 @@ export interface PlannerNote {
     synced: boolean;
 }
 
+export interface ActivityFlag {
+    id?: number;
+    activityId: string;
+    flag: number; // 7-10 (supporting sticker value)
+    childId: number;
+}
+
 export class MutabaahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
     children!: Table<Child>;
     customActivities!: Table<CustomActivity, number>;
+    flags!: Table<ActivityFlag>;
 
     constructor() {
         super('MutabaahDB');
@@ -64,6 +72,35 @@ export class MutabaahDatabase extends Dexie {
         this.version(7).stores({
             customActivities: '++id, childId, [childId+category+name]',
         });
+        // Version 8: replace `completed` with `stickerValue` (0 = empty, 1-10 = stickers)
+        this.version(8).stores({
+            logs: '++id, [date+activityId+childId], date, activityId, synced, stickerValue, childId',
+        }).upgrade(tx => {
+            return tx.table('logs').toCollection().modify(log => {
+                // Migrate legacy `completed` flag to the new sticker code.
+                // completed === 1 → "SUDAH BISA" (1); everything else → empty (0).
+                if (log.stickerValue === undefined) {
+                    log.stickerValue = log.completed === 1 ? 1 : 0;
+                }
+                delete log.completed;
+            });
+        });
+        // Version 9: add flags table for supporting stickers (7-10)
+        this.version(9).stores({
+            flags: '++id, [activityId+flag+childId], activityId, flag, childId',
+        }).upgrade(tx => {
+            // Migrate old supporting sticker data (7-10) from logs to flags table
+            return tx.table('logs').toCollection().modify(log => {
+                if (log.stickerValue >= 7 && log.stickerValue <= 10) {
+                    const flag = log.stickerValue;
+                    tx.table('flags').add({
+                        activityId: log.activityId,
+                        flag,
+                        childId: log.childId
+                    });
+                }
+            });
+        });
     }
 }
 
@@ -79,5 +116,6 @@ export async function resetAllData(): Promise<void> {
     await db.planner.clear();
     await db.children.clear();
     await db.customActivities.clear();
+    await db.flags.clear();
     localStorage.removeItem('greetingName');
 }

@@ -44,7 +44,7 @@ export function useMonthlyStats(
 
             const completedCount = logs.filter(log => {
                 const activity = categoryActivities.find(a => a.id === log.activityId);
-                return !!activity && log.completed === 1;
+                return !!activity && log.stickerValue >= 1 && log.stickerValue <= 6;
             }).length;
 
             return {
@@ -56,7 +56,7 @@ export function useMonthlyStats(
         });
 
         const activityStats: ActivityStat[] = resolvedActivities.map(activity => {
-            const count = logs.filter(log => log.activityId === activity.id && log.completed === 1).length;
+            const count = logs.filter(log => log.activityId === activity.id && log.stickerValue >= 1 && log.stickerValue <= 6).length;
             return {
                 id: activity.id,
                 name: activity.name,
