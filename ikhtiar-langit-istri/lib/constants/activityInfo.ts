@@ -721,20 +721,25 @@ Aku tahu, ini adalah cara Allah menyayangiku...`,
             'Niat adalah fondasi setiap amal — amalan yang lurus niatnya akan diterima dan dilipatgandakan oleh Allah, sekalipun kecil di mata manusia.',
             'Membaca script niat secara berkala menegaskan kembali arah hidup: setiap amalan sehari-hari — sholat, mengurus rumah, mendidik anak, melayani suami — bernilai ibadah ketika diniatkan karena Allah.',
         ],
+        bacaan:
+`Ya Allah, luruskanlah selalu niatku dalam setiap aktivitas dan amalan yang aku lakukan, baik yang telah berlalu maupun yang akan datang.
+
+Jadikan setiap langkah, usaha, dan kebaikan yang aku kerjakan bernilai ibadah dan menjadi pahala di sisi-Mu. Jika masih ada niat yang keliru atau kekurangan dalam amalanku, ampunilah dan bimbinglah aku untuk terus memperbaikinya.
+
+Ya Allah, berkahilah setiap amalan dan ikhtiarku. Dengan ketaatan dan usahaku untuk mendekatkan diri kepada-Mu, mudahkanlah jalan rezekiku dan suami, lapangkanlah urusan kami, dan cukupkanlah kebutuhan keluarga kami.
+
+Mudahkanlah aku dan suami dalam memenuhi kebutuhan anak-anak, membiayai pendidikan mereka, memberikan makanan yang halal dan baik, serta menghadirkan kehidupan yang penuh keberkahan bagi keluarga kami.
+
+Ya Allah, jadikanlah aku hamba yang senantiasa taat dan bersyukur atas segala nikmat-Mu. Jangan palingkan hatiku dari-Mu setelah Engkau kabulkan segala doa dan harapanku. Karuniakanlah kepadaku kebaikan di dunia dan di akhirat, serta lindungilah aku dari azab api neraka.
+
+Aamiin ya Rabbal 'alamin.`,
         dalil: [
-            {
-                arab: 'قَالَ إِنِّي عَبْدُ اللَّهِ ۖ أَنْزَلَنِيَ الْكِتَابَ وَجَعَلَنِي نَبِيًّا ۖ وَجَعَلَنِي مُبَارَكًا أَيْنَ مَا كُنْتُ وَأَوْصَانِي بِالصَّلَاةِ وَالزَّكَاةِ مَا دُمْتُ حَيًّا',
-                arti: '"Dia (Nabi Isa) berkata: Sesungguhnya aku hamba Allah. Dia menurunkan Al-Kitab (Injil) kepadaku dan Dia menjadikan aku seorang nabi. Dan Dia menjadikan aku seorang yang diberkahi di mana saja aku berada, dan Dia memerintahkan kepadaku (mendirikan) sholat dan (menunaikan) zakat selama aku hidup."',
-                sumber: 'QS. Maryam: 30-31',
-            },
             {
                 arab: 'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى',
                 arti: '"Sesungguhnya setiap amal tergantung pada niatnya, dan sesungguhnya setiap orang akan mendapatkan sesuai apa yang dia niatkan."',
                 sumber: 'HR. Bukhari no. 1, Muslim no. 1907',
             },
         ],
-        catatan:
-            'Baca perlahan sambil meresapi setiap kalimat — pastikan niat lurus sebelum memulai amalan hari ini. Waktu terbaik: pagi hari sebelum memulai kegiatan, atau malam hari sebelum tidur.',
     },
     tidur_awal: {
         ringkasan:
@@ -883,6 +888,7 @@ baru baca perlahan penuh kesadaran`,
         ringkasan:
             "Membaca Surah Al-Waqi'ah — surah yang penuh peringatan tentang kebangkitan, keabadian, dan rezeki dari Allah.",
         keutamaan: [
+            "Keutamaan berdasarkan QS. Al-Waqi'ah: 57–74:",
             "Mengingat kebesaran dan kekuasaan Allah.",
             "Merenungi nikmat kehidupan dan rezeki dari Allah.",
             "Menumbuhkan rasa syukur atas nikmat Allah.",
