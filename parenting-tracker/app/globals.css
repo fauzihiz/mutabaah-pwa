@@ -20,38 +20,60 @@
 
 /* ─── Light Mode ─────────────────────────────── */
 :root {
-  --bg-base: #FAF5E8;
-  --bg-surface: #FFFDF8;
-  --bg-subtle: #F1EBD9;
-  --border: #DADBCB;
-  --text-primary: #4C6752;
-  --text-secondary: #6F746B;
-  --text-muted: #9BAE94;
-  --primary: #4C6752;
-  --primary-light: #9BAE94;
-  --accent-pink: #D39991;
-  --accent-terracotta: #AD6F57;
-  --accent-gold: #F5C074;
-  --accent-blue: #7691AF;
-  --dark-text: #644136;
+  /* Background - warm neutral base */
+  --bg-base: #FDFCF8;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F5F3EF;
+  
+  /* Borders - higher contrast */
+  --border: #C8C5BE;
+  
+  /* Text - high contrast for readability */
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --text-muted: #7A7A7A;
+  
+  /* Primary - Triadic Green Emerald */
+  --primary: #059669;
+  --primary-light: #D1FAE5;
+  
+  /* Accent colors - Triadic harmony */
+  --accent-pink: #DC2626;      /* Coral Red (Triadic point 1) */
+  --accent-terracotta: #EA580C; /* Orange (Triadic point 2) */
+  --accent-gold: #F59E0B;       /* Golden Amber */
+  --accent-blue: #7C3AED;       /* Violet Purple (Triadic point 3) */
+  
+  /* Dark text for special use */
+  --dark-text: #0F0F0F;
 }
 
 /* ─── Dark Mode ──────────────────────────────── */
 :root.dark {
-  --bg-base: #2B352E;
-  --bg-surface: #36423A;
-  --bg-subtle: #415046;
-  --border: #4C6752;
-  --text-primary: #FAF5E8;
-  --text-secondary: #9BAE94;
-  --text-muted: #6F746B;
-  --primary: #9BAE94;
-  --primary-light: #4C6752;
-  --accent-pink: #D39991;
-  --accent-terracotta: #AD6F57;
-  --accent-gold: #F5C074;
-  --accent-blue: #7691AF;
-  --dark-text: #FFFDF8;
+  /* Background - deep dark */
+  --bg-base: #0F0F0F;
+  --bg-surface: #1A1A1A;
+  --bg-subtle: #2A2A2A;
+  
+  /* Borders - visible contrast */
+  --border: #4A4A4A;
+  
+  /* Text - high contrast for readability */
+  --text-primary: #FFFFFF;
+  --text-secondary: #C8C8C8;
+  --text-muted: #9A9A9A;
+  
+  /* Primary - Triadic Green Emerald (lighter for dark mode) */
+  --primary: #10B981;
+  --primary-light: #064E3B;
+  
+  /* Accent colors - Triadic harmony (adjusted for dark) */
+  --accent-pink: #EF4444;      /* Coral Red */
+  --accent-terracotta: #F97316; /* Orange */
+  --accent-gold: #FBBF24;       /* Golden Amber */
+  --accent-blue: #A855F7;       /* Violet Purple */
+  
+  /* Dark text for special use */
+  --dark-text: #FFFFFF;
 }
 
 * {

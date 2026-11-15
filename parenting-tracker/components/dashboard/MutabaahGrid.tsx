@@ -244,7 +244,7 @@ export function MutabaahGrid({
         >
             {/* ── LEFT: static activity names ── */}
             <div
-                className="w-36 flex-shrink-0 border-r z-20"
+                className="w-44 flex-shrink-0 border-r z-20"
                 style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
             >
                 {/* empty top-left corner */}
@@ -262,7 +262,7 @@ export function MutabaahGrid({
                                 style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
                             >
                                 <span
-                                    className="text-[9px] font-black uppercase tracking-tighter truncate"
+                                    className="text-[9px] font-black uppercase tracking-tighter break-words flex-1 mr-2 leading-tight"
                                     style={{ color: 'var(--text-muted)' }}
                                 >
                                     {category}
@@ -307,14 +307,14 @@ export function MutabaahGrid({
                                         }}
                                     >
                                         {/* Row 1: activity name + buttons */}
-                                        <div className="h-12 px-3 flex items-center justify-between">
+                                        <div className="min-h-12 px-3 py-2 flex items-start justify-between gap-1">
                                             <span
-                                                className="text-[11px] font-semibold leading-tight truncate"
+                                                className="text-[11px] font-semibold leading-snug break-words flex-1"
                                                 style={{ color: "var(--text-secondary)" }}
                                             >
                                                 {activity.name}
                                             </span>
-                                            <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-0.5"
+                                            <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-0.5 flex-shrink-0"
                                                 onClick={(e) => e.stopPropagation()}
                                             >
                                                 <button
@@ -426,7 +426,7 @@ export function MutabaahGrid({
                                 {activitiesByCategory[category].map(activity => (
                                     <div
                                         key={activity.id}
-                                        className="flex h-12 border-b"
+                                        className="flex min-h-12 border-b"
                                         style={{ borderColor: 'var(--border)' }}
                                     >
                                         {days.map(day => {
