@@ -1,7 +1,7 @@
 {
-  "name": "Menata Pikiran",
-  "short_name": "Menata",
-  "description": "Aplikasi untuk menata pikiran dan mengelola aktivitas harian dengan tenang",
+  "name": "Action Plan",
+  "short_name": "Action",
+  "description": "Aplikasi untuk membuat rencana aksi dan mengelola aktivitas harian dengan tenang",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

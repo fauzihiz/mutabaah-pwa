@@ -1,6 +1,6 @@
-# Menata Pikiran
+# Action Plan
 
-Aplikasi untuk menata pikiran dan mengelola aktivitas harian dengan tenang — offline-first PWA berbasis Next.js.
+Aplikasi untuk membuat rencana aksi dan mengelola aktivitas harian dengan tenang — offline-first PWA berbasis Next.js.
 
 ## Getting Started
 
