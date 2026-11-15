@@ -10,8 +10,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Full Custom Tracker",
-  description: "A fully customizable activity tracker",
+  title: "Menata Pikiran",
+  description: "Aplikasi untuk menata pikiran dan mengelola aktivitas harian dengan tenang",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Tracker",
+    title: "Menata Pikiran",
   },
 };
 

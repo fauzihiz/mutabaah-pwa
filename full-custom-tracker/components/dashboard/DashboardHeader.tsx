@@ -71,7 +71,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                 </button>
                 <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm shadow-green-200 dark:shadow-green-900/30">
-                        <img src="/logo.png" alt="Full Custom Tracker" width={32} height={32} className="w-full h-full object-cover" />
+                        <img src="/logo.png" alt="Menata Pikiran" width={32} height={32} className="w-full h-full object-cover" />
                     </div>
                     <div>
                         <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-medium leading-none mb-1">

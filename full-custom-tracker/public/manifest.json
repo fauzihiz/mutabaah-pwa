@@ -1,7 +1,7 @@
 {
-  "name": "Full Custom Tracker",
-  "short_name": "Ikhtiar Langit",
-  "description": "Amalan istri untuk suami mudah menjemput rezeki",
+  "name": "Menata Pikiran",
+  "short_name": "Menata",
+  "description": "Aplikasi untuk menata pikiran dan mengelola aktivitas harian dengan tenang",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

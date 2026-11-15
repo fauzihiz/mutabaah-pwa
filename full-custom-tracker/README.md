@@ -1,6 +1,6 @@
-# Ikhtiar Langit Istri
+# Menata Pikiran
 
-Catatan ibadah harian — offline-first PWA berbasis Next.js.
+Aplikasi untuk menata pikiran dan mengelola aktivitas harian dengan tenang — offline-first PWA berbasis Next.js.
 
 ## Getting Started
 
