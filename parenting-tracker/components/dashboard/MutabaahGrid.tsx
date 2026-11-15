@@ -5,6 +5,7 @@ import { CATEGORIES, type ActivityCategory } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
 import { ActivityDropdown } from './ActivityDropdown';
 import { getSupportingStickers, getStickerOption } from '@/lib/constants/stickers';
+import { storage } from '@/lib/storage';
 
 interface MutabaahGridProps {
     currentDate: Date;
@@ -92,7 +93,7 @@ export function MutabaahGrid({
     // Persist flags to localStorage so they survive navigation
     useEffect(() => {
         try {
-            const raw = localStorage.getItem(`flags:${childId}:${currentDate.getFullYear()}:${currentDate.getMonth()}`);
+            const raw = storage.get(`flags:${childId}:${currentDate.getFullYear()}:${currentDate.getMonth()}`);
             if (raw) setActivityFlags(JSON.parse(raw));
         } catch { /* ignore */ }
     }, [childId, currentDate]);
@@ -103,7 +104,7 @@ export function MutabaahGrid({
             const next = arr.includes(flag) ? arr.filter(f => f !== flag) : [...arr, flag];
             const updated = { ...prev, [activityId]: next };
             try {
-                localStorage.setItem(`flags:${childId}:${currentDate.getFullYear()}:${currentDate.getMonth()}`, JSON.stringify(updated));
+                storage.set(`flags:${childId}:${currentDate.getFullYear()}:${currentDate.getMonth()}`, JSON.stringify(updated));
             } catch { /* ignore */ }
             return updated;
         });

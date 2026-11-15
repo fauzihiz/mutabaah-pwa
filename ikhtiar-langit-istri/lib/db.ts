@@ -1,4 +1,5 @@
 import Dexie, { type Table } from 'dexie';
+import { storage } from './storage';
 
 /** Kode status yang disimpan di `ActivityLog.completed`. */
 export type LogStatus = 0 | 1 | 2 | 3 | 4;
@@ -111,5 +112,5 @@ export async function resetAllData(): Promise<void> {
     await db.planner.clear();
     await db.doaScripts.clear();
     await db.goals.clear();
-    localStorage.removeItem('greetingName');
+    storage.remove('greeting');
 }

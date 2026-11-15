@@ -1,4 +1,5 @@
 import Dexie, { type Table } from 'dexie';
+import { storage } from './storage';
 
 export interface Child {
     id?: number;
@@ -66,5 +67,5 @@ export async function resetAllData(): Promise<void> {
     await db.activitySettings.clear();
     await db.planner.clear();
     await db.children.clear();
-    localStorage.removeItem('greetingName');
+    storage.remove('greeting');
 }

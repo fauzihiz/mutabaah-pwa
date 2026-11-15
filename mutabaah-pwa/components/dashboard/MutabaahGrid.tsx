@@ -1,5 +1,6 @@
 'use client';
 
+import { storage } from '@/lib/storage';
 import { useMemo, useState, useEffect, useRef, type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { ACTIVITIES, CATEGORIES, Activity, ActivityCategory } from '@/lib/constants/activities';
 import { db, ActivityLog, LogStatus } from '@/lib/db';
@@ -320,13 +321,13 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
     const [todayStr, setTodayStr] = useState('');
 
     useEffect(() => {
-        const saved = localStorage.getItem('selected_amalan_unggulan');
+        const saved = storage.get('amalan_unggulan');
         if (saved) setSelectedAmalanUnggulan(saved);
     }, []);
 
     const handleSelectAmalan = (id: string) => {
         setSelectedAmalanUnggulan(id);
-        localStorage.setItem('selected_amalan_unggulan', id);
+        storage.set('amalan_unggulan', id);
     };
 
     const getActivitiesForCategory = (category: ActivityCategory): Activity[] => {

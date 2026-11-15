@@ -8,6 +8,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
+import { GoalPlanningCard } from '@/components/dashboard/GoalPlanningCard';
 
 // Lazy-load heavy components that aren't needed on initial render
 const NavigationDrawer = dynamic(
@@ -25,12 +26,18 @@ const StatsView = dynamic(
   { ssr: false }
 );
 
+const GoalPlanningModal = dynamic(
+  () => import('@/components/dashboard/GoalPlanningModal').then(m => m.GoalPlanningModal),
+  { ssr: false }
+);
+
 export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   // UI State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
+  const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
 
   const { logs, toggleActivity } = useMutabaahMonth(
@@ -62,6 +69,10 @@ export default function Dashboard() {
           setActiveView('dashboard');
           setIsDrawerOpen(false);
         }}
+        onOpenGoals={() => {
+          setIsGoalModalOpen(true);
+          setIsDrawerOpen(false);
+        }}
         activeView={activeView}
       />
 
@@ -70,12 +81,19 @@ export default function Dashboard() {
         onClose={() => setIsChangelogOpen(false)}
       />
 
+      <GoalPlanningModal
+        isOpen={isGoalModalOpen}
+        onClose={() => setIsGoalModalOpen(false)}
+      />
+
       <main className="flex-1 flex flex-col overflow-hidden relative">
         {activeView === 'dashboard' ? (
           <>
             <div className="py-5 space-y-5">
               <MonthPicker currentDate={currentDate} onDateChange={setCurrentDate} />
             </div>
+
+            <GoalPlanningCard onOpen={() => setIsGoalModalOpen(true)} />
 
             <MutabaahGrid
               currentDate={currentDate}

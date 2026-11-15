@@ -1,4 +1,5 @@
 import Dexie, { type Table } from 'dexie';
+import { storage } from './storage';
 
 export interface ActivityLog {
     id?: number;
@@ -29,11 +30,36 @@ export interface PlannerNote {
     synced: boolean;
 }
 
+/** Goal Planning — daftar goal pribadi bergaya S.M.A.R.T */
+export interface GoalPlanning {
+    id?: number;
+    judul: string; // S — Specific: goal konkret (mis. "Dapatkan uang 1 juta dalam 1 minggu")
+    terukur: string; // M — Measurable: angka/indikator keberhasilan
+    usaha: string; // A — Achievable: langkah/ikhtiar konkret yang akan dilakukan
+    motivasi: string; // R — Relevant: mengapa penting & untuk siapa
+    tenggat: string; // T — Time-bound: YYYY-MM-DD
+    done: boolean; // goal sudah tercapai (dicoret)
+    doneAt?: number; // epoch ms saat ditandai tercapai
+    createdAt: number; // epoch ms
+    updatedAt: number; // epoch ms
+}
+
+/** Script doa pribadi yang ditulis & disimpan user (fitur Script Doa Saya). */
+export interface DoaScript {
+    id?: number;
+    judul: string;
+    isi: string;
+    createdAt: number; // epoch ms
+    updatedAt: number; // epoch ms
+}
+
 export class MutabaahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     categories!: Table<CategoryDef, string>;
     activities!: Table<ActivityDef, string>;
     planner!: Table<PlannerNote>;
+    doaScripts!: Table<DoaScript, number>;
+    goals!: Table<GoalPlanning, number>;
 
     constructor() {
         super('FullCustomTrackerDB');
@@ -43,19 +69,27 @@ export class MutabaahDatabase extends Dexie {
             activities: 'id, categoryId, order',
             planner: '++id, date, synced',
         });
+        this.version(8).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed',
+            categories: 'id, order',
+            activities: 'id, categoryId, order',
+            planner: '++id, date, synced',
+            doaScripts: '++id, updatedAt',
+            goals: '++id, done, createdAt',
+        });
     }
 }
 
 export const db = new MutabaahDatabase();
 
-/**
- * Reset all locally stored data (IndexedDB tables + localStorage items).
- * After calling this, the page should be reloaded.
- */
+/** Reset all locally stored data (IndexedDB tables + localStorage items). */
+/* After calling this, the page should be reloaded. */
 export async function resetAllData(): Promise<void> {
     await db.logs.clear();
     await db.categories.clear();
     await db.activities.clear();
     await db.planner.clear();
-    localStorage.removeItem('greetingName');
+    await db.doaScripts.clear();
+    await db.goals.clear();
+    storage.remove('greeting');
 }

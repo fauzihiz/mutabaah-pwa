@@ -2,18 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
+import { storage } from '@/lib/storage';
 import { Menu, Sun, Moon, Pencil } from 'lucide-react';
 
-const GREETING_KEY = 'greetingName';
 const DEFAULT_NAME = 'Tuliskan harapan yang ingin kamu wujudkan';
-
-function getStoredName(): string {
-    if (typeof window === 'undefined') return DEFAULT_NAME;
-    const stored = localStorage.getItem(GREETING_KEY);
-    // 'Bunda' was the old default — treat it as unset so the new default shows
-    if (stored === null || stored === 'Bunda') return DEFAULT_NAME;
-    return stored;
-}
 
 interface DashboardHeaderProps {
     onMenuClick: () => void;
@@ -28,7 +20,9 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
 
     // Load from localStorage on mount
     useEffect(() => {
-        setName(getStoredName());
+        const stored = storage.get('greeting');
+        // 'Bunda' was the old default — treat it as unset so the new default shows
+        setName(stored && stored !== 'Bunda' ? stored : DEFAULT_NAME);
     }, []);
 
     const startEditing = () => {
@@ -40,7 +34,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
         const trimmed = draft.trim();
         const final = trimmed.length > 0 ? trimmed : DEFAULT_NAME;
         setName(final);
-        localStorage.setItem(GREETING_KEY, final);
+        storage.set('greeting', final);
         setIsEditing(false);
     };
 

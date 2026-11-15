@@ -2,14 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
+import { storage } from '@/lib/storage';
 import { Menu, Sun, Moon, Pencil } from 'lucide-react';
-
-const GREETING_KEY = 'greetingName';
-
-function getStoredName(): string {
-    if (typeof window === 'undefined') return 'User';
-    return localStorage.getItem(GREETING_KEY) || 'User';
-}
 
 interface DashboardHeaderProps {
     onMenuClick: () => void;
@@ -24,7 +18,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
 
     // Load from localStorage on mount
     useEffect(() => {
-        setName(getStoredName());
+        setName(storage.get('greeting') || 'User');
     }, []);
 
     const startEditing = () => {
@@ -36,7 +30,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
         const trimmed = draft.trim();
         const final = trimmed.length > 0 ? trimmed : 'User';
         setName(final);
-        localStorage.setItem(GREETING_KEY, final);
+        storage.set('greeting', final);
         setIsEditing(false);
     };
 
