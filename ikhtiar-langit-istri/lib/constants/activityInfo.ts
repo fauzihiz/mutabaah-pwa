@@ -877,4 +877,36 @@ baru baca perlahan penuh kesadaran`,
         catatan:
             'Waktu terbaik: malam hari sebelum tidur — saat hati tenang dan tubuh bersiap beristirahat, sehingga prasangka baik kepada Allah tertanam kuat sepanjang malam.',
     },
+
+    // ── Interaksi Al Quran: QS. Al-Waqi'ah ──
+    al_waqiah: {
+        ringkasan:
+            "Membaca Surah Al-Waqi'ah — surah yang penuh peringatan tentang kebangkitan, keabadian, dan rezeki dari Allah.",
+        keutamaan: [
+            "Mengingat kebesaran dan kekuasaan Allah.",
+            "Merenungi nikmat kehidupan dan rezeki dari Allah.",
+            "Menumbuhkan rasa syukur atas nikmat Allah.",
+        ],
+    },
+
+    // ── Zikir Harian: Tasbih, Tahmid, Takbir Sebelum Tidur ──
+    zikir_tasbih_tidur: {
+        ringkasan:
+            "Membaca tasbih, tahmid, dan takbir sebelum tidur — dzikir yang diajarkan Rasulullah ﷺ untuk mengakhiri hari dengan mengingat Allah.",
+        keutamaan: [
+            "Siapa yang merutinkan dzikir ini sebelum tidur, ia tidak mungkin mengalami kelelahan.",
+            "Karena Fathimah mengadukan kepada Rasul shallallahu 'alaihi wa sallam bahwa ia begitu capek dalam mengurus rumah, lantas diarahkan untuk mengamalkan dzikir ini.",
+        ],
+        dalil: [
+            {
+                arab: "أَلَا أَدُلُّكُمَا عَلَىٰ مَا هُوَ خَيْرٌ لَكُمَا مِنْ خَادِمٍ؟ إِذَا أَوَيْتُمَا إِلَىٰ فِرَاشِكُمَا، أَوْ أَخَذْتُمَا مَضَاجِعَكُمَا، فَكَبِّرَا ثَلَاثًا وَثَلَاثِينَ، وَسَبِّحَا ثَلَاثًا وَثَلَاثِينَ، وَحَمِّدَا ثَلَاثًا وَثَلَاثِينَ، فَهَٰذَا خَيْرٌ لَكُمَا مِنْ خَادِمٍ",
+                arti:
+                    '"Maukah kalian berdua aku tunjukkan kepada sesuatu yang lebih baik dari seorang pembantu? Jika kalian hendak tidur, ucapkanlah takbir 33 kali, tasbih 33 kali, dan tahmid 33 kali. Hal itu lebih baik dari seorang pembantu."',
+                sumber:
+                    "HR. Bukhari no. 6324, Muslim no. 2727 (dari Ali bin Abi Thalib radhiyallahu 'anhu)",
+            },
+        ],
+        catatan:
+            "Dzikir ini diajarkan Nabi ﷺ kepada Sayyidah Fatimah RA ketika ia mengeluh kelelahan mengurus rumah tangga. Merutinkannya sebelum tidur memberikan ketenangan hati dan kekuatan fisik, serta menjadi amalan penutup hari yang penuh berkah.",
+    },
 };

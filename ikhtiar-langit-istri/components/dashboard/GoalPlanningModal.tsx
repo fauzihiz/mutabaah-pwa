@@ -273,14 +273,14 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
                                     Goal — apa yang ingin dicapai? <span style={{ color: '#dc2626' }}>*</span>
                                 </label>
                             </div>
-                            <input
+                            <textarea
                                 id="goal-judul"
-                                type="text"
                                 value={judul}
                                 onChange={e => setJudul(e.target.value)}
-                                placeholder="Mis. Dapatkan uang 1 juta dalam 1 minggu"
+                                placeholder="Contoh: Mendapatkan tambahan penghasilan Rp1 juta dalam 1 bulan."
                                 maxLength={120}
-                                className="w-full px-3 py-2.5 rounded-lg border text-sm outline-none"
+                                rows={2}
+                                className="w-full px-3 py-2.5 rounded-lg border text-sm leading-relaxed outline-none resize-none"
                                 style={inputStyle}
                             />
                         </div>
@@ -292,14 +292,14 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
                                     Terukur — berapa banyak / indikator keberhasilannya?
                                 </label>
                             </div>
-                            <input
+                            <textarea
                                 id="goal-terukur"
-                                type="text"
                                 value={terukur}
                                 onChange={e => setTerukur(e.target.value)}
-                                placeholder="Mis. Rp1.000.000 tunai"
+                                placeholder="Contoh: Berhasil menjual minimal 22 produk digital seharga Rp49.000 per produk dalam 1 bulan dan memperoleh penghasilan bersih minimal Rp1 juta."
                                 maxLength={120}
-                                className="w-full px-3 py-2.5 rounded-lg border text-sm outline-none"
+                                rows={2}
+                                className="w-full px-3 py-2.5 rounded-lg border text-sm leading-relaxed outline-none resize-none"
                                 style={inputStyle}
                             />
                         </div>
@@ -315,7 +315,7 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
                                 id="goal-usaha"
                                 value={usaha}
                                 onChange={e => setUsaha(e.target.value)}
-                                placeholder={'Mis. Buka jasa katering, target 3 pesanan per hari\nPromosi harian ke 10 grup WA tetangga'}
+                                placeholder="Contoh: Membuat minimal 3 konten promosi setiap minggu di Instagram atau TikTok.&#10;Membagikan promosi produk setiap hari melalui Instagram Story dan WhatsApp.&#10;Menawarkan produk secara langsung kepada minimal 5 calon pembeli setiap hari."
                                 rows={3}
                                 className="w-full px-3 py-2.5 rounded-lg border text-sm leading-relaxed outline-none resize-none"
                                 style={inputStyle}
@@ -333,7 +333,7 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
                                 id="goal-motivasi"
                                 value={motivasi}
                                 onChange={e => setMotivasi(e.target.value)}
-                                placeholder="Mis. Untuk menutup biaya sekolah anak dan modal usaha suami"
+                                placeholder="Contoh: Untuk memenuhi kebutuhan anak-anak dengan membelikan sepatu lari bagi keempat anak agar mereka semakin semangat berolahraga, aktif bergerak, dan menjaga kesehatan tubuh."
                                 rows={2}
                                 className="w-full px-3 py-2.5 rounded-lg border text-sm leading-relaxed outline-none resize-none"
                                 style={inputStyle}

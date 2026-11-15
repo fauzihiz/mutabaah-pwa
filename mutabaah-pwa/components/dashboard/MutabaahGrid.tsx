@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect, useRef, type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { ACTIVITIES, CATEGORIES, Activity, ActivityCategory } from '@/lib/constants/activities';
-import { ActivityLog, LogStatus } from '@/lib/db';
+import { db, ActivityLog, LogStatus } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
 
 interface MutabaahGridProps {
@@ -56,6 +56,10 @@ function getAvailableStatuses(activity: Activity): LogStatus[] {
         return ['done', 'late', 'haid', 'miss'];
     }
     return ['done', 'haid', 'miss'];
+}
+
+function isTilawahActivity(activity: Activity): boolean {
+    return activity.id === 'tilawah' || activity.id === 'tilawah_harian';
 }
 
 function StatusPopover({
@@ -126,6 +130,141 @@ function StatusPopover({
     );
 }
 
+function TilawahPagePopover({
+    position,
+    activity,
+    onSave,
+    onClose,
+    currentLog
+}: {
+    position: { x: number; y: number };
+    activity: Activity;
+    currentLog: ActivityLog | undefined;
+    onSave: (startPage: number, endPage: number) => void;
+    onClose: () => void;
+}) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [startPage, setStartPage] = useState(currentLog?.startPage || '');
+    const [endPage, setEndPage] = useState(currentLog?.endPage || '');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (ref.current && !ref.current.contains(event.target as Node)) onClose();
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [onClose]);
+
+    useEffect(() => {
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') onClose();
+        };
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [onClose]);
+
+    const handleSave = () => {
+        const start = Number(startPage);
+        const end = Number(endPage);
+        
+        if (!startPage || !endPage) {
+            setError('Harap isi halaman mulai dan selesai');
+            return;
+        }
+        if (isNaN(start) || isNaN(end)) {
+            setError('Masukkan angka yang valid');
+            return;
+        }
+        if (start > end) {
+            setError('Halaman selesai harus >= halaman mulai');
+            return;
+        }
+        if (start < 1 || end > 604) {
+            setError('Halaman harus antara 1-604');
+            return;
+        }
+        
+        setError('');
+        onSave(start, end);
+        onClose();
+    };
+
+    const handleClear = () => {
+        onSave(0, 0); // Signal to clear
+        onClose();
+    };
+
+    return (
+        <div
+            ref={ref}
+            className="fixed z-[200] w-72 rounded-xl border shadow-xl overflow-hidden"
+            style={{
+                background: 'var(--bg-surface)',
+                borderColor: 'var(--border)',
+                left: Math.min(position.x, (typeof window !== 'undefined' ? window.innerWidth : 9999) - 300),
+                top: Math.min(position.y, (typeof window !== 'undefined' ? window.innerHeight : 9999) - 250),
+            }}
+        >
+            <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
+                <p className="text-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>{activity.name}</p>
+                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Masukkan halaman yang dibaca</p>
+            </div>
+            <div className="p-4 space-y-3">
+                <div>
+                    <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Halaman Mulai</label>
+                    <input
+                        type="number"
+                        value={startPage}
+                        onChange={(e) => setStartPage(e.target.value)}
+                        min="1"
+                        max="604"
+                        className="w-full px-3 py-2 text-sm rounded-lg border bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                        placeholder="1"
+                    />
+                </div>
+                <div>
+                    <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Halaman Selesai</label>
+                    <input
+                        type="number"
+                        value={endPage}
+                        onChange={(e) => setEndPage(e.target.value)}
+                        min="1"
+                        max="604"
+                        className="w-full px-3 py-2 text-sm rounded-lg border bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                        placeholder="604"
+                    />
+                </div>
+                {error && (
+                    <div className="text-xs text-red-500 bg-red-50 dark:bg-red-900/20 p-2 rounded" style={{ borderColor: 'var(--border)' }}>
+                        {error}
+                    </div>
+                )}
+                <div className="flex gap-2 pt-2">
+                    <button
+                        onClick={handleSave}
+                        className="flex-1 px-3 py-2 text-sm font-semibold rounded-lg transition-colors"
+                        style={{ background: 'var(--primary)', color: 'var(--primary-foreground)' }}
+                    >
+                        Simpan
+                    </button>
+                    {currentLog && (
+                        <button
+                            onClick={handleClear}
+                            className="flex-1 px-3 py-2 text-sm font-semibold rounded-lg border transition-colors"
+                            style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
+                        >
+                            Hapus
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function AmalanUnggulanModal({
     isOpen,
     onClose,
@@ -147,6 +286,7 @@ function AmalanUnggulanModal({
                     <div>
                         <h2 className="text-lg font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Amalan Unggulan</h2>
                         <p className="text-[10px] uppercase font-bold tracking-widest" style={{ color: 'var(--text-muted)' }}>Pilih Satu</p>
+                        <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Konsep Amalan Unggulan: Pengguna hanya memilih satu amalan untuk dijadikan prioritas ibadah pribadi, dijaga dengan ikhlas dan istiqamah. Bukan untuk menggantikan kewajiban atau mengukur tingkat kesalehan seseorang.</p>
                     </div>
                     <button onClick={onClose} className="rounded-full p-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"><span style={{ color: 'var(--text-muted)' }}>✕</span></button>
                 </div>
@@ -205,6 +345,12 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
         return m;
     }, [logs]);
 
+    const logObjectMap = useMemo(() => {
+        const m = new Map<string, ActivityLog | undefined>();
+        for (const l of logs) m.set(`${l.date}:${l.activityId}`, l);
+        return m;
+    }, [logs]);
+
     useEffect(() => {
         const sync = () => {
             const now = new Date();
@@ -244,6 +390,32 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
         activity: Activity;
         currentStatus: LogStatus | undefined;
     } | null>(null);
+
+    const [tilawahPopover, setTilawahPopover] = useState<{
+        position: { x: number; y: number };
+        dateStr: string;
+        activity: Activity;
+        currentLog: ActivityLog | undefined;
+    } | null>(null);
+
+    /** Simpan data halaman tilawah (startPage=0 & endPage=0 berarti hapus data) */
+    const handleSaveTilawah = async (date: string, activityId: string, startPage: number, endPage: number) => {
+        const existing = await db.logs.where({ date, activityId }).first();
+        if (startPage === 0 && endPage === 0) {
+            if (existing?.id != null) await db.logs.delete(existing.id);
+        } else {
+            await db.logs.put({
+                id: existing?.id,
+                date,
+                activityId,
+                completed: 1,
+                status: 'done',
+                synced: false,
+                startPage,
+                endPage,
+            });
+        }
+    };
 
     const gridScrollRef = useRef<HTMLDivElement>(null);
 
@@ -330,7 +502,12 @@ return (
                                             {days.map(day => {
                                                 const dateStr = formatDate(day);
                                                 const status = logMap.get(`${dateStr}:${activity.id}`);
+                                                const currentLog = logObjectMap.get(`${dateStr}:${activity.id}`);
                                                 const _today = isToday(day);
+                                                const isTilawah = isTilawahActivity(activity);
+                                                const pageDifference = isTilawah && currentLog?.startPage && currentLog?.endPage 
+                                                    ? currentLog.endPage - currentLog.startPage 
+                                                    : null;
                                                 return (
                                                     <div
                                                         key={day}
@@ -342,10 +519,16 @@ return (
                                                         onClick={(e) => {
                                                             if (isFuture(day)) return;
                                                             const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                                                            setStatusPopover({ position: { x: rect.left, y: rect.bottom + 4 }, dateStr, activity, currentStatus: status });
+                                                            if (isTilawah) {
+                                                                setTilawahPopover({ position: { x: rect.left, y: rect.bottom + 4 }, dateStr, activity, currentLog });
+                                                            } else {
+                                                                setStatusPopover({ position: { x: rect.left, y: rect.bottom + 4 }, dateStr, activity, currentStatus: status });
+                                                            }
                                                         }}
                                                     >
-                                                        {status ? (
+                                                        {pageDifference !== null ? (
+                                                            <span aria-hidden="true" style={{ color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700 }}>{pageDifference}</span>
+                                                        ) : status ? (
                                                             <span aria-hidden="true" style={{ color: getStatusBadgeBg(status), fontSize: '12px', fontWeight: 700 }}>{getStatusSymbol(status)}</span>
                                                         ) : null}
                                                     </div>
@@ -372,6 +555,15 @@ return (
                     currentStatus={statusPopover.currentStatus}
                     onSelect={(status) => onSetStatus(statusPopover.dateStr, statusPopover.activity.id, status)}
                     onClose={() => setStatusPopover(null)}
+                />
+            )}
+            {tilawahPopover && (
+                <TilawahPagePopover
+                    position={tilawahPopover.position}
+                    activity={tilawahPopover.activity}
+                    currentLog={tilawahPopover.currentLog}
+                    onSave={(startPage, endPage) => handleSaveTilawah(tilawahPopover.dateStr, tilawahPopover.activity.id, startPage, endPage)}
+                    onClose={() => setTilawahPopover(null)}
                 />
             )}
         </div>

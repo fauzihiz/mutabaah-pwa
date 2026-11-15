@@ -5,7 +5,7 @@ import { useTheme } from '@/components/providers/ThemeProvider';
 import { Menu, Sun, Moon, Pencil } from 'lucide-react';
 
 const GREETING_KEY = 'greetingName';
-const DEFAULT_NAME = 'Tulis Target yang ingin dicapai';
+const DEFAULT_NAME = 'Tuliskan harapan yang ingin kamu wujudkan';
 
 function getStoredName(): string {
     if (typeof window === 'undefined') return DEFAULT_NAME;
@@ -79,7 +79,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                     </div>
                     <div>
                         <p style={{ color: 'var(--text-muted)' }} className="text-[10px] font-medium leading-none mb-1">
-                            Semangat Menarik Keberlimpahan,
+                            Semangat Menjemput Keberkahan,
                         </p>
                         {isEditing ? (
                             <input

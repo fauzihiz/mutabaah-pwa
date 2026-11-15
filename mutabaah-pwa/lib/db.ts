@@ -9,6 +9,8 @@ export interface ActivityLog {
     completed: number; // 1 for true, 0 for false (better for indexing)
     status?: LogStatus; // Extended status for 4-state toggle
     synced: boolean; // Legacy field, kept for schema compatibility
+    startPage?: number; // Halaman mulai untuk tilawah
+    endPage?: number; // Halaman selesai untuk tilawah
 }
 
 export interface ActivitySetting {
@@ -47,6 +49,14 @@ export class MutabaahDatabase extends Dexie {
                     log.status = log.completed === 1 ? 'done' : 'miss';
                 }
             });
+        });
+        this.version(7).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed, status, startPage, endPage',
+            activitySettings: 'activityId',
+            planner: '++id, date, synced',
+        }).upgrade(async tx => {
+            // Tidak ada migrasi data yang diperlukan untuk field startPage dan endPage.
+            // Data lama akan memiliki undefined untuk kedua field ini.
         });
     }
 }

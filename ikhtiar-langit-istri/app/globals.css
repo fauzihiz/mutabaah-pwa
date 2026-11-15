@@ -6,34 +6,34 @@
 
 /* ─── Light Mode ─────────────────────────────── */
 :root {
-  --bg-base: #F8F8E8; /* Warm Cream */
-  --bg-surface: #FFFDF7; /* Ivory */
-  --bg-subtle: #78A888; /* Sage (used as subtle/accent bg) */
-  --border: #587868; /* Secondary */
-  --text-primary: #284848; /* Dark Text */
-  --text-secondary: #587868; /* Secondary */
-  --text-muted: #687878; /* Muted Text */
-  --primary: #285848; /* Primary */
-  --primary-light: #78A888; /* Sage */
-  --gold: #C89838; /* Gold */
-  --gold-soft: #f7ecd4; /* Background lembut kartu emas */
-  --gold-text: #8a5a1b; /* Teks emas di atas gold-soft */
+  --bg-base: #F0FDF4; /* Latar belakang cerah hijau muda */
+  --bg-surface: #FFFFFF; /* Putih murni — kontras kuat */
+  --bg-subtle: #34D399; /* Hijau cerah untuk aksen */
+  --border: #10B981; /* Hijau cerah untuk border */
+  --text-primary: #065F46; /* Hijau tua tegas */
+  --text-secondary: #047857; /* Hijau sedang */
+  --text-muted: #0F766E; /* Hijau gelap terang */
+  --primary: #10B981; /* Hijau primer cerah */
+  --primary-light: #86EFAC; /* Hijau sangat terang */
+  --gold: #FBBF24; /* Emas cerah */
+  --gold-soft: #FEF3C7; /* Emas lembut cerah */
+  --gold-text: #92400E; /* Emas tua kontras */
 }
 
 /* ─── Dark Mode ──────────────────────────────── */
 :root.dark {
-  --bg-base: #0f172a;
-  --bg-surface: #1e293b;
-  --bg-subtle: #334155;
-  --border: #475569;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --primary: #4ade80;
-  --primary-light: #14532d;
-  --gold: #d4a952; /* Gold — dark mode variant (terang agar menonjol di bg gelap) */
-  --gold-soft: #3a3222; /* Tint emas gelap untuk kartu emas */
-  --gold-text: #e8c987; /* Emas terang agar menonjol di bg gelap */
+  --bg-base: #064E3B; /* Hijau gelap sangat tua */
+  --bg-surface: #065F46; /* Hijau tua kontras */
+  --bg-subtle: #0F766E; /* Hijau sedang */
+  --border: #34D399; /* Hijau cerah untuk border */
+  --text-primary: #D1FAE5; /* Hijau sangat terang */
+  --text-secondary: #A7F3D0; /* Hijau terang sedang */
+  --text-muted: #6EE7B7; /* Hijau terang lembut */
+  --primary: #34D399; /* Hijau cerah */
+  --primary-light: #10B981; /* Hijau cerah medium */
+  --gold: #FCD34D; /* Emas cerah */
+  --gold-soft: #451A03; /* Emas tua lembut */
+  --gold-text: #FEF08A; /* Emas sangat terang */
 }
 
 * {

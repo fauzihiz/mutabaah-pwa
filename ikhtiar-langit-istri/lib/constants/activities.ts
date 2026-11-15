@@ -40,12 +40,14 @@ export const ACTIVITIES: Activity[] = [
   { id: 'yunus', name: 'Doa Nabi Yunus 10x', category: 'Zikir Harian' },
   { id: 'astagfirullah', name: 'Astagfirullahaladzim Waatuubuilaihi 10x', category: 'Zikir Harian' },
   { id: 'sholawat', name: 'Sholawat 10x', category: 'Zikir Harian' },
+  { id: 'zikir_tasbih_tidur', name: 'Membaca tasbih,tahmid,takbir sebelum tidur', category: 'Zikir Harian' },
 
   // Interaksi Al Quran
   { id: 'tilawah', name: 'Tilawah Al Quran minimal 1 Halaman', category: 'Interaksi Al Quran' },
   { id: 'al_mulk', name: 'Membaca Surat Almulk Malam Hari', category: 'Interaksi Al Quran' },
   { id: 'attalaq', name: 'Membaca Ayat Seribu Dinar', category: 'Interaksi Al Quran' },
   { id: 'alqashas', name: 'Membaca Doa Nabi Musa memohon rezeki', category: 'Interaksi Al Quran' },
+  { id: 'al_waqiah', name: 'Membaca Qs. Al-waqiah', category: 'Interaksi Al Quran' },
 
   // Sedekah
   { id: 'sedekah_uang', name: 'Sedekah Uang', category: 'Sedekah' },

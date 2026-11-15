@@ -66,6 +66,10 @@ export const ACTIVITIES: Activity[] = [
   { id: 'menjaga_lisan', name: 'Menjaga Lisan', category: 'Aktivitas Ramadhan' },
   { id: 'menahan_amarah', name: 'Menahan Amarah', category: 'Aktivitas Ramadhan' },
   { id: 'menghindari_ghibah', name: 'Menghindari Ghibah', category: 'Aktivitas Ramadhan' },
+  { id: 'puasa_ramadhan', name: 'Puasa Ramadan', category: 'Aktivitas Ramadhan' },
+  { id: 'tarawih', name: 'Salat Sunah Tarawih', category: 'Aktivitas Ramadhan' },
+  { id: 'iktikaf', name: 'Iktikaf', category: 'Aktivitas Ramadhan' },
+  { id: 'terjemahan_quran', name: "Membaca Terjemahan Al-Qur'an", category: 'Aktivitas Ramadhan' },
 
   // Amalan Unggulan (pilih satu amalan yang ingin dijaga secara istiqamah)
   { id: 'istigfar', name: 'Memperbanyak Istigfar', category: 'Amalan Unggulan' },
