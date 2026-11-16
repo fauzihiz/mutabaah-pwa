@@ -517,15 +517,17 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                                     >
                                                         {locked
                                                             ? <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-muted)' }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                                            : status === STATUS.DONE
-                                                                ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                                                : status === STATUS.LATE
-                                                                    ? <Clock size={12} strokeWidth={2.5} />
-                                                                    : status === STATUS.HAID
-                                                                        ? <Heart size={12} fill="currentColor" strokeWidth={0} />
-                                                                        : status === STATUS.SKIPPED
-                                                                            ? <Frown size={12} strokeWidth={2.5} />
-                                                                            : null
+                                                            : pageDifference !== null
+                                                                ? <span aria-hidden="true" style={{ color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700 }}>{pageDifference}</span>
+                                                                : status === STATUS.DONE
+                                                                    ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                                                    : status === STATUS.LATE
+                                                                        ? <Clock size={12} strokeWidth={2.5} />
+                                                                        : status === STATUS.HAID
+                                                                            ? <Heart size={12} fill="currentColor" strokeWidth={0} />
+                                                                            : status === STATUS.SKIPPED
+                                                                                ? <Frown size={12} strokeWidth={2.5} />
+                                                                                : null
                                                         }
                                                     </button>
                                                 </div>

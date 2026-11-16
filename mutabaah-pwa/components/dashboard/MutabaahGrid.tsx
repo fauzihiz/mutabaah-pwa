@@ -1,6 +1,7 @@
 'use client';
 
 import { storage } from '@/lib/storage';
+import { Lock } from 'lucide-react';
 import { useMemo, useState, useEffect, useRef, type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { ACTIVITIES, CATEGORIES, Activity, ActivityCategory } from '@/lib/constants/activities';
 import { db, ActivityLog, LogStatus } from '@/lib/db';
@@ -530,7 +531,9 @@ return (
                                                             }
                                                         }}
                                                     >
-                                                        {pageDifference !== null ? (
+                                                        {isFuture(day) ? (
+                                                            <Lock size={9} strokeWidth={2} style={{ color: 'var(--text-muted)' }} />
+                                                        ) : pageDifference !== null ? (
                                                             <span aria-hidden="true" style={{ color: 'var(--text-primary)', fontSize: '11px', fontWeight: 700 }}>{pageDifference}</span>
                                                         ) : status ? (
                                                             <span aria-hidden="true" style={{ color: getStatusBadgeBg(status), fontSize: '12px', fontWeight: 700 }}>{getStatusSymbol(status)}</span>
