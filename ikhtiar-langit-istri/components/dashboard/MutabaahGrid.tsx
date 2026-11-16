@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { Clock, Frown, Heart } from 'lucide-react';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants/activities';
-import { ActivityLog, STATUS } from '@/lib/db';
+import { db, ActivityLog, STATUS } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
 import dynamic from 'next/dynamic';
 
@@ -35,6 +35,141 @@ const STATUS_LABEL: Record<number, string> = {
     [STATUS.SKIPPED]: 'Tidak mengerjakan',
 };
 
+function isTilawahActivity(activityId: string): boolean {
+    return activityId === 'tilawah';
+}
+
+function TilawahPagePopover({
+    position, activity, onSave, onClose, currentLog
+}: {
+    position: { x: number; y: number };
+    activity: { id: string; name: string };
+    currentLog: ActivityLog | undefined;
+    onSave: (startPage: number, endPage: number) => void;
+    onClose: () => void;
+}) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [startPage, setStartPage] = useState(currentLog?.startPage || '');
+    const [endPage, setEndPage] = useState(currentLog?.endPage || '');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (ref.current && !ref.current.contains(event.target as Node)) onClose();
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [onClose]);
+
+    useEffect(() => {
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') onClose();
+        };
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [onClose]);
+
+    const handleSave = () => {
+        const start = Number(startPage);
+        const end = Number(endPage);
+
+        if (!startPage || isNaN(start)) {
+            setError('Harap isi halaman mulai');
+            return;
+        }
+
+        // Jika endPage kosong atau 0, otomatis diisi dengan angka yang sama dengan halaman start
+        const finalEnd = (end === 0 || !endPage || isNaN(end)) ? start : end;
+
+        if (start > finalEnd) {
+            setError('Halaman selesai harus >= halaman mulai');
+            return;
+        }
+        if (start < 1 || finalEnd > 604) {
+            setError('Halaman harus antara 1-604');
+            return;
+        }
+
+        setError('');
+        onSave(start, finalEnd);
+        onClose();
+    };
+
+    const handleClear = () => {
+        onSave(0, 0); // Signal to clear
+        onClose();
+    };
+
+    return (
+        <div
+            ref={ref}
+            className="fixed z-[200] w-72 rounded-xl border shadow-xl overflow-hidden"
+            style={{
+                background: 'var(--bg-surface)',
+                borderColor: 'var(--border)',
+                left: Math.min(position.x, (typeof window !== 'undefined' ? window.innerWidth : 9999) - 300),
+                top: Math.min(position.y, (typeof window !== 'undefined' ? window.innerHeight : 9999) - 250),
+            }}
+        >
+            <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
+                <p className="text-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>{activity.name}</p>
+                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Masukkan halaman yang dibaca</p>
+            </div>
+            <div className="p-4 space-y-3">
+                <div>
+                    <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Halaman Mulai</label>
+                    <input
+                        type="number"
+                        value={startPage}
+                        onChange={(e) => setStartPage(e.target.value)}
+                        min="1"
+                        max="604"
+                        className="w-full px-3 py-2 text-sm rounded-lg border bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                        placeholder="1"
+                    />
+                </div>
+                <div>
+                    <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Halaman Selesai</label>
+                    <input
+                        type="number"
+                        value={endPage}
+                        onChange={(e) => setEndPage(e.target.value)}
+                        min="1"
+                        max="604"
+                        className="w-full px-3 py-2 text-sm rounded-lg border bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                        placeholder="604"
+                    />
+                </div>
+                {error && (
+                    <div className="text-xs text-red-500 bg-red-50 dark:bg-red-900/20 p-2 rounded" style={{ borderColor: 'var(--border)' }}>
+                        {error}
+                    </div>
+                )}
+                <div className="flex gap-2 pt-2">
+                    <button
+                        onClick={handleSave}
+                        className="flex-1 px-3 py-2 text-sm font-semibold rounded-lg transition-colors"
+                        style={{ background: 'var(--primary)', color: 'var(--primary-foreground)' }}
+                    >
+                        Simpan
+                    </button>
+                    {currentLog && (
+                        <button
+                            onClick={handleClear}
+                            className="flex-1 px-3 py-2 text-sm font-semibold rounded-lg border transition-colors"
+                            style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
+                        >
+                            Hapus
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
@@ -49,6 +184,44 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
         }
         return m;
     }, [logs]);
+
+    // Lookup Map objek log penuh (diperlukan utk data halaman tilawah: startPage/endPage)
+    const logObjectMap = useMemo(() => {
+        const m = new Map<string, ActivityLog>();
+        for (const l of logs) {
+            m.set(`${l.date}:${l.activityId}`, l);
+        }
+        return m;
+    }, [logs]);
+
+    // Target popover input halaman tilawah — null = tertutup
+    const [tilawahPopover, setTilawahPopover] = useState<{
+        position: { x: number; y: number };
+        dateStr: string;
+        activityId: string;
+        currentLog: ActivityLog | undefined;
+    } | null>(null);
+
+    /** Simpan data halaman tilawah (startPage=0 & endPage=0 berarti hapus data) */
+    const handleSaveTilawah = async (date: string, activityId: string, startPage: number, endPage: number) => {
+        const existing = await db.logs.where({ date, activityId }).first();
+        // Auto-fill endPage dengan startPage jika endPage kosong (0)
+        const finalEndPage = (endPage === 0 || !endPage) ? startPage : endPage;
+
+        if (startPage === 0 && finalEndPage === 0) {
+            if (existing?.id != null) await db.logs.delete(existing.id);
+        } else {
+            await db.logs.put({
+                id: existing?.id,
+                date,
+                activityId,
+                completed: STATUS.DONE,
+                synced: false,
+                startPage,
+                endPage: finalEndPage,
+            });
+        }
+    };
 
     // Reactive "today" state — initialised to null so the server never bakes
     // a highlight into the SSR HTML (avoids React 19 hydration style mismatches).
@@ -292,6 +465,13 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                             const locked = isFuture(day);
                                             const status = logMap.get(`${dateStr}:${activity.id}`) ?? STATUS.EMPTY;
                                             const _today = isToday(day);
+                                            const isTilawah = isTilawahActivity(activity.id);
+                                            const currentLog = logObjectMap.get(`${dateStr}:${activity.id}`);
+
+                                            // Hitung jumlah halaman terbaca untuk tilawah
+                                            const pageDifference = isTilawah && currentLog?.startPage && currentLog?.endPage
+                                                ? currentLog.endPage - currentLog.startPage + 1
+                                                : null;
 
                                             return (
                                                 <div
@@ -304,9 +484,22 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                                 >
                                                     <button
                                                         disabled={locked}
-                                                        onClick={() => onToggle(dateStr, activity.id)}
-                                                        title={locked ? 'Hari mendatang' : STATUS_LABEL[status]}
-                                                        aria-label={`${getActivityName(activity.id)} — ${locked ? 'Hari mendatang' : STATUS_LABEL[status]}`}
+                                                        onClick={(e) => {
+                                                            if (locked) return;
+                                                            if (isTilawah) {
+                                                                const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                                                                setTilawahPopover({
+                                                                    position: { x: rect.left, y: rect.bottom + 4 },
+                                                                    dateStr,
+                                                                    activityId: activity.id,
+                                                                    currentLog,
+                                                                });
+                                                            } else {
+                                                                onToggle(dateStr, activity.id);
+                                                            }
+                                                        }}
+                                                        title={locked ? 'Hari mendatang' : isTilawah ? (pageDifference !== null ? `${pageDifference} halaman dibaca` : 'Catat halaman') : STATUS_LABEL[status]}
+                                                        aria-label={`${getActivityName(activity.id)} — ${locked ? 'Hari mendatang' : isTilawah ? (pageDifference !== null ? `${pageDifference} halaman dibaca` : 'Belum dicatat') : STATUS_LABEL[status]}`}
                                                         className={[
                                                             'w-6 h-6 rounded-lg flex items-center justify-center transition-all active:scale-90',
                                                             status === STATUS.DONE
@@ -361,6 +554,15 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                         : undefined
                 }
             />
+            {tilawahPopover && (
+                <TilawahPagePopover
+                    position={tilawahPopover.position}
+                    activity={{ id: tilawahPopover.activityId, name: getActivityName(tilawahPopover.activityId) }}
+                    currentLog={tilawahPopover.currentLog}
+                    onSave={(sp, ep) => handleSaveTilawah(tilawahPopover.dateStr, tilawahPopover.activityId, sp, ep)}
+                    onClose={() => setTilawahPopover(null)}
+                />
+            )}
         </div>
     );
 }

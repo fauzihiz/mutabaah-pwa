@@ -168,26 +168,26 @@ function TilawahPagePopover({
     const handleSave = () => {
         const start = Number(startPage);
         const end = Number(endPage);
-        
-        if (!startPage || !endPage) {
-            setError('Harap isi halaman mulai dan selesai');
+
+        if (!startPage || isNaN(start)) {
+            setError('Harap isi halaman mulai');
             return;
         }
-        if (isNaN(start) || isNaN(end)) {
-            setError('Masukkan angka yang valid');
-            return;
-        }
-        if (start > end) {
+
+        // Jika endPage kosong atau 0, otomatis diisi dengan angka yang sama dengan halaman start
+        const finalEnd = (end === 0 || !endPage || isNaN(end)) ? start : end;
+
+        if (start > finalEnd) {
             setError('Halaman selesai harus >= halaman mulai');
             return;
         }
-        if (start < 1 || end > 604) {
+        if (start < 1 || finalEnd > 604) {
             setError('Halaman harus antara 1-604');
             return;
         }
-        
+
         setError('');
-        onSave(start, end);
+        onSave(start, finalEnd);
         onClose();
     };
 
@@ -402,7 +402,10 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
     /** Simpan data halaman tilawah (startPage=0 & endPage=0 berarti hapus data) */
     const handleSaveTilawah = async (date: string, activityId: string, startPage: number, endPage: number) => {
         const existing = await db.logs.where({ date, activityId }).first();
-        if (startPage === 0 && endPage === 0) {
+        // Auto-fill endPage dengan startPage jika endPage kosong (0)
+        const finalEndPage = (endPage === 0 || !endPage) ? startPage : endPage;
+        
+        if (startPage === 0 && finalEndPage === 0) {
             if (existing?.id != null) await db.logs.delete(existing.id);
         } else {
             await db.logs.put({
@@ -413,7 +416,7 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
                 status: 'done',
                 synced: false,
                 startPage,
-                endPage,
+                endPage: finalEndPage,
             });
         }
     };
@@ -507,7 +510,7 @@ return (
                                                 const _today = isToday(day);
                                                 const isTilawah = isTilawahActivity(activity);
                                                 const pageDifference = isTilawah && currentLog?.startPage && currentLog?.endPage 
-                                                    ? currentLog.endPage - currentLog.startPage 
+                                                    ? currentLog.endPage - currentLog.startPage + 1
                                                     : null;
                                                 return (
                                                     <div

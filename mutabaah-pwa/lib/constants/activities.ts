@@ -47,7 +47,7 @@ export const ACTIVITIES: Activity[] = [
 
   // Interaksi Al Quran
   { id: 'tilawah', name: 'Tilawah', category: 'Interaksi Al Quran' },
-  { id: 'terjemahan_quran', name: "Membaca Terjemahan Al-Qur'an", category: 'Aktivitas Ramadhan' },
+  { id: 'terjemahan_quran', name: "Membaca Terjemahan Al-Qur'an", category: 'Interaksi Al Quran' },
   { id: 'al_waqiah', name: 'Membaca QS Al Waqiah', category: 'Interaksi Al Quran' },
   { id: 'al_mulk', name: 'Membaca QS Al Mulk Setiap Malam', category: 'Interaksi Al Quran' },
   { id: 'al_kahfi', name: 'Membaca QS Al Kahfi Setiap Jumat', category: 'Interaksi Al Quran' },
@@ -55,13 +55,13 @@ export const ACTIVITIES: Activity[] = [
   // Ibadah Lainnya
   { id: 'puasa_sunnah', name: 'Puasa Sunnah', category: 'Ibadah Lainnya' },
   { id: 'sedekah_subuh', name: 'Sedekah Subuh', category: 'Ibadah Lainnya' },
-  { id: 'dhuha', name: 'Dhuha', category: 'Ibadah Lainnya' },
+  { id: 'dhuha', name: 'Shalat Sunnah Dhuha', category: 'Ibadah Lainnya' },
   { id: 'mendoakan', name: 'Mendoakan Orang lain di jalan', category: 'Ibadah Lainnya' },
   { id: 'memaafkan', name: 'Memaafkan Orang Lain Sebelum Tidur', category: 'Ibadah Lainnya' },
 
   // Aktivitas Ramadhan
   { id: 'puasa_ramadhan', name: 'Puasa Ramadan', category: 'Aktivitas Ramadhan' },
-  { id: 'tarawih', name: 'Salat Sunah Tarawih', category: 'Aktivitas Ramadhan' },
+  { id: 'tarawih', name: 'Shalat Sunah Tarawih', category: 'Aktivitas Ramadhan' },
   { id: 'kajian', name: 'Mengikuti atau Mendengarkan Kajian Ilmu', category: 'Aktivitas Ramadhan' },
   { id: 'doa_sahur', name: 'Memperbanyak Doa Saat Sahur', category: 'Aktivitas Ramadhan' },
   { id: 'doa_berbuka', name: 'Memperbanyak Doa Menjelang Berbuka', category: 'Aktivitas Ramadhan' },
@@ -70,13 +70,14 @@ export const ACTIVITIES: Activity[] = [
   { id: 'menahan_amarah', name: 'Menahan Amarah', category: 'Aktivitas Ramadhan' },
   { id: 'menghindari_ghibah', name: 'Menghindari Ghibah', category: 'Aktivitas Ramadhan' },
   { id: 'itikaf', name: 'Itikaf', category: 'Aktivitas Ramadhan' },
+  { id: 'doa_lailatul_qadr', name: 'Membaca Doa Lailatul Qadr', category: 'Aktivitas Ramadhan' },
 
   // Amalan Unggulan (pilih satu amalan yang ingin dijaga secara istiqamah)
   { id: 'istigfar', name: 'Memperbanyak Istigfar', category: 'Amalan Unggulan' },
-  { id: 'selawat', name: 'Memperbanyak Selawat', category: 'Amalan Unggulan' },
+  { id: 'shalawat', name: 'Memperbanyak Shalawat', category: 'Amalan Unggulan' },
   { id: 'sedekah_subuh', name: 'Sedekah Subuh', category: 'Amalan Unggulan' },
   { id: 'zikir_pagi_petang', name: 'Zikir Pagi dan Petang', category: 'Amalan Unggulan' },
-  { id: 'tahajud_unggulan', name: 'Salat Tahajud', category: 'Amalan Unggulan' },
+  { id: 'tahajud_unggulan', name: 'Shalat Tahajud', category: 'Amalan Unggulan' },
   { id: 'duha', name: 'Salat Duha', category: 'Amalan Unggulan' },
   { id: 'tilawah_harian', name: "Membaca Al-Qur'an Setiap Hari", category: 'Amalan Unggulan' },
   { id: 'al_mulk_malam', name: 'Membaca Surah Al-Mulk Setiap Malam', category: 'Amalan Unggulan' },

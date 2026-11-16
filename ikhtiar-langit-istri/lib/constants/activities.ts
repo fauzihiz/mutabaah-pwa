@@ -60,6 +60,7 @@ export const ACTIVITIES: Activity[] = [
   { id: 'baca_script_niat', name: 'Baca Script Meluruskan Niat', category: 'Membangun Kebiasaan Baik' },
   { id: 'tidur_awal', name: 'Tidur Lebih Awal', category: 'Membangun Kebiasaan Baik' },
   { id: 'bangun_awal', name: 'Bangun Lebih Awal', category: 'Membangun Kebiasaan Baik' },
+  { id: 'syuruq', name: 'Menghidupkan Waktu Subuh Hingga Syuruq', category: 'Membangun Kebiasaan Baik' },
   { id: 'bersih', name: 'Membersihkan Rumah', category: 'Membangun Kebiasaan Baik' },
   { id: 'gerak', name: 'Ikhtiar Gerak Antusias', category: 'Membangun Kebiasaan Baik' },
   { id: 'menjaga_ucapan', name: 'Menjaga Ucapan Kepada Anak atau Suami', category: 'Membangun Kebiasaan Baik' },

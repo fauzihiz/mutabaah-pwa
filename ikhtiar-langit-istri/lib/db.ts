@@ -28,6 +28,8 @@ export interface ActivityLog {
     activityId: string;
     completed: LogStatus; // Lihat STATUS di atas (better for indexing)
     synced: boolean; // Legacy field, kept for schema compatibility
+    startPage?: number; // Halaman mulai untuk tilawah
+    endPage?: number; // Halaman selesai untuk tilawah
 }
 
 export interface ActivitySetting {
@@ -92,6 +94,15 @@ export class MutabaahDatabase extends Dexie {
         // v7: tambah tabel goals (Goal Planning) — penambahan tabel saja, upgrade path aman
         this.version(7).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
+            activitySettings: 'activityId',
+            planner: '++id, date, synced',
+            doaScripts: '++id, updatedAt',
+            goals: '++id, done, createdAt',
+        });
+        // v8: tambah field startPage & endPage ke logs (fitur input halaman tilawah).
+        // Tidak ada migrasi data — data lama akan memiliki undefined untuk kedua field ini.
+        this.version(8).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed, startPage, endPage',
             activitySettings: 'activityId',
             planner: '++id, date, synced',
             doaScripts: '++id, updatedAt',

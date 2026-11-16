@@ -500,6 +500,16 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
                 arti: '"Sedekah itu tidak mengurangi harta."',
                 sumber: 'HR. Muslim no. 2588',
             },
+            {
+                arab: 'مَثَلُ الَّذِينَ يُنْفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنْبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنْبُلَةٍ مِائَةُ حَبَّةٍ وَاللَّهُ يُضَاعِفُ لِمَنْ يَشَاءُ وَاللَّهُ وَاسِعٌ عَلِيمٌ',
+                arti: '"Perumpamaan orang-orang yang menginfakkan hartanya di jalan Allah adalah seperti (orang-orang yang menabur) sebutir biji (benih) yang menumbuhkan tujuh tangkai, pada setiap tangkai ada seratus biji. Allah melipatgandakan (pahala) bagi siapa yang Dia kehendaki. Allah Mahaluas lagi Maha Mengetahui."',
+                sumber: 'QS. Al-Baqarah [2]: 261',
+            },
+            {
+                arab: 'إِنَّ الْمُصَدِّقِينَ وَالْمُصَدِّقَاتِ وَمَنْ قَرْضُوا اللَّهَ قَرْضًا حَسَنًا يُضَاعَفُ لَهُمْ وَلَهُمْ أَجْرٌ كَرِيمٌ',
+                arti: '"Sesungguhnya orang-orang yang bersedekah baik laki-laki maupun perempuan dan meminjamkan kepada Allah dengan pinjaman yang baik, akan dilipatgandakan (balasannya) bagi mereka; dan mereka akan mendapat pahala yang banyak."',
+                sumber: 'QS. Al-Hadid: 18',
+            },
         ],
     },
     sedekah_tenaga: {
@@ -784,6 +794,34 @@ Aamiin ya Rabbal 'alamin.`,
         ],
         catatan:
             'Disarankan diusahakan bangun tidur jam 3 pagi (sepertiga malam terakhir) — meski tidak wajib, bahkan sepuluh hingga lima belas menit di penghujung malam sangat berharga untuk berdoa dan bermunajat.',
+    },
+    syuruq: {
+        ringkasan:
+            'Menghidupkan waktu antara Subuh hingga Syuruq (matahari terbit) dengan dzikir, tilawah, dan doa — amalan mulia yang nilainya setara haji dan umrah sempurna bagi yang istiqamah.',
+        keutamaan: [
+            'Rasulullah ﷺ bersabda: Barangsiapa sholat Subuh berjamaah, kemudian duduk berdzikir kepada Allah hingga matahari terbit, lalu sholat dua rakaat (Dhuha), maka baginya pahala seperti pahala haji dan umrah — sempurna, sempurna, sempurna.',
+            'Bagi ibu rumah tangga yang tidak bisa ke masjid: duduk di rumah setelah Subuh, mengisi waktu dengan dzikir pagi, tilawah Al-Quran, muhasabah, atau doa-doa pribadi hingga matahari naik sepenggalah (~15-20 menit setelah terbit) — niat dan usaha tetap dinilai oleh Allah.',
+            'Waktu antara Subuh dan Syuruq adalah waktu yang diberkahi — doa di waktu ini sangat mustajab, dan malaikat masih mencatat amalan pergantian shift malam ke siang.',
+        ],
+        dalil: [
+            {
+                arab: 'مَن صَلَّى الغَدَاةَ فِي جَمَاعَةٍ، ثُمَّ قَعَدَ يَذْكُرُ اللَّهَ حَتَّى تَطْلُعَ الشَّمْسُ، ثُمَّ صَلَّى رَكْعَتَيْنِ، كَانَتْ لَهُ كَأَجْرِ حَجَّةٍ وَعُمْرَةٍ تَامَّةٍ تَامَّةٍ تَامَّةٍ',
+                arti: '"Barangsiapa sholat Subuh berjamaah, kemudian duduk berdzikir kepada Allah hingga matahari terbit, lalu sholat dua rakaat, maka baginya (pahala) seperti pahala haji dan umrah yang sempurna."',
+                sumber: 'HR. At-Tirmidzi no. 586 (hasan)',
+            },
+            {
+                arab: 'اللَّهُمَّ بَارِكْ لِأُمَّتِي فِي بُكُورِهَا',
+                arti: '"Ya Allah, berkahilah umatku di waktu paginya."',
+                sumber: 'HR. Abu Dawud no. 1200, At-Tirmidzi no. 1306 (hasan shahih)',
+            },
+            {
+                arab: 'إِنَّ قُرْآنَ الفَجْرِ كَانَ مَشْهُودًا',
+                arti: '"Dan bacaan Fajar (Subuh), sesungguhnya bacaan fajar itu disaksikan (oleh malaikat)."',
+                sumber: 'QS. Al-Isra: 78',
+            },
+        ],
+        catatan:
+            'Untuk ibu rumah tangga: setelah sholat Subuh, siapkan teh hangat atau air putih, duduk di sudut ruangan yang tenang, buka mushaf atau aplikasi Al-Quran, dan isi waktu dengan dzikir pagi (Al-Ikhlas, Al-Falaq, An-Nas, Ayat Kursi), tilawah minimal ½ halaman, serta doa-doa pribadi untuk keluarga. Akhiri dengan sholat Dhuha 2 rakaat saat matahari sudah naik sepenggalah (±15-20 menit setelah terbit). Konsisten lebih utama daripada banyak tapi sekali-sekali.',
     },
 
 
