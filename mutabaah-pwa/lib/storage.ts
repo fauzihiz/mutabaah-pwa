@@ -13,7 +13,7 @@ const key = (k: string) => `${NS}.${k}`;
 const MIGRATION_MAP: Record<string, string> = {
     greeting: 'greetingName',
     theme: 'mutabaah-theme',
-    amalan_unggulan: 'selected_amalan_unggulan',
+    // amalan_unggulan: 'selected_amalan_unggulan',
 };
 
 /**
@@ -58,7 +58,7 @@ export const storage = {
         migrateLegacyNamespace();
 
         // Try new namespaced key first
-        let val = localStorage.getItem(key(k));
+        const val = localStorage.getItem(key(k));
 
         // If not found, attempt one-time migration from legacy key
         if (val === null) {

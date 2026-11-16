@@ -26,10 +26,29 @@ export interface PlannerNote {
     synced: boolean;
 }
 
+/**
+ * Goal Planning — daftar goal pribadi bergaya S.M.A.R.T (fitur Goal Planning).
+ * `judul` = Specific, `terukur` = Measurable, `usaha` = Achievable,
+ * `motivasi` = Relevant, `tenggat` = Time-bound (YYYY-MM-DD).
+ */
+export interface GoalPlanning {
+    id?: number;
+    judul: string; // S — Specific: goal konkret
+    terukur: string; // M — Measurable: angka/indikator keberhasilan
+    usaha: string; // A — Achievable: langkah/ikhtiar konkret yang akan dilakukan
+    motivasi: string; // R — Relevant: mengapa penting & untuk siapa
+    tenggat: string; // T — Time-bound: YYYY-MM-DD
+    done: boolean; // goal sudah tercapai (dicoret)
+    doneAt?: number; // epoch ms saat ditandai tercapai
+    createdAt: number; // epoch ms
+    updatedAt: number; // epoch ms
+}
+
 export class RamadhanIbadahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
+    goals!: Table<GoalPlanning, number>;
 
     constructor() {
         super('RamadhanIbadahDB');
@@ -58,6 +77,13 @@ export class RamadhanIbadahDatabase extends Dexie {
         }).upgrade(async tx => {
             // Tidak ada migrasi data yang diperlukan untuk field startPage dan endPage.
             // Data lama akan memiliki undefined untuk kedua field ini.
+        });
+        // v8: tambah tabel goals (Goal Planning) — penambahan tabel saja, upgrade path aman
+        this.version(8).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed, status, startPage, endPage',
+            activitySettings: 'activityId',
+            planner: '++id, date, synced',
+            goals: '++id, done, createdAt',
         });
     }
 }
@@ -140,5 +166,6 @@ export async function resetAllData(): Promise<void> {
     await db.logs.clear();
     await db.activitySettings.clear();
     await db.planner.clear();
+    await db.goals.clear();
     storage.remove('greeting');
 }

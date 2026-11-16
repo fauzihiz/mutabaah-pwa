@@ -1,8 +1,8 @@
 'use client';
 
-import { storage } from '@/lib/storage';
+// import { storage } from '@/lib/storage'; // dinonaktifkan sementara (dipakai oleh Amalan Unggulan)
 import { Lock } from 'lucide-react';
-import { useMemo, useState, useEffect, useRef, type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useMemo, useState, useEffect, useRef, /* type MouseEvent as ReactMouseEvent, type KeyboardEvent as ReactKeyboardEvent */ } from 'react';
 import { ACTIVITIES, CATEGORIES, Activity, ActivityCategory } from '@/lib/constants/activities';
 import { db, ActivityLog, LogStatus } from '@/lib/db';
 import { useActivitySettings } from '@/hooks/useActivitySettings';
@@ -267,6 +267,7 @@ function TilawahPagePopover({
     );
 }
 
+/* 
 function AmalanUnggulanModal({
     isOpen,
     onClose,
@@ -310,34 +311,29 @@ function AmalanUnggulanModal({
         </div>
     );
 }
+*/
 
 export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
     const { getActivityName } = useActivitySettings();
 
-    const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-    const [selectedAmalanUnggulan, setSelectedAmalanUnggulan] = useState<string | null>(null);
+    // const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+    // const [selectedAmalanUnggulan, setSelectedAmalanUnggulan] = useState<string | null>(null);
     const [today, setToday] = useState<Date | null>(null);
     const [todayStr, setTodayStr] = useState('');
 
-    useEffect(() => {
-        const saved = storage.get('amalan_unggulan');
-        if (saved) setSelectedAmalanUnggulan(saved);
-    }, []);
+    // useEffect(() => {
+    //     const saved = storage.get('amalan_unggulan');
+    //     if (saved) setSelectedAmalanUnggulan(saved);
+    // }, []);
 
-    const handleSelectAmalan = (id: string) => {
-        setSelectedAmalanUnggulan(id);
-        storage.set('amalan_unggulan', id);
-    };
+    // const handleSelectAmalan = (id: string) => {
+    //     setSelectedAmalanUnggulan(id);
+    //     storage.set('amalan_unggulan', id);
+    // };
 
     const getActivitiesForCategory = (category: ActivityCategory): Activity[] => {
-        if (category === 'Amalan Unggulan') {
-            if (selectedAmalanUnggulan) {
-                return ACTIVITIES.filter(a => a.category === 'Amalan Unggulan' && a.id === selectedAmalanUnggulan);
-            }
-            return [];
-        }
         return ACTIVITIES.filter(a => a.category === category);
     };
 
@@ -433,7 +429,7 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
         } else {
             el.scrollTo({ left: 0, behavior: 'smooth' });
         }
-    }, [currentDate, todayStr]);
+    }, [currentDate, todayStr, today]);
 
 return (
         <div className="flex-1 flex overflow-hidden border-t" style={{ borderColor: 'var(--border)' }}>
@@ -443,29 +439,26 @@ return (
                     {CATEGORIES.map(category => {
                         const activities = getActivitiesForCategory(category);
                         const isUnggulan = category === 'Amalan Unggulan';
-                        const needsFocusPrompt = isUnggulan && !selectedAmalanUnggulan;
+                        if (isUnggulan) return null;
                         return (
                             <div key={category}>
-                                <div className={`${needsFocusPrompt ? 'h-20 py-1 pl-3 pr-8' : isUnggulan ? 'h-12 py-1 px-3' : 'h-7 px-3'} flex items-center border-b relative`} style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)', borderLeftWidth: isUnggulan ? '4px' : '0', borderLeftColor: '#f59e0b' }}>
-                                    <button
-                                        onClick={() => isUnggulan && setCategoryModalOpen(true)}
-                                        className={`flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter text-left transition-colors ${isUnggulan ? 'text-amber-700 dark:text-amber-400' : 'text-gray-500 hover:text-green-600 dark:hover:text-green-400 truncate'}`}
-                                        style={isUnggulan ? undefined : { color: 'var(--text-muted)' }}
+                                <div className="h-7 px-3 flex items-center border-b" style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
+                                    <span
+                                        className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter text-left truncate"
+                                        style={{ color: 'var(--text-muted)' }}
                                     >
-                                        {isUnggulan ? (
-                                            <span className="whitespace-normal break-words leading-tight">
-                                                {needsFocusPrompt ? 'Pilih Amalan Unggulan Yang Akan Difokuskan [Klik Untuk Pilih]' : 'Amalan Unggulan [Klik Untuk Pilih]'}
-                                            </span>
-                                        ) : category}
-                                    </button>
+                                        <span className="whitespace-normal break-words leading-tight">
+                                            {category}
+                                        </span>
+                                    </span>
                                 </div>
                                 {activities.map(activity => (
                                     <div
                                         key={activity.id}
                                         className="h-12 px-3 flex items-center border-b"
-                                        style={{ background: isUnggulan ? '#fffbeb' : 'var(--bg-surface)', borderColor: 'var(--border)', borderLeftWidth: isUnggulan ? '4px' : '0', borderLeftColor: '#f59e0b' }}
+                                        style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                                     >
-                                        <span className={`text-[11px] leading-tight pr-4 ${isUnggulan ? 'font-bold text-amber-800 dark:text-amber-300' : 'font-semibold'}`} style={{ color: !isUnggulan ? 'var(--text-secondary)' : undefined }}>
+                                        <span className="text-[11px] leading-tight pr-4 font-semibold">
                                             {getActivityName(activity.id)}
                                         </span>
                                     </div>
@@ -494,10 +487,10 @@ return (
                         {CATEGORIES.map(category => {
                             const activities = getActivitiesForCategory(category);
                             const isUnggulan = category === 'Amalan Unggulan';
-                            const needsFocusPrompt = isUnggulan && !selectedAmalanUnggulan;
+                            if (isUnggulan) return null;
                             return (
                                 <div key={category}>
-                                    <div className={`flex ${needsFocusPrompt ? 'h-20' : isUnggulan ? 'h-12' : 'h-7'} border-b`} style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}>
+                                    <div className="flex h-7 border-b" style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}>
                                         {days.map(day => (
                                             <div key={day} className="w-10 flex-shrink-0 border-r" style={{ borderColor: 'var(--border)' }} />
                                         ))}
@@ -549,12 +542,14 @@ return (
                     </div>
                 </div>
             </div>
+            {/* AmalanUnggulanModal dinonaktifkan sementara
             <AmalanUnggulanModal
                 isOpen={categoryModalOpen}
                 onClose={() => setCategoryModalOpen(false)}
                 selectedId={selectedAmalanUnggulan}
                 onSelect={handleSelectAmalan}
             />
+            */}
             {statusPopover && (
                 <StatusPopover
                     position={statusPopover.position}

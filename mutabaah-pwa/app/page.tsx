@@ -9,6 +9,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
+import { GoalPlanningCard } from '@/components/dashboard/GoalPlanningCard';
 
 // Lazy-load heavy components that aren't needed on initial render
 const NavigationDrawer = dynamic(
@@ -26,6 +27,11 @@ const StatsView = dynamic(
   { ssr: false }
 );
 
+const GoalPlanningModal = dynamic(
+  () => import('@/components/dashboard/GoalPlanningModal').then(m => m.GoalPlanningModal),
+  { ssr: false }
+);
+
 export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -38,6 +44,7 @@ export default function Dashboard() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
   const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
+  const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
 
   const { logs, setStatus } = useMutabaahMonth(
     currentDate.getFullYear(),
@@ -68,12 +75,18 @@ export default function Dashboard() {
           setActiveView('dashboard');
           setIsDrawerOpen(false);
         }}
+        onOpenGoals={() => setIsGoalModalOpen(true)}
         activeView={activeView}
       />
 
       <ChangelogModal
         isOpen={isChangelogOpen}
         onClose={() => setIsChangelogOpen(false)}
+      />
+
+      <GoalPlanningModal
+        isOpen={isGoalModalOpen}
+        onClose={() => setIsGoalModalOpen(false)}
       />
 
       <main className="flex-1 flex flex-col overflow-hidden relative">
@@ -88,6 +101,8 @@ export default function Dashboard() {
               logs={logs || []}
               onSetStatus={setStatus}
             />
+
+            <GoalPlanningCard onOpen={() => setIsGoalModalOpen(true)} />
           </>
         ) : (
           <StatsView stats={stats} />
