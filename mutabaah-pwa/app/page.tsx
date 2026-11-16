@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useMutabaahMonth } from '@/hooks/useMutabaah';
 import { useMonthlyStats } from '@/hooks/useMonthlyStats';
+import { migrateLegacyDb } from '@/lib/db';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
@@ -27,6 +28,11 @@ const StatsView = dynamic(
 
 export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  // Run one-time IndexedDB migration from the legacy database name
+  useEffect(() => {
+    migrateLegacyDb().catch(() => {});
+  }, []);
 
   // UI State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

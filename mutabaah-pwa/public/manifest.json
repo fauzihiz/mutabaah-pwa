@@ -1,6 +1,6 @@
 {
-  "name": "Mutabaah Tracker",
-  "short_name": "Mutabaah",
+  "name": "Ramadhan Ibadah Tracker",
+  "short_name": "Ramadhan Ibadah",
   "description": "Catatan ibadah harian — offline-first, penuh motivasi",
   "start_url": "/",
   "display": "standalone",

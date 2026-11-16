@@ -1,4 +1,4 @@
-# 🌙 Mutabaah Tracker
+# 🌙 Ramadhan Ibadah Tracker
 
 > **A private, offline-first PWA for Muslims to track daily worship habits, build consistency, and reflect on their monthly progress — with no account or cloud storage required.**
 
@@ -12,7 +12,7 @@
 ## 📸 Preview
 
 <!-- Replace with your actual screenshot or demo GIF 
-![Mutabaah Tracker Preview](docs/screenshoot/preview.png) -->
+![Ramadhan Ibadah Tracker Preview](docs/screenshoot/preview.png) -->
 | Light Mode | Dark Mode | Statistics |
 |---|---|---|
 | ![Light Mode](./docs/screenshots/dashboard-light.jpg) | ![Dark Mode](./docs/screenshots/dashboard-dark.jpg) | ![Statistics](./docs/screenshots/statistic.jpg) |
@@ -23,7 +23,7 @@
 
 ## ✨ Features
 
-- **📅 Monthly Mutabaah Grid** — Track daily worship activities in an easy-to-scan monthly grid.
+- **📅 Monthly Ramadhan Ibadah Grid** — Track daily worship activities in an easy-to-scan monthly grid.
 - **👆 One-Tap Tracking** — Mark activities as completed with a single tap.
 - **🔒 Past & Future Day Rules** — Past days remain editable while future days are automatically locked.
 - **📊 Progress Statistics** — View overall and category-level completion progress through interactive charts.
@@ -126,7 +126,7 @@ Toggle the theme from the dashboard header. Your preference is stored locally.
 
 ### Install as an App
 
-On a supported browser, use the browser's **Install App** or **Add to Home Screen** option to install Mutabaah Tracker as a PWA.
+On a supported browser, use the browser's **Install App** or **Add to Home Screen** option to install Ramadhan Ibadah Tracker as a PWA.
 
 ---
 
@@ -207,7 +207,7 @@ mutabaah-pwa/
 
 ## 🔐 Privacy & Data
 
-Mutabaah Tracker is designed to keep personal worship data private.
+Ramadhan Ibadah Tracker is designed to keep personal worship data private.
 
 - **No account required**
 - **No login**

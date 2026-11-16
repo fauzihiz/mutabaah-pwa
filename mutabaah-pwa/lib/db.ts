@@ -26,13 +26,13 @@ export interface PlannerNote {
     synced: boolean;
 }
 
-export class MutabaahDatabase extends Dexie {
+export class RamadhanIbadahDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
 
     constructor() {
-        super('MutabaahDB');
+        super('RamadhanIbadahDB');
         this.version(5).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             activitySettings: 'activityId',
@@ -62,7 +62,75 @@ export class MutabaahDatabase extends Dexie {
     }
 }
 
-export const db = new MutabaahDatabase();
+export const db = new RamadhanIbadahDatabase();
+
+/**
+ * One-time migration from the legacy IndexedDB database ('MutabaahDB')
+ * to the new database name ('RamadhanIbadahDB'). This runs automatically
+ * on app startup and copies all tables from the old DB to the new one.
+ * After successful migration, the legacy database is deleted.
+ */
+export async function migrateLegacyDb(): Promise<void> {
+    if (typeof indexedDB === 'undefined') return;
+
+    const LEGACY_DB_NAME = 'MutabaahDB';
+    const FLAG_KEY = 'ramadhan-ibadah.db.migrated';
+    const canStore = typeof localStorage !== 'undefined';
+
+    try {
+        // Skip if this browser already completed the migration.
+        if (canStore && localStorage.getItem(FLAG_KEY) === '1') return;
+
+        // Skip if the new database already contains data (fresh installs or
+        // subsequent visits after a successful copy).
+        const existingCount = await db.logs.count();
+        if (existingCount > 0) {
+            if (canStore) localStorage.setItem(FLAG_KEY, '1');
+            return;
+        }
+
+        // Detect the legacy DB. `indexedDB.databases()` isn't supported in every
+        // browser, so fall back to optimistically opening it (an empty DB is
+        // created and immediately removed if it never existed).
+        let legacyExists = true;
+        const idbAny = indexedDB as IDBFactory & {
+            databases?: () => Promise<Array<{ name?: string }>>;
+        };
+        if (typeof idbAny.databases === 'function') {
+            const dbs = await idbAny.databases();
+            legacyExists = dbs.some(d => d.name === LEGACY_DB_NAME);
+        }
+
+        if (!legacyExists) {
+            if (canStore) localStorage.setItem(FLAG_KEY, '1');
+            return;
+        }
+
+        const legacy = new Dexie(LEGACY_DB_NAME);
+        legacy.version(7).stores({
+            logs: '++id, [date+activityId], date, activityId, synced, completed, status, startPage, endPage',
+            activitySettings: 'activityId',
+            planner: '++id, date, synced',
+        });
+        await legacy.open();
+
+        const legacyLogs = await legacy.table('logs').toArray();
+        const legacySettings = await legacy.table('activitySettings').toArray();
+        const legacyPlanner = await legacy.table('planner').toArray();
+
+        if (legacyLogs.length) await db.logs.bulkPut(legacyLogs);
+        if (legacySettings.length) await db.activitySettings.bulkPut(legacySettings);
+        if (legacyPlanner.length) await db.planner.bulkPut(legacyPlanner);
+
+        legacy.close();
+        await Dexie.delete(LEGACY_DB_NAME).catch(() => { });
+
+        if (canStore) localStorage.setItem(FLAG_KEY, '1');
+        console.log('[DB Migration] Migrated data from MutabaahDB to RamadhanIbadahDB');
+    } catch (err) {
+        console.warn('[DB Migration] Failed to migrate legacy database:', err);
+    }
+}
 
 /**
  * Reset all locally stored data (IndexedDB tables + localStorage items).
