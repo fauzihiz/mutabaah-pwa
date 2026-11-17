@@ -10,6 +10,7 @@ import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
 import { GoalPlanningCard } from '@/components/dashboard/GoalPlanningCard';
+import { RamadhanVirtuesCard } from '@/components/dashboard/RamadhanVirtuesCard';
 
 // Lazy-load heavy components that aren't needed on initial render
 const NavigationDrawer = dynamic(
@@ -32,6 +33,11 @@ const GoalPlanningModal = dynamic(
   { ssr: false }
 );
 
+const RamadhanVirtuesModal = dynamic(
+  () => import('@/components/dashboard/RamadhanVirtuesModal').then(m => m.RamadhanVirtuesModal),
+  { ssr: false }
+);
+
 export default function Dashboard() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -45,6 +51,7 @@ export default function Dashboard() {
   const [isChangelogOpen, setIsChangelogOpen] = useState(false);
   const [activeView, setActiveView] = useState<'dashboard' | 'stats'>('dashboard');
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
+  const [isVirtuesOpen, setIsVirtuesOpen] = useState(false);
 
   const { logs, setStatus } = useMutabaahMonth(
     currentDate.getFullYear(),
@@ -62,6 +69,8 @@ export default function Dashboard() {
       <DashboardHeader
         onMenuClick={() => setIsDrawerOpen(true)}
       />
+
+      <GoalPlanningCard onOpen={() => setIsGoalModalOpen(true)} />
 
       <NavigationDrawer
         isOpen={isDrawerOpen}
@@ -89,6 +98,11 @@ export default function Dashboard() {
         onClose={() => setIsGoalModalOpen(false)}
       />
 
+      <RamadhanVirtuesModal
+        isOpen={isVirtuesOpen}
+        onClose={() => setIsVirtuesOpen(false)}
+      />
+
       <main className="flex-1 flex flex-col overflow-hidden relative">
         {activeView === 'dashboard' ? (
           <>
@@ -102,7 +116,7 @@ export default function Dashboard() {
               onSetStatus={setStatus}
             />
 
-            <GoalPlanningCard onOpen={() => setIsGoalModalOpen(true)} />
+            <RamadhanVirtuesCard onOpen={() => setIsVirtuesOpen(true)} />
           </>
         ) : (
           <StatsView stats={stats} />
