@@ -250,12 +250,12 @@ body {
 
 /* ─── MutabaahGrid responsive sticky label column ─── */
 .mutabaah-grid {
-  --label-col-w: 220px;
+  --label-col-w: 240px;
 }
 
 @media (min-width: 640px) {
   .mutabaah-grid {
-    --label-col-w: 12rem; /* 192px — w-48 */
+    --label-col-w: 16rem; /* 256px — w-64 */
   }
 }
 

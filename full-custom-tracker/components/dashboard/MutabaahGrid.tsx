@@ -75,10 +75,11 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         if (!el || !today || !todayStr) return;
         const isCurrentMonth = currentDate.getFullYear() === today.getFullYear() && currentDate.getMonth() === today.getMonth();
         if (isCurrentMonth) {
-            // Sticky label column width (responsive: 220px mobile / 192px sm+)
-            const LEFT = el.querySelector('[data-label-col]')?.clientWidth ?? 192;
+            // Get the natural width of the label column after it's rendered
+            const labelCol = el.querySelector('[data-label-col]') as HTMLElement;
+            const labelWidth = labelCol?.offsetWidth || 240;
             const colWidth = 40;
-            const target = Math.max(0, LEFT + (today.getDate() - 1) * colWidth - el.clientWidth * 0.5);
+            const target = Math.max(0, labelWidth + (today.getDate() - 1) * colWidth - el.clientWidth * 0.5);
             el.scrollTo({ left: target, behavior: 'smooth' });
         } else {
             el.scrollTo({ left: 0, behavior: 'smooth' });
@@ -128,13 +129,13 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
 
                 {/* ── HEADER ROW ── */}
                 <div
-                    className="flex h-11 border-b sticky top-0 z-30"
+                    className="flex min-h-11 border-b sticky top-0 z-30"
                     style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                 >
                     {/* sticky top-left corner with Add Category button */}
                     <div
                         data-label-col
-                        className="flex-shrink-0 sticky left-0 z-30 flex items-center justify-between px-2 border-r w-[220px] sm:w-48"
+                        className="flex-shrink-0 sticky left-0 z-30 flex items-center justify-between px-2 border-r w-[var(--label-col-w)]"
                         style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                     >
                         <span className="text-xs font-bold" style={{ color: 'var(--text-secondary)' }}>
@@ -188,21 +189,21 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                         <div key={category.id}>
                             {/* ── Category header row ── */}
                             <div
-                                className="flex h-7 border-b group"
+                                className="flex min-h-7 border-b group"
                                 style={{ borderColor: 'var(--border)', background: 'var(--bg-subtle)' }}
                             >
                                 {/* sticky label */}
                                 <div
-                                    className="flex-shrink-0 sticky left-0 z-20 flex items-center justify-between px-2 border-r w-[220px] sm:w-48"
+                                    className="flex-shrink-0 sticky left-0 z-20 flex items-start justify-between gap-1 px-2 py-1 border-r w-[var(--label-col-w)] h-auto"
                                     style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
                                 >
                                     <span
-                                        className="text-[10px] font-black uppercase tracking-tighter truncate"
+                                        className="text-[10px] font-black uppercase break-words flex-1 min-w-0 leading-snug"
                                         style={{ color: 'var(--text-muted)' }}
                                     >
                                         {category.name}
                                     </span>
-                                    <div className="flex sm:hidden sm:group-hover:flex items-center gap-1 shrink-0">
+                                    <div className="flex sm:hidden sm:group-hover:flex items-center gap-1 shrink-0 mt-0.5">
                                         <button
                                             onClick={() => handleAddActivity(category.id)}
                                             title="Add Activity"
@@ -241,11 +242,11 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                             {/* ── Activity rows ── */}
                             {catActivities.length === 0 ? (
                                 <div
-                                    className="flex h-10 border-b"
+                                    className="flex min-h-10 border-b"
                                     style={{ borderColor: 'var(--border)' }}
                                 >
                                     <div
-                                        className="flex-shrink-0 sticky left-0 z-20 flex items-center px-3 border-r w-[220px] sm:w-48"
+                                        className="flex-shrink-0 sticky left-0 z-20 flex items-center px-3 py-1 border-r w-[var(--label-col-w)] h-auto"
                                         style={{ background: 'var(--bg-surface)', borderColor: 'var(--border)' }}
                                     >
                                         <span className="text-[10px] opacity-40 italic">No activities — tap + above</span>
@@ -262,12 +263,12 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                 catActivities.map(activity => (
                                     <div
                                         key={activity.id}
-                                        className="flex h-12 border-b group"
+                                        className="flex min-h-12 border-b group"
                                         style={{ borderColor: 'var(--border)' }}
                                     >
                                         {/* sticky label */}
                                         <div
-                                            className="flex-shrink-0 sticky left-0 z-20 flex items-center justify-between px-2 border-r w-[220px] sm:w-48"
+                                            className="flex-shrink-0 sticky left-0 z-20 flex items-start justify-between gap-1 px-2 py-1 border-r w-[var(--label-col-w)] h-auto"
                                             style={{
                                                 background:
                                                     activity.priority === 'high' ? 'var(--priority-high-bg)' :
@@ -278,12 +279,12 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                             }}
                                         >
                                             <span
-                                                className="text-[11px] font-semibold leading-tight truncate"
+                                                className="text-[11px] font-semibold break-words flex-1 min-w-0 leading-snug"
                                                 style={{ color: activity.priority ? 'var(--text-primary)' : 'var(--text-secondary)' }}
                                             >
                                                 {activity.name}
                                             </span>
-                                            <div className="flex sm:hidden sm:group-hover:flex items-center gap-1 shrink-0">
+                                            <div className="flex sm:hidden sm:group-hover:flex items-center gap-1 shrink-0 mt-0.5">
                                                 <button
                                                     onClick={() => cycleActivityPriority(activity)}
                                                     title={`Priority: ${activity.priority ?? 'none'} — click to cycle`}
