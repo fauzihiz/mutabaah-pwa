@@ -1,7 +1,7 @@
 // lib/storage.ts
 // Namespace-based localStorage wrapper to prevent cross-app data conflicts
 
-export const NS = 'full-custom';
+export const NS = 'action-planner';
 
 const key = (k: string) => `${NS}.${k}`;
 

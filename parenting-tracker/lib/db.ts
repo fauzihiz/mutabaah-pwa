@@ -41,7 +41,7 @@ export interface ActivityFlag {
     childId: number;
 }
 
-export class MutabaahDatabase extends Dexie {
+export class ParentingTrackerDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
@@ -50,7 +50,7 @@ export class MutabaahDatabase extends Dexie {
     flags!: Table<ActivityFlag>;
 
     constructor() {
-        super('MutabaahDB');
+        super('ParentingTrackerDatabase');
         // Keep version 5 for old schema, upgrade to 6 for children
         this.version(5).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
@@ -105,7 +105,7 @@ export class MutabaahDatabase extends Dexie {
     }
 }
 
-export const db = new MutabaahDatabase();
+export const db = new ParentingTrackerDatabase();
 
 /**
  * Reset all locally stored data (IndexedDB tables + localStorage items).

@@ -27,14 +27,14 @@ export interface PlannerNote {
     synced: boolean;
 }
 
-export class MutabaahDatabase extends Dexie {
+export class DietTrackerDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
     children!: Table<Child>;
 
     constructor() {
-        super('MutabaahDB');
+        super('DietTrackerDatabase');
         // Keep version 5 for old schema, upgrade to 6 for children
         this.version(5).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
@@ -56,7 +56,7 @@ export class MutabaahDatabase extends Dexie {
     }
 }
 
-export const db = new MutabaahDatabase();
+export const db = new DietTrackerDatabase();
 
 /**
  * Reset all locally stored data (IndexedDB tables + localStorage items).

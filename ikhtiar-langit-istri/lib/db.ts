@@ -71,7 +71,7 @@ export interface GoalPlanning {
     updatedAt: number; // epoch ms
 }
 
-export class MutabaahDatabase extends Dexie {
+export class IkhtiarLangitIstriDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
@@ -79,7 +79,7 @@ export class MutabaahDatabase extends Dexie {
     goals!: Table<GoalPlanning, number>;
 
     constructor() {
-        super('MutabaahDB');
+        super('IkhtiarLangitIstriDatabase');
         this.version(5).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             activitySettings: 'activityId',
@@ -111,7 +111,7 @@ export class MutabaahDatabase extends Dexie {
     }
 }
 
-export const db = new MutabaahDatabase();
+export const db = new IkhtiarLangitIstriDatabase();
 
 /**
  * Reset all locally stored data (IndexedDB tables + localStorage items).

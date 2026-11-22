@@ -71,7 +71,7 @@ git clone https://github.com/fauzihiz/mutabaah-pwa.git
 ### 2. Navigate to the project
 
 ```bash
-cd mutabaah-pwa/mutabaah-pwa
+cd mutabaah-pwa/ramadhan-tracker
 ```
 
 ### 3. Install dependencies
@@ -151,7 +151,7 @@ npm start
 ## 📁 Project Structure
 
 ```text
-mutabaah-pwa/
+ramadhan-tracker/
 ├── app/
 │   ├── page.tsx
 │   │   └── Dashboard (main screen)

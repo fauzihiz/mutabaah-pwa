@@ -1,6 +1,6 @@
 {
-  "name": "Action Plan",
-  "short_name": "Action",
+  "name": "Action Planner",
+  "short_name": "Planner",
   "description": "Aplikasi untuk membuat rencana aksi dan mengelola aktivitas harian dengan tenang",
   "start_url": "/",
   "display": "standalone",

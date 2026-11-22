@@ -53,7 +53,7 @@ export interface DoaScript {
     updatedAt: number; // epoch ms
 }
 
-export class MutabaahDatabase extends Dexie {
+export class ActionPlannerDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     categories!: Table<CategoryDef, string>;
     activities!: Table<ActivityDef, string>;
@@ -62,7 +62,7 @@ export class MutabaahDatabase extends Dexie {
     goals!: Table<GoalPlanning, number>;
 
     constructor() {
-        super('FullCustomTrackerDB');
+        super('ActionPlannerDB');
         this.version(7).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             categories: 'id, order',
@@ -80,7 +80,7 @@ export class MutabaahDatabase extends Dexie {
     }
 }
 
-export const db = new MutabaahDatabase();
+export const db = new ActionPlannerDatabase();
 
 /** Reset all locally stored data (IndexedDB tables + localStorage items). */
 /* After calling this, the page should be reloaded. */

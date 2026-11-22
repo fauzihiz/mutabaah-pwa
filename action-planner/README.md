@@ -1,4 +1,4 @@
-# Action Plan
+# Action Planner
 
 Aplikasi untuk membuat rencana aksi dan mengelola aktivitas harian dengan tenang — offline-first PWA berbasis Next.js.
 

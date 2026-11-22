@@ -10,7 +10,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Action Plan",
+  title: "Action Planner",
   description: "Aplikasi untuk membuat rencana aksi dan mengelola aktivitas harian dengan tenang",
   manifest: "/manifest.json",
   icons: {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Action Plan",
+    title: "Action Planner",
   },
 };
 
