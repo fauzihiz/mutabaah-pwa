@@ -432,7 +432,13 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
     }, [currentDate, todayStr, today]);
 
     // ── Desktop Drag-to-Scroll ──
+    // A drag only begins after the pointer moves past a small threshold,
+    // so plain taps/clicks on grid cells still fire their onClick handlers
+    // (pointer capture would otherwise retarget the click to the scroll
+    // container and swallow the cell click).
+    const PAN_THRESHOLD = 6;
     const isPanning = useRef(false);
+    const pendingPan = useRef(false);
     const panStartX = useRef(0);
     const panStartY = useRef(0);
     const panStartScrollLeft = useRef(0);
@@ -446,25 +452,34 @@ export function MutabaahGrid({ currentDate, logs, onSetStatus }: MutabaahGridPro
         const target = e.target as HTMLElement;
         if (target.closest('button, input, textarea, select, [draggable="true"], [data-drag-handle]')) return;
 
-        isPanning.current = true;
+        pendingPan.current = true;
+        isPanning.current = false;
         panStartX.current = e.clientX;
         panStartY.current = e.clientY;
         panStartScrollLeft.current = gridScrollRef.current?.scrollLeft ?? 0;
         panStartScrollTop.current = gridScrollRef.current?.scrollTop ?? 0;
-        setIsPanningActive(true);
-        e.currentTarget.setPointerCapture(e.pointerId);
     };
 
     const handlePanMove = (e: React.PointerEvent<HTMLDivElement>) => {
-        if (!isPanning.current || !gridScrollRef.current) return;
+        if (!pendingPan.current || !gridScrollRef.current) return;
         const dx = e.clientX - panStartX.current;
         const dy = e.clientY - panStartY.current;
-        // Scroll by delta amount (opposite direction of drag)
+
+        if (!isPanning.current) {
+            // Below threshold → wait, don't start capture yet
+            if (Math.abs(dx) < PAN_THRESHOLD && Math.abs(dy) < PAN_THRESHOLD) return;
+            // Threshold crossed — begin the actual pan
+            isPanning.current = true;
+            setIsPanningActive(true);
+            e.currentTarget.setPointerCapture(e.pointerId);
+        }
+
         gridScrollRef.current.scrollLeft = panStartScrollLeft.current - dx;
         gridScrollRef.current.scrollTop = panStartScrollTop.current - dy;
     };
 
     const handlePanEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+        pendingPan.current = false;
         if (!isPanning.current) return;
         isPanning.current = false;
         setIsPanningActive(false);
