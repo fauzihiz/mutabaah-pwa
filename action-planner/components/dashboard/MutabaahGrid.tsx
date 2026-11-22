@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { ActivityLog, ActivityDef } from '@/lib/db';
 import { useTrackerConfig } from '@/hooks/useTrackerConfig';
-import { Plus, Trash, Edit2, Flag } from 'lucide-react';
+import { Plus, Trash, Edit2, Flag, GripVertical } from 'lucide-react';
 
 interface MutabaahGridProps {
     currentDate: Date;
@@ -22,8 +22,66 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
     const {
         categories, activities,
         addCategory, editCategory, deleteCategory,
-        addActivity, editActivity, deleteActivity
+        addActivity, editActivity, deleteActivity,
+        reorderCategories, reorderActivities
     } = useTrackerConfig();
+
+    // ── Drag & Drop State ──
+    type DragItem = { type: 'category' | 'activity'; id: string; categoryId?: string };
+    const [draggedItem, setDraggedItem] = useState<DragItem | null>(null);
+    const [dropTarget, setDropTarget] = useState<{ id: string; position: 'before' | 'after' } | null>(null);
+
+    const handleDragStart = (e: React.DragEvent, item: DragItem) => {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', JSON.stringify(item));
+        setDraggedItem(item);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedItem(null);
+        setDropTarget(null);
+    };
+
+    const handleDragOver = (e: React.DragEvent, targetId: string, targetType: 'category' | 'activity') => {
+        if (!draggedItem || draggedItem.id === targetId) return;
+        
+        // Prevent cross-type drops (category onto activity row or vice versa)
+        if (draggedItem.type !== targetType) return;
+        
+        // For activities, prevent cross-category drops
+        if (targetType === 'activity' && draggedItem.categoryId !== undefined) {
+             // We need to know the target activity's category. 
+             // Since we don't pass it here easily without lookup, we assume valid targets are passed correctly in render.
+             // However, simpler check: just allow drop if types match. The reorder function validates category internally.
+        }
+
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        
+        const rect = e.currentTarget.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        const position = e.clientY < midY ? 'before' : 'after';
+        
+        setDropTarget({ id: targetId, position });
+    };
+
+    const handleDrop = async (e: React.DragEvent, targetId: string, targetType: 'category' | 'activity') => {
+        e.preventDefault();
+        if (!draggedItem || !dropTarget) return;
+        if (draggedItem.id === targetId) return;
+
+        if (targetType === 'category' && draggedItem.type === 'category') {
+            await reorderCategories(draggedItem.id, targetId, dropTarget.position);
+        } else if (targetType === 'activity' && draggedItem.type === 'activity') {
+            // Ensure same category for safety, though UI restricts this visually usually
+            if (draggedItem.categoryId) {
+                await reorderActivities(draggedItem.id, targetId, dropTarget.position, draggedItem.categoryId);
+            }
+        }
+
+        setDraggedItem(null);
+        setDropTarget(null);
+    };
 
     const logMap = useMemo(() => {
         const m = new Map<string, boolean>();
@@ -43,11 +101,10 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
             setTodayStr(toLocalDateStr(now.getFullYear(), now.getMonth(), now.getDate()));
         };
         sync();
-        const id = setInterval(sync, 60_000);
         const onVisible = () => { if (document.visibilityState === 'visible') sync(); };
         document.addEventListener('visibilitychange', onVisible);
         window.addEventListener('focus', onVisible);
-        return () => { clearInterval(id); document.removeEventListener('visibilitychange', onVisible); window.removeEventListener('focus', onVisible); };
+        return () => { document.removeEventListener('visibilitychange', onVisible); window.removeEventListener('focus', onVisible); };
     }, []);
 
     const isFuture = (day: number) => {
@@ -86,6 +143,48 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         }
     }, [currentDate, todayStr]);
 
+    // ── Desktop Drag-to-Scroll ──
+    const isPanning = useRef(false);
+    const panStartX = useRef(0);
+    const panStartY = useRef(0);
+    const panStartScrollLeft = useRef(0);
+    const panStartScrollTop = useRef(0);
+    const [isPanningActive, setIsPanningActive] = useState(false);
+
+    const handlePanStart = (e: React.PointerEvent<HTMLDivElement>) => {
+        // Only respond to primary button (left click / touch / pen)
+        if (e.button !== 0) return;
+        // Skip if starting on interactive elements (buttons, inputs, drag handles)
+        const target = e.target as HTMLElement;
+        if (target.closest('button, input, textarea, select, [draggable="true"], [data-drag-handle]')) return;
+
+        isPanning.current = true;
+        panStartX.current = e.clientX;
+        panStartY.current = e.clientY;
+        panStartScrollLeft.current = scrollRef.current?.scrollLeft ?? 0;
+        panStartScrollTop.current = scrollRef.current?.scrollTop ?? 0;
+        setIsPanningActive(true);
+        e.currentTarget.setPointerCapture(e.pointerId);
+    };
+
+    const handlePanMove = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (!isPanning.current || !scrollRef.current) return;
+        const dx = e.clientX - panStartX.current;
+        const dy = e.clientY - panStartY.current;
+        // Scroll by delta amount (opposite direction of drag)
+        scrollRef.current.scrollLeft = panStartScrollLeft.current - dx;
+        scrollRef.current.scrollTop = panStartScrollTop.current - dy;
+    };
+
+    const handlePanEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (!isPanning.current) return;
+        isPanning.current = false;
+        setIsPanningActive(false);
+        if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+        }
+    };
+
     const handleAddCategory = () => {
         const name = prompt('New Category Name:');
         if (name?.trim()) addCategory(name.trim());
@@ -120,9 +219,14 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
 
     return (
         <div
-            className="mutabaah-grid flex-1 overflow-auto border-t scrollbar-hide"
+            className={`mutabaah-grid flex-1 overflow-auto border-t scrollbar-hide select-none ${isPanningActive ? 'cursor-grabbing' : 'cursor-grab'}`}
             style={{ borderColor: 'var(--border)' }}
             ref={scrollRef}
+            onPointerDown={handlePanStart}
+            onPointerMove={handlePanMove}
+            onPointerUp={handlePanEnd}
+            onPointerCancel={handlePanEnd}
+            onPointerLeave={handlePanEnd}
         >
             {/* The whole grid is one scroll context. Left labels are sticky. */}
             <div style={{ minWidth: 'calc(var(--label-col-w) + ' + days.length * 40 + 'px)' }}>
@@ -183,20 +287,43 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                     </div>
                 )}
 
-                {categories.map(category => {
+                {categories.map((category, catIdx) => {
                     const catActivities = activities.filter(a => a.categoryId === category.id);
+                    const isDraggingCat = draggedItem?.type === 'category' && draggedItem.id === category.id;
+                    const isDropTargetCat = dropTarget?.id === category.id && draggedItem?.type === 'category';
+
                     return (
                         <div key={category.id}>
+                            {/* Drop-zone before this category (except first) */}
+                            {catIdx > 0 && draggedItem?.type === 'category' && (
+                                <div
+                                    className={`h-1 transition-colors ${dropTarget?.id === category.id && dropTarget?.position === 'before' ? 'bg-primary' : ''}`}
+                                    onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; setDropTarget({ id: category.id, position: 'before' }); }}
+                                    onDrop={(e) => { e.preventDefault(); if (draggedItem && draggedItem.type === 'category') reorderCategories(draggedItem.id, category.id, 'before').then(() => { setDraggedItem(null); setDropTarget(null); }); }}
+                                />
+                            )}
                             {/* ── Category header row ── */}
                             <div
-                                className="flex min-h-7 border-b group"
+                                className={`flex min-h-7 border-b group ${isDraggingCat ? 'opacity-50' : ''} ${isDropTargetCat ? (dropTarget!.position === 'before' ? 'border-t-2 border-t-primary' : 'border-b-2 border-b-primary') : ''}`}
                                 style={{ borderColor: 'var(--border)', background: 'var(--bg-subtle)' }}
+                                onDragOver={(e) => handleDragOver(e, category.id, 'category')}
+                                onDrop={(e) => handleDrop(e, category.id, 'category')}
                             >
                                 {/* sticky label */}
                                 <div
                                     className="flex-shrink-0 sticky left-0 z-20 flex items-start justify-between gap-1 px-2 py-1 border-r w-[var(--label-col-w)] h-auto"
                                     style={{ background: 'var(--bg-subtle)', borderColor: 'var(--border)' }}
                                 >
+                                    {/* Drag Handle */}
+                                    <div
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, { type: 'category', id: category.id })}
+                                        onDragEnd={handleDragEnd}
+                                        className="cursor-grab active:cursor-grabbing p-1 -ml-1 mr-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] touch-none"
+                                        title="Drag to reorder"
+                                    >
+                                        <GripVertical size={14} />
+                                    </div>
                                     <span
                                         className="text-[10px] font-black uppercase break-words flex-1 min-w-0 leading-snug"
                                         style={{ color: 'var(--text-muted)' }}
@@ -260,12 +387,20 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                     ))}
                                 </div>
                             ) : (
-                                catActivities.map(activity => (
-                                    <div
-                                        key={activity.id}
-                                        className="flex min-h-12 border-b group"
-                                        style={{ borderColor: 'var(--border)' }}
-                                    >
+                                catActivities.map((activity, actIdx) => {
+                                    const isDraggingAct = draggedItem?.type === 'activity' && draggedItem.id === activity.id;
+                                    const isDropTargetAct = dropTarget?.id === activity.id && draggedItem?.type === 'activity';
+                                    
+                                    return (
+                                    <div key={activity.id} className={`flex min-h-12 border-b group ${isDraggingAct ? 'opacity-50' : ''} ${isDropTargetAct ? 'border-b-2 border-b-primary' : ''}`} style={{ borderColor: 'var(--border)' }} onDragOver={(e) => handleDragOver(e, activity.id, 'activity')} onDrop={(e) => handleDrop(e, activity.id, 'activity')}>
+                                        {/* Drop-zone before this activity (except first in category) */}
+                                        {actIdx > 0 && draggedItem?.type === 'activity' && (
+                                            <div
+                                                className={`h-1 transition-colors ${dropTarget?.id === activity.id && dropTarget?.position === 'before' ? 'bg-primary' : ''}`}
+                                                onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; setDropTarget({ id: activity.id, position: 'before' }); }}
+                                                onDrop={(e) => { e.preventDefault(); if (draggedItem && draggedItem.type === 'activity') reorderActivities(draggedItem.id, activity.id, 'before', activity.categoryId).then(() => { setDraggedItem(null); setDropTarget(null); }); }}
+                                            />
+                                        )}
                                         {/* sticky label */}
                                         <div
                                             className="flex-shrink-0 sticky left-0 z-20 flex items-start justify-between gap-1 px-2 py-1 border-r w-[var(--label-col-w)] h-auto"
@@ -278,6 +413,16 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                                 borderColor: 'var(--border)',
                                             }}
                                         >
+                                            {/* Drag Handle */}
+                                            <div
+                                                draggable
+                                                onDragStart={(e) => handleDragStart(e, { type: 'activity', id: activity.id, categoryId: activity.categoryId })}
+                                                onDragEnd={handleDragEnd}
+                                                className="cursor-grab active:cursor-grabbing p-1 -ml-1 mr-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] touch-none"
+                                                title="Drag to reorder"
+                                            >
+                                                <GripVertical size={14} />
+                                            </div>
                                             <span
                                                 className="text-[11px] font-semibold break-words flex-1 min-w-0 leading-snug"
                                                 style={{ color: activity.priority ? 'var(--text-primary)' : 'var(--text-secondary)' }}
@@ -353,7 +498,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
                                             );
                                         })}
                                     </div>
-                                ))
+                                );
+                                })
                             )}
                         </div>
                     );

@@ -107,6 +107,48 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
         }
     }, [currentDate, todayStr]); // re-run when month changes or todayStr updates
 
+    // ── Desktop Drag-to-Scroll ──
+    const isPanning = useRef(false);
+    const panStartX = useRef(0);
+    const panStartY = useRef(0);
+    const panStartScrollLeft = useRef(0);
+    const panStartScrollTop = useRef(0);
+    const [isPanningActive, setIsPanningActive] = useState(false);
+
+    const handlePanStart = (e: React.PointerEvent<HTMLDivElement>) => {
+        // Only respond to primary button (left click / touch / pen)
+        if (e.button !== 0) return;
+        // Skip if starting on interactive elements (buttons, inputs, drag handles)
+        const target = e.target as HTMLElement;
+        if (target.closest('button, input, textarea, select, [draggable="true"], [data-drag-handle]')) return;
+
+        isPanning.current = true;
+        panStartX.current = e.clientX;
+        panStartY.current = e.clientY;
+        panStartScrollLeft.current = gridScrollRef.current?.scrollLeft ?? 0;
+        panStartScrollTop.current = gridScrollRef.current?.scrollTop ?? 0;
+        setIsPanningActive(true);
+        e.currentTarget.setPointerCapture(e.pointerId);
+    };
+
+    const handlePanMove = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (!isPanning.current || !gridScrollRef.current) return;
+        const dx = e.clientX - panStartX.current;
+        const dy = e.clientY - panStartY.current;
+        // Scroll by delta amount (opposite direction of drag)
+        gridScrollRef.current.scrollLeft = panStartScrollLeft.current - dx;
+        gridScrollRef.current.scrollTop = panStartScrollTop.current - dy;
+    };
+
+    const handlePanEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (!isPanning.current) return;
+        isPanning.current = false;
+        setIsPanningActive(false);
+        if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+        }
+    };
+
     const handleRename = async (id: string, currentName: string) => {
         const newName = prompt(`Ganti nama baris ini:`, currentName);
         if (newName === null) return; // user pressed Cancel
@@ -169,7 +211,15 @@ export function MutabaahGrid({ currentDate, logs, onToggle }: MutabaahGridProps)
             </div>
 
             {/* ── RIGHT: horizontal date grid ── */}
-            <div ref={gridScrollRef} className="flex-1 overflow-x-auto overflow-y-hidden z-10">
+            <div
+                ref={gridScrollRef}
+                className={`flex-1 overflow-x-auto overflow-y-hidden z-10 select-none ${isPanningActive ? 'cursor-grabbing' : 'cursor-grab'}`}
+                onPointerDown={handlePanStart}
+                onPointerMove={handlePanMove}
+                onPointerUp={handlePanEnd}
+                onPointerCancel={handlePanEnd}
+                onPointerLeave={handlePanEnd}
+            >
                 <div className="inline-block min-w-full">
 
                     {/* Date header */}

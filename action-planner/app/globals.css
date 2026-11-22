@@ -284,6 +284,29 @@ body {
   color: var(--text-muted);
 }
 
+/* ─── Drag & Drop Styles ─────────────────────── */
+.drag-handle {
+  cursor: grab;
+  touch-action: none; /* Prevent browser scrolling while dragging on touch devices */
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.dragging-item {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.drop-target-before {
+  box-shadow: inset 0 2px 0 0 var(--primary);
+}
+
+.drop-target-after {
+  box-shadow: inset 0 -2px 0 0 var(--primary);
+}
+
 /* ─── Animation Keyframes ─────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; }

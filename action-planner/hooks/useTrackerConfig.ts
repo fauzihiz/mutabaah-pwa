@@ -57,6 +57,43 @@ export function useTrackerConfig() {
         await db.activities.delete(id);
     };
 
+    // ── Drag-and-drop reorder functions ──
+    const reorderCategories = async (fromId: string, toId: string, position: 'before' | 'after') => {
+        const cats = await db.categories.orderBy('order').toArray();
+        const fromIndex = cats.findIndex(c => c.id === fromId);
+        const toIndex = cats.findIndex(c => c.id === toId);
+
+        if (fromIndex < 0 || toIndex < 0 || fromId === toId) return;
+
+        const newCats = [...cats];
+        const [moved] = newCats.splice(fromIndex, 1);
+        const newToIndex = newCats.findIndex(c => c.id === toId);
+        const insertAt = position === 'before' ? newToIndex : newToIndex + 1;
+        newCats.splice(insertAt, 0, moved);
+
+        for (let i = 0; i < newCats.length; i++) {
+            await db.categories.update(newCats[i].id, { order: i });
+        }
+    };
+
+    const reorderActivities = async (fromId: string, toId: string, position: 'before' | 'after', categoryId: string) => {
+        const categoryActivities = await db.activities.where('categoryId').equals(categoryId).sortBy('order');
+        const fromIndex = categoryActivities.findIndex((a: ActivityDef) => a.id === fromId);
+        const toIndex = categoryActivities.findIndex((a: ActivityDef) => a.id === toId);
+
+        if (fromIndex < 0 || toIndex < 0 || fromId === toId) return;
+
+        const newActs = [...categoryActivities];
+        const [moved] = newActs.splice(fromIndex, 1);
+        const newToIndex = newActs.findIndex(a => a.id === toId);
+        const insertAt = position === 'before' ? newToIndex : newToIndex + 1;
+        newActs.splice(insertAt, 0, moved);
+
+        for (let i = 0; i < newActs.length; i++) {
+            await db.activities.update(newActs[i].id, { order: i });
+        }
+    };
+
     return {
         categories,
         activities,
@@ -66,5 +103,7 @@ export function useTrackerConfig() {
         addActivity,
         editActivity,
         deleteActivity,
+        reorderCategories,
+        reorderActivities
     };
 }

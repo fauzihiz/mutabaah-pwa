@@ -1,0 +1,3 @@
+npm notice run action-planner@1.3.0 npx
+npm notice run tsc --noEmit
+app/sw.ts(27,25): error TS2353: Object literal may only specify known properties, and 'maxAgeSeconds' does not exist in type 'SerwistPlugin'.
