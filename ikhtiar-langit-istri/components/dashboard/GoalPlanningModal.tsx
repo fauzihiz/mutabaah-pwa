@@ -263,7 +263,7 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
                             style={{ color: 'var(--gold-text, #8a5a1b)' }}
                         >
                             Tulis goal yang konkret &amp; terukur — bukan &quot;dapat uang banyak cepat&quot;,
-                            tapi &quot;Dapatkan uang 1 juta dalam 1 minggu&quot;.
+                            tapi &quot;Dapatkan uang 1 juta dalam 1 bulan&quot;.
                         </p>
 
                         <div className="space-y-1.5">

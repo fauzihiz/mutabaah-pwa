@@ -44,14 +44,14 @@ export interface GoalPlanning {
     updatedAt: number; // epoch ms
 }
 
-export class RamadhanIbadahDatabase extends Dexie {
+export class RamadhanTrackerDatabase extends Dexie {
     logs!: Table<ActivityLog>;
     activitySettings!: Table<ActivitySetting, string>;
     planner!: Table<PlannerNote>;
     goals!: Table<GoalPlanning, number>;
 
     constructor() {
-        super('RamadhanIbadahDB');
+        super('RamadhanTrackerDB');
         this.version(5).stores({
             logs: '++id, [date+activityId], date, activityId, synced, completed',
             activitySettings: 'activityId',
@@ -88,11 +88,11 @@ export class RamadhanIbadahDatabase extends Dexie {
     }
 }
 
-export const db = new RamadhanIbadahDatabase();
+export const db = new RamadhanTrackerDatabase();
 
 /**
  * One-time migration from the legacy IndexedDB database ('MutabaahDB')
- * to the new database name ('RamadhanIbadahDB'). This runs automatically
+ * to the new database name ('RamadhanTrackerDB'). This runs automatically
  * on app startup and copies all tables from the old DB to the new one.
  * After successful migration, the legacy database is deleted.
  */
@@ -100,7 +100,7 @@ export async function migrateLegacyDb(): Promise<void> {
     if (typeof indexedDB === 'undefined') return;
 
     const LEGACY_DB_NAME = 'MutabaahDB';
-    const FLAG_KEY = 'ramadhan-ibadah.db.migrated';
+    const FLAG_KEY = 'ramadhan-tracker.db.migrated';
     const canStore = typeof localStorage !== 'undefined';
 
     try {
@@ -152,7 +152,7 @@ export async function migrateLegacyDb(): Promise<void> {
         await Dexie.delete(LEGACY_DB_NAME).catch(() => { });
 
         if (canStore) localStorage.setItem(FLAG_KEY, '1');
-        console.log('[DB Migration] Migrated data from MutabaahDB to RamadhanIbadahDB');
+        console.log('[DB Migration] Migrated data from MutabaahDB to RamadhanTrackerDB');
     } catch (err) {
         console.warn('[DB Migration] Failed to migrate legacy database:', err);
     }

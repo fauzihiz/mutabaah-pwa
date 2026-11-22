@@ -1,8 +1,8 @@
 // lib/storage.ts
 // Namespace-based localStorage wrapper to prevent cross-app data conflicts
 
-export const NS = 'ramadhan-ibadah';
-/** Legacy namespace used before the project was renamed to "Ramadhan Ibadah Tracker". */
+export const NS = 'ramadhan-tracker';
+/** Legacy namespace used before the project was renamed to "Ramadhan Tracker". */
 const LEGACY_NS = 'mutabaah';
 /** One-time migration flag so legacy keys are only copied once per browser. */
 const MIGRATION_FLAG = `${NS}.__migrated_from_legacy__`;
@@ -18,7 +18,7 @@ const MIGRATION_MAP: Record<string, string> = {
 
 /**
  * One-time migration from the legacy namespace ('mutabaah.*') to the new
- * namespace ('ramadhan-ibadah.*'). Runs lazily on the first storage access.
+ * namespace ('ramadhan-tracker.*'). Runs lazily on the first storage access.
  * Old keys are copied then removed so users keep their existing preferences.
  */
 function migrateLegacyNamespace(): void {

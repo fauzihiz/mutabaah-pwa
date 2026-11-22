@@ -107,7 +107,7 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
     const [terukur, setTerukur] = useState('');
     const [usaha, setUsaha] = useState('');
     const [motivasi, setMotivasi] = useState('');
-    const tenggatStatis = 'Selama Ramadan 1448 H / 2027';
+    const tenggatStatis = 'Selama Bulan Ramadan';
 
     // Escape to close + lock body scroll (pola DoaScriptModal / ActivityInfoModal)
     useEffect(() => {
@@ -275,7 +275,7 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
                                 id="goal-terukur"
                                 value={terukur}
                                 onChange={e => setTerukur(e.target.value)}
-                                placeholder="Contoh: Bisa mengisi target ibadah di Ramadan Ibadah Tracker."
+                                placeholder="Contoh: Bisa mengisi target ibadah di Ramadhan Tracker."
                                 maxLength={120}
                                 rows={2}
                                 className="w-full px-3 py-2.5 rounded-lg border text-sm leading-relaxed outline-none resize-none"
@@ -294,7 +294,7 @@ export function GoalPlanningModal({ isOpen, onClose }: GoalPlanningModalProps) {
                                 id="goal-usaha"
                                 value={usaha}
                                 onChange={e => setUsaha(e.target.value)}
-                                placeholder="Contoh: Mengisi Ramadan Ibadah Tracker setiap hari."
+                                placeholder="Contoh: Mengisi Ramadhan Tracker setiap hari."
                                 rows={3}
                                 className="w-full px-3 py-2.5 rounded-lg border text-sm leading-relaxed outline-none resize-none"
                                 style={inputStyle}
