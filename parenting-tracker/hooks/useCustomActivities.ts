@@ -66,16 +66,52 @@ export function useCustomActivities(childId: number) {
         });
     };
 
+    /**
+     * Reorder activities within a category based on drag-and-drop interactions.
+     * @param fromId - The ID of the activity being moved (with custom- prefix)
+     * @param toId - The ID of the activity where the user wants to drop
+     * @param position - 'before' or 'after' indicating the target position relative to toId
+     * @param categoryId - The category ID where the reordering happens
+     */
+    const reorderActivities = async (fromId: string, toId: string, position: 'before' | 'after', categoryId: string) => {
+        const fromRowId = parseRowId(fromId);
+        const toRowId = parseRowId(toId);
+        if (fromRowId === null || toRowId === null || fromRowId === toRowId) return;
+
+        const fromRow = await db.customActivities.get(fromRowId);
+        const toRow = await db.customActivities.get(toRowId);
+        if (!fromRow || !toRow || fromRow.childId !== childId || toRow.childId !== childId) return;
+        if (fromRow.category !== categoryId || toRow.category !== categoryId) return;
+
+        const rows = await db.customActivities.where('childId').equals(childId).toArray();
+        const categoryRows = rows
+            .filter(r => r.category === categoryId)
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || (a.id ?? 0) - (b.id ?? 0));
+        const orderedIds = categoryRows.map(r => r.id!).filter(id => id !== fromRowId);
+        const targetIndex = orderedIds.indexOf(toRowId);
+        if (targetIndex < 0) return;
+        const insertIndex = position === 'before' ? targetIndex : targetIndex + 1;
+        orderedIds.splice(insertIndex, 0, fromRowId);
+
+        await db.transaction('rw', db.customActivities, async () => {
+            for (let i = 0; i < orderedIds.length; i++) {
+                await db.customActivities.update(orderedIds[i], { order: i });
+            }
+        });
+    };
+
     /** Convert the DB rows into the Activity shape expected by the grid/stats. */
     const activities: {
         id: string;
         name: string;
         category: ActivityCategory;
+        order: number;
     }[] = (customActivities ?? []).map(row => ({
         id: `${CUSTOM_ID_PREFIX}${row.id}`,
         name: row.name,
         category: row.category as ActivityCategory,
-    }));
+        order: row.order ?? 0,
+    })).sort((a, b) => a.order - b.order);
 
     return {
         activities,
@@ -83,6 +119,7 @@ export function useCustomActivities(childId: number) {
         addActivity,
         renameActivity,
         deleteActivity,
+        reorderActivities,
     };
 }
 

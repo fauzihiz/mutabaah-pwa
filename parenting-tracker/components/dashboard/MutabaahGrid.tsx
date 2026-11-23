@@ -1,21 +1,23 @@
 'use client';
 
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
 import { CATEGORIES, type ActivityCategory } from '@/lib/constants/activities';
 import { ActivityLog } from '@/lib/db';
 import { ActivityDropdown } from './ActivityDropdown';
 import { getSupportingStickers, getStickerOption } from '@/lib/constants/stickers';
 import { storage } from '@/lib/storage';
+import { GripVertical } from 'lucide-react';
 
 interface MutabaahGridProps {
     currentDate: Date;
     logs: ActivityLog[];
     onToggle: (date: string, activityId: string, stickerValue: number) => void;
     childId: number;
-    activities: { id: string; name: string; category: ActivityCategory }[];
+    activities: { id: string; name: string; category: ActivityCategory; order: number }[];
     onAddActivity: (name: string, category: ActivityCategory) => Promise<string>;
     onRenameActivity: (activityId: string, newName: string) => Promise<void>;
     onDeleteActivity: (activityId: string) => Promise<void>;
+    onReorderActivities: (fromId: string, toId: string, position: 'before' | 'after', categoryId: string) => Promise<void>;
 }
 
 /** Build a YYYY-MM-DD string from local date components (timezone-safe). */
@@ -26,6 +28,7 @@ function toLocalDateStr(y: number, m: number, d: number) {
 export function MutabaahGrid({
     currentDate, logs, onToggle, childId,
     activities, onAddActivity, onRenameActivity, onDeleteActivity,
+    onReorderActivities,
 }: MutabaahGridProps) {
     const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
     const days = useMemo(() => Array.from({ length: daysInMonth }, (_, i) => i + 1), [daysInMonth]);
@@ -90,6 +93,49 @@ export function MutabaahGrid({
     // activityId → array of flag values (7-10)
     const [activityFlags, setActivityFlags] = useState<Record<string, number[]>>({});
 
+    // ── Row height synchronization state ──
+    // activityId → measured height in pixels
+    const [rowHeights, setRowHeights] = useState<Record<string, number>>({});
+    const leftRowRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+    // Measure and sync left row heights to right grid
+    const measureRowHeights = useCallback(() => {
+        const heights: Record<string, number> = {};
+        Object.entries(leftRowRefs.current).forEach(([id, el]) => {
+            if (el) heights[id] = el.offsetHeight;
+        });
+        setRowHeights(prev => {
+            let changed = false;
+            const next = { ...prev };
+            Object.entries(heights).forEach(([id, h]) => {
+                if (prev[id] !== h) {
+                    changed = true;
+                    next[id] = h;
+                }
+            });
+            // Remove heights for activities that no longer exist
+            Object.keys(prev).forEach(id => {
+                if (!(id in heights)) {
+                    delete next[id];
+                    changed = true;
+                }
+            });
+            return changed ? next : prev;
+        });
+    }, []);
+
+    // Measure on mount, after activities change, or after activity flags change
+    useLayoutEffect(() => {
+        measureRowHeights();
+    }, [activities, activityFlags, measureRowHeights]);
+
+    // Re-measure on window resize (text wrapping changes)
+    useEffect(() => {
+        const handleResize = () => measureRowHeights();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [measureRowHeights]);
+
     // Persist flags to localStorage so they survive navigation
     useEffect(() => {
         try {
@@ -116,6 +162,18 @@ export function MutabaahGrid({
     const [targetActivity, setTargetActivity] = useState<string | null>(null);
     const menuRef = useRef<HTMLDivElement>(null);
     const rowRef = useRef<HTMLElement>(null);
+
+    // ── Drag-and-drop reorder state ──
+    // Stored in a mutable ref so pointer event handlers always read fresh values
+    const dragRef = useRef<{
+        pending: { id: string; category: string; startX: number; startY: number } | null;
+        fromId: string | null;
+        toId: string | null;
+        position: 'before' | 'after';
+        category: string | null;
+    }>({ pending: null, fromId: null, toId: null, position: 'after', category: null });
+    const [dragRender, setDragRender] = useState(0);
+    const PAN_THRESHOLD = 6;
 
     const openSupportingMenu = (activityId: string, anchor: HTMLElement | null) => {
         if (anchor) rowRef.current = anchor;
@@ -252,6 +310,90 @@ export function MutabaahGrid({
         }
     };
 
+    // ── Drag-and-drop handlers for activities ──
+    const handleDragHandlePointerDown = (e: React.PointerEvent<HTMLDivElement>, activityId: string, category: string) => {
+        const target = e.target as HTMLElement;
+        if (!target.closest('[data-drag-handle]')) return;
+        e.stopPropagation();
+        if (e.button !== 0) return;
+        target.setPointerCapture(e.pointerId);
+        dragRef.current.pending = {
+            id: activityId,
+            category,
+            startX: e.clientX,
+            startY: e.clientY
+        };
+    };
+
+    const handleDragHandlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+        const pending = dragRef.current.pending;
+        if (!pending) return;
+        const dx = e.clientX - pending.startX;
+        const dy = e.clientY - pending.startY;
+        if (Math.abs(dx) < PAN_THRESHOLD && Math.abs(dy) < PAN_THRESHOLD) return;
+
+        if (dragRef.current.fromId === null) {
+            dragRef.current.fromId = pending.id;
+            dragRef.current.category = pending.category;
+            setDragRender(v => v + 1);
+        }
+
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+        const row = target?.closest('[data-activity-id]') as HTMLElement | null;
+        if (row) {
+            const id = row.dataset.activityId;
+            if (id && id !== pending.id) {
+                dragRef.current.toId = id;
+                const rect = row.getBoundingClientRect();
+                const centerY = rect.top + rect.height / 2;
+                dragRef.current.position = e.clientY < centerY ? 'before' : 'after';
+                setDragRender(v => v + 1);
+            } else {
+                dragRef.current.toId = null;
+                setDragRender(v => v + 1);
+            }
+        }
+    };
+
+    const handleDragHandlePointerUp = async (e: React.PointerEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLElement;
+        if (target.hasPointerCapture(e.pointerId)) {
+            target.releasePointerCapture(e.pointerId);
+        }
+
+        const pending = dragRef.current.pending;
+        if (!pending) return;
+
+        const fromId = dragRef.current.fromId ?? pending.id;
+        const toId = dragRef.current.toId;
+        const position = dragRef.current.position;
+        const category = dragRef.current.category ?? pending.category;
+
+        dragRef.current.pending = null;
+        dragRef.current.fromId = null;
+        dragRef.current.toId = null;
+        dragRef.current.position = 'after';
+        dragRef.current.category = null;
+        setDragRender(v => v + 1);
+
+        if (fromId && toId && category && fromId !== toId) {
+            await onReorderActivities(fromId, toId, position, category);
+        }
+    };
+
+    const handleDragHandlePointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLElement;
+        if (target.hasPointerCapture(e.pointerId)) {
+            target.releasePointerCapture(e.pointerId);
+        }
+        dragRef.current.pending = null;
+        dragRef.current.fromId = null;
+        dragRef.current.toId = null;
+        dragRef.current.position = 'after';
+        dragRef.current.category = null;
+        setDragRender(v => v + 1);
+    };
+
     const handleRename = async (id: string, currentName: string) => {
         const newName = prompt(`Ganti nama aktivitas ini:`, currentName);
         if (newName === null) return; // user pressed Cancel
@@ -320,11 +462,18 @@ export function MutabaahGrid({
                             </div>
 
                             {activitiesByCategory[category].map(activity => {
+                                const drag = dragRef.current;
+                                const isDragFrom = drag.fromId === activity.id;
+                                const isDragOver = drag.toId === activity.id;
+                                const isDragging = drag.fromId !== null;
+                                const dragOverPosition = drag.position;
                                 return (
                                     <div
                                         key={activity.id}
-                                        className="relative flex flex-col gap-1 border-b group"
-                                        style={{ background: "var(--bg-surface)", borderColor: "var(--border)", cursor: "pointer" }}
+                                        data-activity-id={activity.id}
+                                        ref={(el) => { leftRowRefs.current[activity.id] = el; }}
+                                        className={`relative flex flex-col gap-1 border-b group transition-colors ${isDragging ? 'opacity-50' : ''} ${isDragOver && dragOverPosition === 'before' ? 'border-t-2 border-t-primary' : ''} ${isDragOver && dragOverPosition === 'after' ? 'border-b-2 border-b-primary' : ''}`}
+                                        style={{ background: "var(--bg-surface)", borderColor: 'var(--border)', cursor: "pointer" }}
                                         onPointerDown={(e) => {
                                             if (e.pointerType === "mouse") return;
                                             const anchor = e.currentTarget as HTMLElement;
@@ -347,7 +496,15 @@ export function MutabaahGrid({
                                                 openSupportingMenu(activity.id, e.currentTarget as HTMLElement);
                                             }
                                         }}
+                                        onPointerDownCapture={(e) => handleDragHandlePointerDown(e, activity.id, category)}
+                                        onPointerMoveCapture={handleDragHandlePointerMove}
+                                        onPointerUpCapture={handleDragHandlePointerUp}
+                                        onPointerCancel={handleDragHandlePointerCancel}
                                     >
+                                        {/* Drag handle */}
+                                        <div className="absolute left-0 top-0 bottom-0 w-6 flex items-center justify-center cursor-grab opacity-0 group-hover:opacity-100 transition-opacity" data-drag-handle style={{ zIndex: 10 }}>
+                                            <GripVertical className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
+                                        </div>
                                         {/* Row 1: activity name + buttons */}
                                         <div className="min-h-12 px-3 py-2 flex items-start justify-between gap-1">
                                             <span
@@ -477,7 +634,7 @@ export function MutabaahGrid({
                                     <div
                                         key={activity.id}
                                         className="flex min-h-12 border-b"
-                                        style={{ borderColor: 'var(--border)' }}
+                                        style={{ borderColor: 'var(--border)', height: rowHeights[activity.id] }}
                                     >
                                         {days.map(day => {
                                             const dateStr = formatDate(day);

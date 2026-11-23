@@ -62,7 +62,7 @@ export default function Dashboard() {
   );
 
   // Get child-specific custom activities
-  const { activities, addActivity, renameActivity, deleteActivity } = useCustomActivities(activeChildId);
+  const { activities, addActivity, renameActivity, deleteActivity, reorderActivities } = useCustomActivities(activeChildId);
 
   const stats = useMonthlyStats(
     currentDate.getFullYear(),
@@ -124,6 +124,7 @@ export default function Dashboard() {
               onAddActivity={addActivity}
               onRenameActivity={renameActivity}
               onDeleteActivity={deleteActivity}
+              onReorderActivities={reorderActivities}
             />
           </>
         ) : (

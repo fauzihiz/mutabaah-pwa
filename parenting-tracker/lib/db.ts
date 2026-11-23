@@ -25,6 +25,7 @@ export interface CustomActivity {
     childId: number;
     name: string;
     category: string; // one of the 10 ActivityCategory values
+    order?: number;   // position within the category (for drag-and-drop reordering)
 }
 
 export interface PlannerNote {
@@ -99,6 +100,16 @@ export class ParentingTrackerDatabase extends Dexie {
                         flag,
                         childId: log.childId
                     });
+                }
+            });
+        });
+        // Version 10: add order field to customActivities for drag-and-drop reordering
+        this.version(10).stores({
+            customActivities: '++id, childId, order, [childId+category+name]',
+        }).upgrade(tx => {
+            return tx.table('customActivities').toCollection().modify(activity => {
+                if (activity.order === undefined) {
+                    activity.order = 0;
                 }
             });
         });

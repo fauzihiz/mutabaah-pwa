@@ -9,3 +9,7 @@ npm notice run next dev
 ✓ Starting...
 ✓ Ready in 8.7s
 ○ Compiling / ...
+ GET / 200 in 16.0s (compile: 13.5s, render: 2.5s)
+[?25h
+
+c:\Users\fauzi\Documents\github\mutabaah-pwa\ramadhan-tracker>
