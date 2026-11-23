@@ -232,6 +232,23 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
     // Info modal target — null = closed
     const [infoTarget, setInfoTarget] = useState<{ kind: 'category' | 'activity'; id: string } | null>(null);
 
+    // Defer heavy cell rendering to avoid blocking main thread during PWA startup.
+    // On installed PWA, the main thread is busy with hydration + IndexedDB + font
+    // loading, which blocks tap/click handlers while native scroll still works.
+    // By deferring the 600+ cells until the main thread is idle, we keep the
+    // initial render light and make the grid interactive sooner.
+    const [ready, setReady] = useState(false);
+    useEffect(() => {
+        const schedule = () => {
+            if (typeof requestIdleCallback === 'function') {
+                requestIdleCallback(() => setReady(true), { timeout: 1500 });
+            } else {
+                setTimeout(() => setReady(true), 1500);
+            }
+        };
+        schedule();
+    }, []);
+
     useEffect(() => {
         const sync = () => {
             const now = new Date();
@@ -361,7 +378,8 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                 />
 
                 <div className="overflow-y-auto h-full scrollbar-hide pb-24">
-                    {CATEGORIES.map(category => (
+                    {ready ? (
+                        CATEGORIES.map(category => (
                         <div key={category}>
                             {/* Category label — clickable → info modal */}
                             <button
@@ -433,7 +451,12 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                 );
                             })}
                         </div>
-                    ))}
+                        ))
+                    ) : (
+                        <div className="flex items-center justify-center h-24">
+                            <span className="text-xs text-gray-500">Loading...</span>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -487,8 +510,9 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
 
                     {/* Grid body */}
                     <div className="overflow-y-auto scrollbar-hide pb-24">
-                        {CATEGORIES.map(category => (
-                            <div key={category}>
+                        {ready ? (
+                            CATEGORIES.map(category => (
+                                <div key={category}>
                                 {/* Category spacer (mirrors left column height h-9) */}
                                 <div
                                     className="h-9 flex border-b"
@@ -533,7 +557,7 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                                     }}
                                                 >
                                                     <button
-                                                        disabled={locked}
+                                                        disabled={!ready || locked}
                                                         onClick={(e) => {
                                                             if (locked) return;
                                                             if (isTilawah) {
@@ -586,7 +610,12 @@ export function MutabaahGrid({ currentDate, logs, onToggle, onOpenDoaScripts }: 
                                     </div>
                                 ))}
                             </div>
-                        ))}
+                        ))
+                    ) : (
+                        <div className="flex items-center justify-center h-24 space-y-4 bg-gray-200 dark:bg-slate-700 rounded">
+                            <span className="text-gray-600">{'Loading grid...'}</span>
+                        </div>
+                    )}
                     </div>
 
                 </div>

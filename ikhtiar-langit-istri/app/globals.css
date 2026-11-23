@@ -102,6 +102,11 @@ body {
   color: var(--text-muted);
 }
 
+/* ─── Mobile Tap Optimization ────────────────────── */
+button {
+  touch-action: manipulation;
+}
+
 /* ─── Animation Keyframes ─────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; }
