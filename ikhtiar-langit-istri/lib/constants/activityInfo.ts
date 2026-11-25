@@ -195,9 +195,9 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             'Sholat Isya berjamaah memiliki pahala seolah sholat semalam penuh.',
         dalil: [
             {
-                arab: 'مَنْ صَلَّى الْعِشَاءَ فِي جَمَاعَةٍ فَكَأَنَّمَا قَامَ نِصْفَ اللَّيْلِ، وَمَنْ صَلَّى الصُّبْحَ فِي جَمَاعَةٍ فَكَأَنَّمَا صَلَّى اللَّيْلَ كُلَّهُ',
-                arti: '"Barangsiapa sholat Isya berjamaah, seakan ia sholat setengah malam. Dan barangsiapa sholat Subuh berjamaah, seakan ia sholat sepanjang malam."',
-                sumber: 'HR. Muslim no. 656',
+                arab: 'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللَّهُ عَنْهُ، قَالَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ: «إِنَّ أَثْقَلَ صَلَاةٍ عَلَى الْمُنَافِقِينَ صَلَاةُ الْعِشَاءِ وَصَلَاةُ الْفَجْرِ، وَلَوْ يَعْلَمُونَ مَا فِيهِمَا لَأَتَوْهُمَا وَلَوْ حَبْوًا»',
+                arti: 'Dari Abu Hurairah radhiyallahu \'anhu, shalat Isya dan Subuh adalah shalat yang paling berat bagi orang munafik; seandainya mereka tahu keutamaannya, niscaya mereka akan mendatanginya meski dengan merangkak.',
+                sumber: 'HR. Bukhari dan Muslim',
             },
         ],
     },
@@ -240,9 +240,9 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
             'Penutup sholat malam, ganjil jumlah rakaatnya. Rasulullah ﷺ tidak pernah meninggalkannya baik saat bepergian maupun di rumah.',
         dalil: [
             {
-                arab: 'الْوِتْرُ حَقٌّ فَمَنْ لَمْ يُوتِرْ فَلَيْسَ مِنَّا',
-                arti: '"Witir itu benar adanya (haq), barangsiapa tidak mengerjakannya maka ia bukan golongan kami."',
-                sumber: 'HR. Abu Dawud no. 1418',
+                arab: 'إِنَّ اللَّهَ عَزَّ وَجَلَّ قَدْ أَمَدَّكُمْ بِصَلَاةٍ وَهِيَ خَيْرٌ لَكُمْ مِنْ حُمْرِ النَّعَمِ وَهِيَ الْوِتْرُ',
+                arti: '"Sesungguhnya Allah ‘Azza wa Jalla telah menganugerahkan kepada kalian sebuah shalat yang ia lebih baik bagi kalian daripada unta merah, yaitu shalat witir."',
+                sumber: 'HR. Abu Dawud',
             },
         ],
     },
