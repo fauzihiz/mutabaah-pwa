@@ -192,14 +192,9 @@ export const ACTIVITY_INFO: Record<string, ActivityInfo> = {
     },
     isya: {
         ringkasan:
-            'Sholat Isya berjamaah memiliki pahala seolah sholat semalam penuh.',
-        dalil: [
-            {
-                arab: 'عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللَّهُ عَنْهُ، قَالَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ: «إِنَّ أَثْقَلَ صَلَاةٍ عَلَى الْمُنَافِقِينَ صَلَاةُ الْعِشَاءِ وَصَلَاةُ الْفَجْرِ، وَلَوْ يَعْلَمُونَ مَا فِيهِمَا لَأَتَوْهُمَا وَلَوْ حَبْوًا»',
-                arti: 'Dari Abu Hurairah radhiyallahu \'anhu, shalat Isya dan Subuh adalah shalat yang paling berat bagi orang munafik; seandainya mereka tahu keutamaannya, niscaya mereka akan mendatanginya meski dengan merangkak.',
-                sumber: 'HR. Bukhari dan Muslim',
-            },
-        ],
+            'Sholat Magrib menandai masuknya malam. Dianjurkan untuk segera dikerjakan begitu waktunya tiba, tidak ditunda-tunda.',
+        catatan:
+            'Termasuk dalam keutamaan umum menyegerakan sholat di awal waktu — "Sholat pada waktunya" adalah amal yang paling dicintai Allah (HR. Bukhari no. 527, Muslim no. 85).',
     },
     // ── Sholat Sunnah ──
     tahajud: {
