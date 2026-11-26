@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useMutabaahMonth } from '@/hooks/useMutabaah';
 import { useMonthlyStats } from '@/hooks/useMonthlyStats';
@@ -8,7 +8,6 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
-import { db } from '@/lib/db';
 // [SEMBUNYI SEMENTARA] Fitur Script Doa Saya — kembalikan saat fitur diaktifkan lagi:
 // import { DoaScriptCard } from '@/components/dashboard/DoaScriptCard';
 import { GoalPlanningCard } from '@/components/dashboard/GoalPlanningCard';
@@ -65,20 +64,9 @@ export default function Dashboard() {
     logs || []
   );
 
-  // Version guard: if app version changed, clear all local data so the new schema applies.
-  useEffect(() => {
-    const storedVersion = localStorage.getItem('ikhtiar.version');
-    const expectedVersion = '1.9.0'; // Bump this whenever you release a new app version
-
-    if (storedVersion !== expectedVersion) {
-      // Clear localStorage and IndexedDB, then reload the page.
-      localStorage.clear();
-      db.delete().finally(() => {
-        localStorage.setItem('ikhtiar.version', expectedVersion);
-        window.location.reload();
-      });
-    }
-  }, []);
+  // No version guard — data must persist across app updates.
+  // Dexie handles IndexedDB schema migrations automatically when you bump
+  // the version() call in lib/db.ts (see comments there).
 
   return (
     <div className="flex-1 flex flex-col min-h-screen" style={{ background: 'var(--bg-surface)' }}>
