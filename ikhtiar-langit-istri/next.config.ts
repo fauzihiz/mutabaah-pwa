@@ -9,8 +9,7 @@ const withSerwist = withSerwistInit({
   cacheOnNavigation: true,
   // Auto-reload page when device comes back online (triggers SW update check)
   reloadOnOnline: true,
-  // Precache the offline fallback page
-  additionalPrecacheEntries: [{ url: "/~offline", revision: process.env.NEXT_PUBLIC_APP_VERSION ?? "1" }],
+  // OFFLINE PAGE DISABLED — removed additionalPrecacheEntries for /~offline
 });
 
 const nextConfig: NextConfig = {

@@ -17,16 +17,7 @@ const serwist = new Serwist({
     runtimeCaching: [
         ...defaultCache,
     ],
-    fallbacks: {
-        entries: [
-            {
-                url: "/~offline",
-                matcher({ request }) {
-                    return request.destination === "document";
-                },
-            },
-        ],
-    },
+    // OFFLINE PAGE DISABLED — removed fallbacks that were serving /~offline
 });
 
 serwist.addEventListeners();
