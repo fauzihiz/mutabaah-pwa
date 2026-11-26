@@ -7,6 +7,7 @@ import { useMonthlyStats } from '@/hooks/useMonthlyStats';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
+import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
 import { db } from '@/lib/db';
 // [SEMBUNYI SEMENTARA] Fitur Script Doa Saya — kembalikan saat fitur diaktifkan lagi:
 // import { DoaScriptCard } from '@/components/dashboard/DoaScriptCard';
