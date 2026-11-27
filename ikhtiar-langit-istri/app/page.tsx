@@ -8,6 +8,7 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { MonthPicker } from '@/components/dashboard/MonthPicker';
 import { MutabaahGrid } from '@/components/dashboard/MutabaahGrid';
 import { DashboardFooter } from '@/components/dashboard/DashboardFooter';
+import { IconLegend } from '@/components/dashboard/IconLegend';
 // [SEMBUNYI SEMENTARA] Fitur Script Doa Saya — kembalikan saat fitur diaktifkan lagi:
 // import { DoaScriptCard } from '@/components/dashboard/DoaScriptCard';
 import { GoalPlanningCard } from '@/components/dashboard/GoalPlanningCard';
@@ -131,6 +132,8 @@ export default function Dashboard() {
           <StatsView stats={stats} />
         )}
       </main>
+
+      <IconLegend />
 
       <DashboardFooter />
     </div>
